@@ -1,0 +1,116 @@
+<template>
+    <div>
+        <footer id="footer_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <div class="footer_heading_area">
+                            <h5>Need any help?</h5>
+                        </div>
+                        <div class="footer_first_area">
+                            <div class="footer_inquery_area">
+                                <h5>Call 24/7 for any help</h5>
+                                <h3> <a href="tel:+00-123-456-789">+00 123 456 789</a></h3>
+                            </div>
+                            <div class="footer_inquery_area">
+                                <h5>Mail to our support team</h5>
+                                <h3> <a href="mailto:support@domain.com">support@domain.com</a></h3>
+                            </div>
+                            <div class="footer_inquery_area">
+                                <h5>Follow us on</h5>
+                                <ul class="soical_icon_footer">
+                                    <li><a href="#!"><i class="fab fa-facebook"></i></a></li>
+                                    <li><a href="#!"><i class="fab fa-twitter-square"></i></a></li>
+                                    <li><a href="#!"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a href="#!"><i class="fab fa-linkedin"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 offset-lg-1 col-md-6 col-sm-6 col-12">
+                        <div class="footer_heading_area">
+                            <h5>Company</h5>
+                        </div>
+                        <div class="footer_link_area">
+                            <ul>
+                                <li><router-link to="/about">About Us</router-link></li>
+                                <li><router-link to="/testimonials">Testimonials</router-link></li>
+                                <li><router-link to="/faqs">Rewards</router-link></li>
+                                <li><router-link to="/terms-service">Work with Us</router-link></li>
+                                <li><router-link to="/tour-guides">Meet the Team </router-link></li>
+                                <li><router-link to="/news">Blog</router-link></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                        <div class="footer_heading_area">
+                            <h5>Support</h5>
+                        </div>
+                        <div class="footer_link_area">
+                            <ul>
+                                <li><router-link to="/dashboard">Account</router-link></li>
+                                <li><router-link to="/faq">Faq</router-link></li>
+                                <li><router-link to="/testimonials">Legal</router-link></li>
+                                <li><router-link to="/contact">Contact</router-link></li>
+                                <li><router-link to="/top-destinations"> Affiliate Program</router-link></li>
+                                <li><router-link to="/privacy-policy">Privacy Policy</router-link></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                        <div class="footer_heading_area">
+                            <h5>Other Services</h5>
+                        </div>
+                        <div class="footer_link_area">
+                            <ul>
+                                <li><router-link to="/top-destinations-details">Community program</router-link></li>
+                                <li><router-link to="/top-destinations-details">Investor Relations</router-link></li>
+                                <li><router-link to="/flight-search-result">Rewards Program</router-link></li>
+                                <li><router-link to="/room-booking">PointsPLUS</router-link></li>
+                                <li><router-link to="/testimonials">Partners</router-link></li>
+                                <li><router-link to="/hotel-search">List My Hotel</router-link></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                        <div class="footer_heading_area">
+                            <h5>Top cities</h5>
+                        </div>
+                        <div class="footer_link_area">
+                            <ul>
+                                <li><router-link to="/room-details">Chicago</router-link></li>
+                                <li><router-link to="/hotel-details">New York</router-link></li>
+                                <li><router-link to="/hotel-booking">San Francisco</router-link></li>
+                                <li><router-link to="/tour-search">California</router-link></li>
+                                <li><router-link to="/tour-booking">Ohio </router-link></li>
+                                <li><router-link to="/tour-guides">Alaska</router-link></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <div class="copyright_area">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="co-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="copyright_left">
+                            <p>Copyright © 2022 All Rights Reserved</p>
+                        </div>
+                    </div>
+                    <div class="co-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="copyright_right">
+                            <img src="../assets/img/common/cards.png" alt="img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+
+export default {
+    name: 'Footer'
+}
+</script>

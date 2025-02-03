@@ -1,0 +1,5 @@
+const Ziggy = {"url":"http:\/\/localhost","port":null,"defaults":{},"routes":{"sanctum.csrf-cookie":{"uri":"sanctum\/csrf-cookie","methods":["GET","HEAD"]},"ignition.healthCheck":{"uri":"_ignition\/health-check","methods":["GET","HEAD"]},"ignition.executeSolution":{"uri":"_ignition\/execute-solution","methods":["POST"]},"ignition.updateConfig":{"uri":"_ignition\/update-config","methods":["POST"]},"home":{"uri":"\/","methods":["GET","HEAD"]},"about":{"uri":"about","methods":["GET","HEAD"]},"profile":{"uri":"profile","methods":["GET","HEAD"]},"posts.index":{"uri":"posts","methods":["GET","HEAD"]},"posts.store":{"uri":"posts","methods":["POST"]},"posts.update":{"uri":"posts\/{post}","methods":["PUT"],"parameters":["post"],"bindings":{"post":"id"}},"posts.destroy":{"uri":"posts\/{post}","methods":["DELETE"],"parameters":["post"],"bindings":{"post":"id"}}}};
+if (typeof window !== 'undefined' && typeof window.Ziggy !== 'undefined') {
+  Object.assign(Ziggy.routes, window.Ziggy.routes);
+}
+export { Ziggy };
