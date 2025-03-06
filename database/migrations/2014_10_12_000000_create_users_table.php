@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone')->nullable();
+            $table->string('VerificationToken')->nullable();
+            $table->timestamp('VerificationOn')->nullable();
+            $table->string('RecordOwnerID');
+            $table->boolean('is_verified')->default(0);
+            $table->string('google_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

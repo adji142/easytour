@@ -1,0 +1,55 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('hotelroom', function (Blueprint $table) {
+            $table->id();
+            $table->integer('HotelID');
+            $table->string('RoomName');
+            $table->string('RoomType');
+            $table->integer('RoomCapacity');
+            $table->integer('RoomSize');
+            $table->string('RoomBedType');
+            $table->double('RoomPrice');
+            $table->string('RoomStatus');
+            $table->string('RoomDescription');
+            $table->double('RoomRating');
+            $table->double('RoomDiscount');
+            $table->datetime('RoomDiscountStart');
+            $table->datetime('RoomDiscountEnd');
+            $table->integer('RoomDiscountStatus');
+            $table->integer('RoomFacilityAC')->default(0);
+            $table->integer('RoomFacilityTV')->default(0);
+            $table->integer('RoomFacilityShower')->default(0);
+            $table->integer('RoomFacilityWaterHeater')->default(0);
+            $table->integer('RoomFacilityFreeWifi')->default(0);
+            $table->integer('RoomFacilityBreakfast')->default(0);
+            $table->integer('RoomFacilityNoSmoking')->default(0);
+            $table->integer('RoomFacilityParking')->default(0);
+            $table->integer('RoomFacilitySwimmingPool')->default(0);
+            $table->integer('RoomFacilityFitness')->default(0);
+            $table->string('RoomInclude');
+            $table->string('RoomExclude');
+            $table->string('RoomWhyChooseUS');
+            $table->string('RecordOwnerID');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('hotelroom');
+    }
+};

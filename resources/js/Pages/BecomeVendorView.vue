@@ -10,12 +10,23 @@
     <AboutService />
 
     <!-- Vendor Form Area -->
-    <VendorForm />
+    <VendorForm :negara="negaraData" />
 
     <!-- Cta Area -->
     <Cta />
     <Footer />
 </template>
+
+<script setup>
+    import { ref } from 'vue';
+    import axios from 'axios';
+
+    const prop = defineProps({
+        negara: Array
+    });
+    const negaraData = prop.negara;
+</script>
+
 <script>
 import Banner from '@/components/about/Banner.vue'
 import HowWork from '@/components/vendor/HowWork.vue'
