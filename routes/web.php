@@ -11,6 +11,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\HotelDetailController;
+use App\Http\Controllers\BedTypeController;
+use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\HotelRoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -110,6 +113,33 @@ Route::get('/user/export', [UserController::class,'Export'])->name('user-export'
 
 /*
 |--------------------------------------------------------------------------
+| BedType
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/bedtypes', [BedTypeController::class,'View'])->name('bedtypes')->middleware('auth');
+Route::get('/bedtypes/form/{id}', [BedTypeController::class,'Form'])->name('bedtypes-form')->middleware('auth');
+Route::post('/bedtypes/store', [BedTypeController::class, 'store'])->name('bedtypes-store')->middleware('auth');
+Route::post('/bedtypes/edit', [BedTypeController::class, 'edit'])->name('bedtypes-edit')->middleware('auth');
+Route::delete('/bedtypes/delete/{id}', [BedTypeController::class, 'deletedata'])->name('bedtypes-delete')->middleware('auth');
+Route::get('/bedtypes/export', [BedTypeController::class,'Export'])->name('bedtypes-export')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| RoomType
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/roomtypes', [RoomTypeController::class,'View'])->name('roomtypes')->middleware('auth');
+Route::get('/roomtypes/form/{id}', [RoomTypeController::class,'Form'])->name('roomtypes-form')->middleware('auth');
+Route::post('/roomtypes/store', [RoomTypeController::class, 'store'])->name('roomtypes-store')->middleware('auth');
+Route::post('/roomtypes/edit', [RoomTypeController::class, 'edit'])->name('roomtypes-edit')->middleware('auth');
+Route::delete('/roomtypes/delete/{id}', [RoomTypeController::class, 'deletedata'])->name('roomtypes-delete')->middleware('auth');
+Route::get('/roomtypes/export', [RoomTypeController::class,'Export'])->name('roomtypes-export')->middleware('auth');
+
+/*
+|--------------------------------------------------------------------------
 | Hotels
 |--------------------------------------------------------------------------
 |
@@ -120,3 +150,17 @@ Route::post('/hotels/store', [HotelDetailController::class, 'store'])->name('hot
 Route::post('/hotels/edit', [HotelDetailController::class, 'edit'])->name('hotels-edit')->middleware('auth');
 Route::delete('/hotels/delete/{id}', [HotelDetailController::class, 'deletedata'])->name('hotels-delete')->middleware('auth');
 Route::get('/hotels/export', [HotelDetailController::class,'Export'])->name('hotels-export')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| Hotels Rooms
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/hotelroom', [HotelRoomController::class,'View'])->name('hotelroom')->middleware('auth');
+Route::get('/hotelroom/form/{id}', [HotelRoomController::class,'Form'])->name('hotelroom-form')->middleware('auth');
+Route::post('/hotelroom/store', [HotelRoomController::class, 'store'])->name('hotelroom-store')->middleware('auth');
+Route::post('/hotelroom/edit', [HotelRoomController::class, 'edit'])->name('hotelroom-edit')->middleware('auth');
+Route::delete('/hotelroom/delete/{id}', [HotelRoomController::class, 'deletedata'])->name('hotelroom-delete')->middleware('auth');
+Route::get('/hotelroom/export', [HotelRoomController::class,'Export'])->name('hotelroom-export')->middleware('auth');

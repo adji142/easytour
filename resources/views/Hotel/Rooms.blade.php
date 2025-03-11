@@ -7,7 +7,7 @@
 	<div class="container-fluid">
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb bg-white mb-0 px-0 py-2">
-				<li class="breadcrumb-item active" aria-current="page">Hotels</li>
+				<li class="breadcrumb-item active" aria-current="page">Hotel Rooms</li>
 			</ol>
 		</nav>
 	</div>
@@ -24,11 +24,11 @@
 						<div class="card card-custom gutter-b bg-transparent shadow-none border-0" >
 							<div class="card-header align-items-center  border-bottom-dark px-0">
 								<div class="card-title mb-0">
-									<h3 class="card-label mb-0 font-weight-bold text-body">Hotels 
+									<h3 class="card-label mb-0 font-weight-bold text-body">Hotel Rooms 
 									</h3>
 								</div>
 							    <div class="icons d-flex">
-									<a href="{{ url('hotels/form/0') }}" class="btn btn-outline-primary rounded-pill font-weight-bold me-1 mb-1">Tambah Data</a>
+									<a href="{{ url('hotelroom/form/0') }}" class="btn btn-outline-primary rounded-pill font-weight-bold me-1 mb-1">Tambah Data</a>
 									<div class="icons d-flex">
 								</div>
 								</div>
@@ -47,13 +47,24 @@
 								Filter Data
 							</div>
 							<div class="card-body" >
-								<form action="{{ route('hotels') }}">
+								<form action="{{ route('hotelroom') }}">
 									<div class="row">
+                                        <div class="col-md-3">
+											<label  class="text-body">Hotels</label>
+											<select name="HotelID" id="HotelID" class="js-example-basic-single js-states form-control bg-transparent">
+												<option value="" {{ ($oldStatus) == '' ? 'selected' : '' }}>Select Hotel</option>
+                                                @foreach($rooms as $key)
+                                                    <option value="{{ $key->id }}" {{ ($oldHotelID) == $key->id ? 'selected' : '' }}>{{ $key->HotelName }}</option>   
+                                                @endforeach
+												
+											</select>
+										</div>
+
 										<div class="col-md-3">
-											<label  class="text-body">Hotels Status</label>
+											<label  class="text-body">Hotel Rooms Status</label>
 											<select name="HotelStatus" id="HotelStatus" class="js-example-basic-single js-states form-control bg-transparent">
-												<option value="" {{ ($oldStatus) == '' ? 'selected' : '' }}>Pilih Status</option>
-                                                @foreach($hotelstatus as $key => $value)
+												<option value="" {{ ($oldStatus) == '' ? 'selected' : '' }}>Select Room Status</option>
+                                                @foreach($roomstatus as $key => $value)
                                                     <option value="{{ $key }}" {{ ($oldStatus) == $key ? 'selected' : '' }}>{{ $value }}</option>   
                                                 @endforeach
 												
@@ -78,22 +89,26 @@
 											<tr>
 												<!-- <th>Kode User</th> -->
 												<th>Hotel Name</th>
-												<th>Hotel Address</th>
-												<th>Hotel Description</th>
-												<th>Hotel Ratting</th>
-                                                <th>Hotel Status</th>
+												<th>Room Name</th>
+												<th>Room Type</th>
+												<th>Bed Type</th>
+                                                <th>Room Capacity</th>
+                                                <th>Room Price</th>
+                                                <th>Room Status</th>
 												<th class=" no-sort text-end">Action</th>
 											</tr>
 										</thead>
 										<tbody>
-											@if (count($hotel) > 0)
-												@foreach($hotel as $v)
+											@if (count($rooms) > 0)
+												@foreach($rooms as $v)
 												<tr>
 													<td>{{ $v['HotelName'] }}</td>
-													<td>{{ $v['HotelAddress'] }}</td>
-													<td>{{ $v['HotelDescription'] }}</td>
-                                                    <td>{{ $v['HotelRating'] }}</td>
-													<td> <div class="{{ $v['HotelStatus'] == 'Y' ? 'mr-0 text-success' : 'mr-0 text-danger' }} ">{{ $v['HotelStatusDesc'] }}</div> </td>
+													<td>{{ $v['RoomName'] }}</td>
+													<td>{{ $v['RoomTypeName'] }}</td>
+                                                    <td>{{ $v['BedTypeName'] }}</td>
+                                                    <td>{{ $v['RoomCapacity'] }}</td>
+                                                    <td>{{ $v['RoomPrice'] }}</td>
+													<td> <div class="{{ $v['RoomStatus'] == 'Y' ? 'mr-0 text-success' : 'mr-0 text-danger' }} ">{{ $v['HotelStatusDesc'] }}</div> </td>
 													<td>
 														<div class="card-toolbar text-end">
 															<button class="btn p-0 shadow-none" type="button" id="dropdowneditButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,7 +119,7 @@
 																</span>
 															</button>
 															<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdowneditButton1"  style="position: absolute; transform: translate3d(1001px, 111px, 0px); top: 0px; left: 0px; will-change: transform;">
-																<a class="dropdown-item" href="{{ url('hotels/form/' . $v['id']) }}">Edit</a>
+																<a class="dropdown-item" href="{{ url('hotelroom/form/' . $v['id']) }}">Edit</a>
 															</div>
 														</div>
 													</td>

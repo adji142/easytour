@@ -7,7 +7,7 @@
 	<div class="container-fluid">
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb bg-white mb-0 px-0 py-2">
-				<li class="breadcrumb-item active" aria-current="page">Hotels</li>
+				<li class="breadcrumb-item active" aria-current="page">Room Type</li>
 			</ol>
 		</nav>
 	</div>
@@ -24,11 +24,11 @@
 						<div class="card card-custom gutter-b bg-transparent shadow-none border-0" >
 							<div class="card-header align-items-center  border-bottom-dark px-0">
 								<div class="card-title mb-0">
-									<h3 class="card-label mb-0 font-weight-bold text-body">Hotels 
+									<h3 class="card-label mb-0 font-weight-bold text-body">Room Type 
 									</h3>
 								</div>
 							    <div class="icons d-flex">
-									<a href="{{ url('hotels/form/0') }}" class="btn btn-outline-primary rounded-pill font-weight-bold me-1 mb-1">Tambah Data</a>
+									<a href="{{ url('roomtypes/form/0') }}" class="btn btn-outline-primary rounded-pill font-weight-bold me-1 mb-1">New Room Type</a>
 									<div class="icons d-flex">
 								</div>
 								</div>
@@ -43,57 +43,21 @@
 				<div class="row">
 					<div class="col-12  px-4">
 						<div class="card card-custom gutter-b bg-white border-0" >
-							<div class="card-header" >
-								Filter Data
-							</div>
-							<div class="card-body" >
-								<form action="{{ route('hotels') }}">
-									<div class="row">
-										<div class="col-md-3">
-											<label  class="text-body">Hotels Status</label>
-											<select name="HotelStatus" id="HotelStatus" class="js-example-basic-single js-states form-control bg-transparent">
-												<option value="" {{ ($oldStatus) == '' ? 'selected' : '' }}>Pilih Status</option>
-                                                @foreach($hotelstatus as $key => $value)
-                                                    <option value="{{ $key }}" {{ ($oldStatus) == $key ? 'selected' : '' }}>{{ $value }}</option>   
-                                                @endforeach
-												
-											</select>
-										</div>
-										<div class="col-md-3">
-											<!-- <label  class="text-body">Status User</label> -->
-											<br>
-											<button type="submit" class="btn btn-danger text-white font-weight-bold me-1 mb-1">Cari Data</button>
-										</div>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="col-12  px-4">
-						<div class="card card-custom gutter-b bg-white border-0" >
 							<div class="card-body" >
 								<div class="table-responsive" id="printableTable">
 									<table id="orderTable" class="display" style="width:100%">
 										<thead>
 											<tr>
 												<!-- <th>Kode User</th> -->
-												<th>Hotel Name</th>
-												<th>Hotel Address</th>
-												<th>Hotel Description</th>
-												<th>Hotel Ratting</th>
-                                                <th>Hotel Status</th>
+												<th>Room Type</th>
 												<th class=" no-sort text-end">Action</th>
 											</tr>
 										</thead>
 										<tbody>
-											@if (count($hotel) > 0)
-												@foreach($hotel as $v)
+											@if (count($roomType) > 0)
+												@foreach($roomType as $v)
 												<tr>
-													<td>{{ $v['HotelName'] }}</td>
-													<td>{{ $v['HotelAddress'] }}</td>
-													<td>{{ $v['HotelDescription'] }}</td>
-                                                    <td>{{ $v['HotelRating'] }}</td>
-													<td> <div class="{{ $v['HotelStatus'] == 'Y' ? 'mr-0 text-success' : 'mr-0 text-danger' }} ">{{ $v['HotelStatusDesc'] }}</div> </td>
+													<td>{{ $v['RoomTypeName'] }}</td>
 													<td>
 														<div class="card-toolbar text-end">
 															<button class="btn p-0 shadow-none" type="button" id="dropdowneditButton1" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -104,7 +68,8 @@
 																</span>
 															</button>
 															<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdowneditButton1"  style="position: absolute; transform: translate3d(1001px, 111px, 0px); top: 0px; left: 0px; will-change: transform;">
-																<a class="dropdown-item" href="{{ url('hotels/form/' . $v['id']) }}">Edit</a>
+																<a class="dropdown-item" href="{{ url('roomtypes/form/' . $v['id']) }}">Edit</a>
+                                                                <a class="dropdown-item" title="Delete" href="{{ route('roomtypes-delete', $v['id']) }}" data-confirm-delete="true">Delete</a>
 															</div>
 														</div>
 													</td>

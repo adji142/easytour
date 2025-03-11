@@ -20,14 +20,17 @@ class HotelDetailController extends Controller
     {
         $keyword = $request->input('keyword');
         $hotelstatus = array('Y' => 'Active', 'N' => 'Inactive');
-        $sql = "*";
+        $sql = "*, CASE WHEN HotelStatus = 'Y' THEN 'Active' ELSE 'Inactive' END AS HotelStatusDesc";
 
         $hotel = HotelDetail::selectRaw($sql)
-        		->where('hoteldetail.RecordOwnerID','=',Auth::user()->RecordOwnerID)->get();
+        		->where('hoteldetail.RecordOwnerID','=',Auth::user()->RecordOwnerID);
 
+        if($request->input('HotelStatus') != null){
+            $hotel->where('hoteldetail.HotelStatus', $request->input('HotelStatus'));
+        }
         
         return view("Hotel.Hotel",[
-            'hotel' => $hotel, 
+            'hotel' => $hotel->get(), 
             'hotelstatus' => $hotelstatus,
             'oldStatus' => $request->input('HotelStatus')
         ]);
@@ -41,6 +44,8 @@ class HotelDetailController extends Controller
 	        ->where('hoteldetail.id','=', $id)->get();
         
         $negara = dem_negara::all();
+        $provinsi = dem_provinsi::all();
+        $kota = dem_kota::all();
 
         $hotelstatus = array('Y' => 'Active', 'N' => 'Inactive');
         $hotelrating = array('1' => '1 Star', '2' => '2 Star', '3' => '3 Star', '4' => '4 Star', '5' => '5 Star');
@@ -48,6 +53,8 @@ class HotelDetailController extends Controller
         return view("Hotel.Hotel-Input",[
             'hotel' => $hoteldetail,
             'negara' => $negara,
+            'provinsi' => $provinsi,
+            'kota' => $kota,
             'hotelstatus' => $hotelstatus,
             'hotelrating' => $hotelrating
         ]);
@@ -112,4 +119,5 @@ class HotelDetailController extends Controller
         }
         return response()->json($data);
     }
+
 }
