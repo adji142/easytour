@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hotelimage', function (Blueprint $table) {
+        Schema::create('tourimage', function (Blueprint $table) {
             $table->id();
-            $table->integer('RoomID');
-            $table->integer('HotelID');
-            $table->longtext('RoomImage');
+            $table->integer('TourID');
+            $table->longtext('TourImage');
             $table->integer('isBanner');
             $table->string('ImageCategory');
             $table->string('RecordOwnerID');
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hotelimage');
+        Schema::dropIfExists('tourimage');
     }
 };
