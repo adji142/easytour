@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('touritinerary', function (Blueprint $table) {
             $table->id();
             $table->integer('TourID');
+            $table->integer('DayNumber');
             $table->string('TourItineraryName');
             $table->string('TourItineraryDescription');
             $table->string('RecordOwnerID');

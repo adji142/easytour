@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('TourCheckPoints');
             $table->string('TourCheckPoints2')->nullable();
             $table->string('TourCheckPoints3')->nullable();
-            $table->string('TourDescription');
-            $table->string('TourIncludeExclude');
+            $table->text('TourDescription');
+            $table->text('TourIncludeExclude');
             $table->string('RecordOwnerID');
             $table->timestamps();
         });
