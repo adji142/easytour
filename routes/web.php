@@ -187,6 +187,7 @@ Route::get('/tourtypes/export', [TourTypeController::class,'Export'])->name('tou
 |--------------------------------------------------------------------------
 |
 */
+Route::get('/tourdestionation', [TourDetailController::class, 'index'])->name('tourdestionation');
 Route::get('/tour', [TourDetailController::class,'View'])->name('tour')->middleware('auth');
 Route::get('/tour/form/{id}', [TourDetailController::class,'Form'])->name('tour-form')->middleware('auth');
 Route::post('/tour/store', [TourDetailController::class, 'store'])->name('tour-store')->middleware('auth');

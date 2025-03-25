@@ -12,9 +12,13 @@ use App\Models\TourType;
 use App\Models\TourImage;
 use App\Models\TourPackage;
 use App\Models\TourItinerary;
+use Inertia\Inertia;
 
 class TourDetailController extends Controller
 {
+    public function index() {
+        return Inertia::render('Tour');
+    }
     public function View(Request $request)
     {
         $tourDetail = TourDetail::where('RecordOwnerID', Auth::user()->RecordOwnerID)->get();

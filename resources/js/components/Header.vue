@@ -74,7 +74,7 @@
                                             </li>
 
                                             <li class="nav-item dropdown">
-                                                <a href="/" class="dropdown-item dropdown-toggle">
+                                                <a href="/tourdestionation" class="dropdown-item dropdown-toggle">
                                                     Tours
                                                 </a>
                                             </li>
@@ -153,7 +153,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="/tourdestionation" class="nav-link">
                                             Tours
                                         </a>
                                     </li>
