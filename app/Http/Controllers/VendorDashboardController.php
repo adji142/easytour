@@ -13,4 +13,7 @@ class VendorDashboardController extends Controller
     public function dashboard(Request $request) {
         return view("dashboard");
     }
+    public function dashboardadmin(Request $request) {
+        return view("dashboardadmin");
+    }
 }

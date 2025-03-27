@@ -283,8 +283,14 @@ class AuthController extends Controller
                     $data['redirect'] = 'dashboard';
                 }
                 else{
-                    $data['success'] = true;
-                    $data['redirect'] = 'dashboard';
+                    if ($RecordOwnerID == "999999") {
+                        $data['success'] = true;
+                        $data['redirect'] = 'admin';
+                    }
+                    else{
+                        $data['success'] = true;
+                        $data['redirect'] = 'dashboard';
+                    }
                 }
             }
             else{

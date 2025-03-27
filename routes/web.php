@@ -16,6 +16,7 @@ use App\Http\Controllers\RoomTypeController;
 use App\Http\Controllers\HotelRoomController;
 use App\Http\Controllers\TourTypeController;
 use App\Http\Controllers\TourDetailController;
+use App\Http\Controllers\TopServicesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,6 +83,7 @@ Route::get('/verify-email/{token}', [AuthController::class, 'verifyEmail'])->nam
 // End Vendor Registration
 
 Route::get('/dashboard', [VendorDashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
+Route::get('/admin', [VendorDashboardController::class, 'dashboardadmin'])->name('admin')->middleware('auth');
 Route::post('/action-login', [AuthController::class, 'action_login'])->name('action-login');
 // Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
@@ -194,3 +196,17 @@ Route::post('/tour/store', [TourDetailController::class, 'store'])->name('tour-s
 Route::post('/tour/edit', [TourDetailController::class, 'edit'])->name('tour-edit')->middleware('auth');
 Route::delete('/tour/delete/{id}', [TourDetailController::class, 'deletedata'])->name('tour-delete')->middleware('auth');
 Route::get('/tour/export', [TourDetailController::class,'Export'])->name('tour-export')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| Top Services
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/topservices', [TopServicesController::class,'View'])->name('topservices')->middleware('auth');
+Route::get('/topservices/form/{id}', [TopServicesController::class,'Form'])->name('topservices-form')->middleware('auth');
+Route::post('/topservices/store', [TopServicesController::class, 'store'])->name('topservices-store')->middleware('auth');
+Route::post('/topservices/edit', [TopServicesController::class, 'edit'])->name('topservices-edit')->middleware('auth');
+Route::delete('/topservices/delete/{id}', [TopServicesController::class, 'deletedata'])->name('topservices-delete')->middleware('auth');
+Route::get('/topservices/export', [TopServicesController::class,'Export'])->name('topservices-export')->middleware('auth');
