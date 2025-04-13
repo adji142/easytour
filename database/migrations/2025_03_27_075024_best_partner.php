@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bestpartner', function (Blueprint $table) {
             $table->id();
             $table->string('PartnerCode');
-            $table->text('Icon');
+            $table->longtext('Icon');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LandingPageController;
@@ -17,6 +18,9 @@ use App\Http\Controllers\HotelRoomController;
 use App\Http\Controllers\TourTypeController;
 use App\Http\Controllers\TourDetailController;
 use App\Http\Controllers\TopServicesController;
+use App\Http\Controllers\EasyTourSettingController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\BestPartnerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,9 +32,10 @@ use App\Http\Controllers\TopServicesController;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+// Route::get('/', function () {
+//     return Inertia::render('Home');
+// })->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('/admin', function () {
     return Inertia::render('Admin/Dashboard');
@@ -210,3 +215,43 @@ Route::post('/topservices/store', [TopServicesController::class, 'store'])->name
 Route::post('/topservices/edit', [TopServicesController::class, 'edit'])->name('topservices-edit')->middleware('auth');
 Route::delete('/topservices/delete/{id}', [TopServicesController::class, 'deletedata'])->name('topservices-delete')->middleware('auth');
 Route::get('/topservices/export', [TopServicesController::class,'Export'])->name('topservices-export')->middleware('auth');
+
+/*
+|--------------------------------------------------------------------------
+| Easy Tour Setting
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/easytoursetting', [EasyTourSettingController::class,'Form'])->name('easytoursetting')->middleware('auth');
+Route::post('/easytoursetting/store', [EasyTourSettingController::class, 'edit'])->name('easytoursetting-store')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| Testimonial
+|--------------------------------------------------------------------------
+|
+*/
+// Testimonial Routes
+Route::get('/testimonial', [TestimonialController::class, 'View'])->name('testimonial')->middleware('auth');
+Route::get('/testimonial/form/{id}', [TestimonialController::class, 'Form'])->name('testimonial-form')->middleware('auth');
+Route::post('/testimonial/store', [TestimonialController::class, 'store'])->name('testimonial-store')->middleware('auth');
+Route::post('/testimonial/edit', [TestimonialController::class, 'edit'])->name('testimonial-edit')->middleware('auth');
+Route::delete('/testimonial/delete/{id}', [TestimonialController::class, 'deletedata'])->name('testimonial-delete')->middleware('auth');
+Route::get('/testimonial/export', [TestimonialController::class, 'Export'])->name('testimonial-export')->middleware('auth');
+
+
+/*
+|--------------------------------------------------------------------------
+| Testimonial
+|--------------------------------------------------------------------------
+|
+*/
+// Testimonial Routes
+Route::get('/bestpartner', [BestPartnerController::class, 'View'])->name('bestpartner')->middleware('auth');
+Route::get('/bestpartner/form/{id}', [BestPartnerController::class, 'Form'])->name('bestpartner-form')->middleware('auth');
+Route::post('/bestpartner/store', [BestPartnerController::class, 'store'])->name('bestpartner-store')->middleware('auth');
+Route::post('/bestpartner/edit', [BestPartnerController::class, 'edit'])->name('bestpartner-edit')->middleware('auth');
+Route::delete('/bestpartner/delete/{id}', [BestPartnerController::class, 'deletedata'])->name('bestpartner-delete')->middleware('auth');
+Route::get('/bestpartner/export', [BestPartnerController::class, 'Export'])->name('bestpartner-export')->middleware('auth');
+

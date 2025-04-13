@@ -1,19 +1,19 @@
 <template>
 
-    <Header />
+    <Header :easyTourSetting="easyTourSetting"/>
   
     <!-- Banner Area -->
-    <Banner />
+    <Banner :easyTourSetting="easyTourSetting" />
 
-    <TopService />
+    <TopService :topServices="topServices" />
 
-    <About />
+    <About :easyTourSetting="easyTourSetting" />
 
-    <ClientSays />
+    <ClientSays :testimonial="testimonial" :easyTourSetting="easyTourSetting"/>
 
-    <Partners/>
+    <Partners :bestPartner="bestPartner"/>
 
-    <Footer />
+    <Footer :easyTourSetting="easyTourSetting"/>
   </template>
   
   <script>
@@ -30,6 +30,13 @@
     name: 'App',
     components: {
       Header, Footer, Banner, TopService, About, ClientSays, Partners
-    }
+    },
+    props: {
+      // Define any props you want to pass to the components here
+      topServices: Array,
+      easyTourSetting: Array,
+      testimonial: Array,
+      bestPartner: Array,
+    },
   }
   </script>

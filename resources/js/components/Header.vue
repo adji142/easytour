@@ -8,13 +8,13 @@
                         <div class="col-lg-6 col-md-6">
                             <ul class="topbar-list">
                                 <li>
-                                    <a href="#!"><i class="fab fa-facebook"></i></a>
-                                    <a href="#!"><i class="fab fa-twitter-square"></i></a>
-                                    <a href="#!"><i class="fab fa-instagram"></i></a>
-                                    <a href="#!"><i class="fab fa-linkedin"></i></a>
+                                    <a :href="easyTourSetting.FacebookPage"><i class="fab fa-facebook"></i></a>
+                                    <a :href="easyTourSetting.TwitterPage"><i class="fab fa-twitter-square"></i></a>
+                                    <a :href="easyTourSetting.InstagramPage"><i class="fab fa-instagram"></i></a>
+                                    <a :href="easyTourSetting.YoutubePage"><i class="fab fa-youtube"></i></a>
                                 </li>
-                                <li><a href="#!"><span>+011 234 567 89</span></a></li>
-                                <li><a href="#!"><span>contact@domain.com</span></a></li>
+                                <li><a href="#!"><span>{{ easyTourSetting.AppsPhone }}</span></a></li>
+                                <li><a href="#!"><span>{{ easyTourSetting.AppsEmail }}</span></a></li>
                             </ul>
                         </div>
                         <div class="col-lg-6 col-md-6">
@@ -267,7 +267,10 @@ export default {
                 e.target.children[0].classList.toggle('active');
             }
         })
-    }
+    },
+    props: {
+        easyTourSetting: Array,
+    },
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <Header />
+    <Header :easyTourSetting="easyTourSetting"/>
     <!-- Common Banner Area -->
     <TopDestinationBanner />
 
@@ -17,6 +17,9 @@ export default {
     name: "TopDestinationsView",
     components: {
         Header,TopDestinationBanner, Destinations
-    }
+    },
+    props: {
+      easyTourSetting: Array,
+    },
 };
 </script>

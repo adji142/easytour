@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('testimonial', function (Blueprint $table) {
             $table->id();
             $table->string('SenderName');
-            $table->string('SenderEmail');
-            $table->string('SenderPhone');
-            $table->text('Testimonnial');
-            $table->text('OtherRemarks');
-            $table->string('Icon');
+            $table->string('SenderEmail')->nullable();
+            $table->string('SenderPhone')->nullable();
+            $table->string('SenderJobTitle')->nullable();
+            $table->string('TestimonnialTitle');
+            $table->longtext('Testimonnial');
+            $table->longtext('OtherRemarks')->nullable();
+            $table->longtext('Icon')->nullable();
             $table->timestamps();
         });
     }

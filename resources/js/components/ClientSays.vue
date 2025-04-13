@@ -12,7 +12,7 @@
                                 <img src="../assets/img/icon/sm-call.png" alt="icon">
                                 <div class="sm_call_number">
                                     <h5>Call now</h5>
-                                    <h2><a href="tel:+01-234-567-890">+01 234 567 890</a></h2>
+                                    <h2><a href="tel:{{ easyTourSetting.AppsPhone }}">{{ easyTourSetting.AppsPhone }}</a></h2>
                                 </div>
                             </div>
                         </div>
@@ -25,60 +25,15 @@
                                 <img src="../assets/img/icon/quote.png" alt="img">
                                 <h3>Awesome service</h3>
                             </div>
-                            <div class="home_two_client_slider  owl-theme owl-carousel">
+                            <div class="home_two_client_slider  owl-theme owl-carousel" >
                                 <swiper :slides-per-view="1" :pagination="{ clickable: true }">
-                                    <swiper-slide>
+                                    <swiper-slide v-for="(item, index) in testimonial" :key="index">
                                         <div class="client_two_content">
-                                            <p>
-                                                Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem
-                                                eiusmod
-                                                excepteur anim adipisicing officia officia.
-                                            </p>
-                                            <div class="client_two_author">
-                                                <h5>Cameron douglas</h5>
-                                                <h6>Businessman</h6>
-                                            </div>
+                                        <p v-html="item.Testimonnial"></p>
+                                        <div class="client_two_author">
+                                            <h5>{{ item.SenderName }}</h5>
+                                            <h6>{{ item.TestimonnialTitle }}</h6>
                                         </div>
-                                    </swiper-slide>
-
-                                    <swiper-slide>
-                                        <div class="client_two_content">
-                                            <p>
-                                                Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem
-                                                eiusmod
-                                                excepteur anim adipisicing officia officia.
-                                            </p>
-                                            <div class="client_two_author">
-                                                <h5>Cameron douglas</h5>
-                                                <h6>Businessman</h6>
-                                            </div>
-                                        </div>
-                                    </swiper-slide>
-                                    <swiper-slide>
-                                        <div class="client_two_content">
-                                            <p>
-                                                Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem
-                                                eiusmod
-                                                excepteur anim adipisicing officia officia.
-                                            </p>
-                                            <div class="client_two_author">
-                                                <h5>Cameron douglas</h5>
-                                                <h6>Businessman</h6>
-                                            </div>
-                                        </div>
-                                    </swiper-slide>
-
-                                    <swiper-slide>
-                                        <div class="client_two_content">
-                                            <p>
-                                                Ad non quis quis commodo ut nostrud ipsum ad reprehenderit. Lorem
-                                                eiusmod
-                                                excepteur anim adipisicing officia officia.
-                                            </p>
-                                            <div class="client_two_author">
-                                                <h5>Cameron douglas</h5>
-                                                <h6>Businessman</h6>
-                                            </div>
                                         </div>
                                     </swiper-slide>
                                 </swiper>
@@ -107,6 +62,10 @@ export default {
         return {
             swiper: null,
         };
-    }
+    },
+    props: {
+        testimonial: Array,
+        easyTourSetting: Array,
+    },
 };
 </script>

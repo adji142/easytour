@@ -12,12 +12,16 @@ use App\Models\TourType;
 use App\Models\TourImage;
 use App\Models\TourPackage;
 use App\Models\TourItinerary;
+use App\Models\EasyTourSetting;
 use Inertia\Inertia;
 
 class TourDetailController extends Controller
 {
     public function index() {
-        return Inertia::render('Tour');
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+        return Inertia::render('Tour',[
+            'easyTourSetting' => $easyTourSetting,
+        ]);
     }
     public function View(Request $request)
     {

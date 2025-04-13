@@ -10,19 +10,19 @@
                         <div class="footer_first_area">
                             <div class="footer_inquery_area">
                                 <h5>Call 24/7 for any help</h5>
-                                <h3> <a href="tel:+00-123-456-789">+00 123 456 789</a></h3>
+                                <h3> <a href="tel:{{ easyTourSetting.AppsPhone }}">{{ easyTourSetting.AppsPhone }}</a></h3>
                             </div>
                             <div class="footer_inquery_area">
                                 <h5>Mail to our support team</h5>
-                                <h3> <a href="mailto:support@domain.com">support@domain.com</a></h3>
+                                <h3> <a href="mailto:{{ easyTourSetting.AppsEmail }}">{{ easyTourSetting.AppsEmail }}</a></h3>
                             </div>
                             <div class="footer_inquery_area">
                                 <h5>Follow us on</h5>
                                 <ul class="soical_icon_footer">
-                                    <li><a href="#!"><i class="fab fa-facebook"></i></a></li>
-                                    <li><a href="#!"><i class="fab fa-twitter-square"></i></a></li>
-                                    <li><a href="#!"><i class="fab fa-instagram"></i></a></li>
-                                    <li><a href="#!"><i class="fab fa-linkedin"></i></a></li>
+                                    <li><a :href="easyTourSetting.FacebookPage"><i class="fab fa-facebook"></i></a></li>
+                                    <li><a :href="easyTourSetting.TwitterPage"><i class="fab fa-twitter-square"></i></a></li>
+                                    <li><a :href="easyTourSetting.InstagramPage"><i class="fab fa-instagram"></i></a></li>
+                                    <li><a :href="easyTourSetting.YoutubePage"><i class="fab fa-youtube"></i></a></li>
                                 </ul>
                             </div>
                         </div>
@@ -111,6 +111,9 @@
 <script>
 
 export default {
-    name: 'Footer'
+    name: 'Footer',
+    props: {
+        easyTourSetting: Array
+    },
 }
 </script>

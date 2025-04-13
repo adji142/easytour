@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class BestPartner extends Model
 {
     use HasFactory;
+    protected $table = 'bestpartner';
 }
