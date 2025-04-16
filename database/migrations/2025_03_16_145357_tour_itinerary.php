@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('TourID');
             $table->integer('DayNumber');
             $table->string('TourItineraryName');
-            $table->string('TourItineraryDescription');
+            $table->logtext('TourItineraryDescription');
             $table->string('RecordOwnerID');
             $table->timestamps();
         });

@@ -4,25 +4,26 @@
     <TopDestinationBanner />
 
     <!-- Destinations Areas -->
-    <Destinations :tours="tours" :tourcount="tourcount" :tourType="tourType"/>
+    <Destinations :tourDetail="tourDetail" :tourImage="tourImage" :tourItinerary="tourItinerary" :tourpackage="tourpackage" />
 
 </template>
 <script>
 import Header from '@/components/Header.vue'
 import TopDestinationBanner from '@/components/tour/TopDestinationBanner.vue'
-import Destinations from '@/components/tour/Destinations.vue'
+import Destinations from '@/components/tour/TourDetails.vue'
 
 
 export default {
-    name: "TopDestinationsView",
+    name: "TourDetail",
     components: {
         Header,TopDestinationBanner, Destinations
     },
-    props: {
-      easyTourSetting: Array,
-      tours: Array,
-      tourcount: Number,
-      tourType: Array
-    },
+    props:{
+        easyTourSetting: Array,
+        tourDetail: Array,
+        tourImage: Array,
+        tourItinerary: Array,
+        tourpackage: Array
+    }
 };
 </script>

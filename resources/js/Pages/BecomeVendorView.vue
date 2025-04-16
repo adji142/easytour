@@ -1,5 +1,5 @@
 <template>
-    <Header />
+    <Header :easyTourSetting="easyTourSetting"/>
     <!-- Common Banner Area -->
     <Banner />
 
@@ -22,6 +22,7 @@
     import axios from 'axios';
 
     const prop = defineProps({
+        easyTourSetting: Array,
         negara: Array
     });
     const negaraData = prop.negara;
@@ -40,6 +41,6 @@ export default {
     name: "BecomeVendorView",
     components: {
         Header, Banner, HowWork, AboutService, VendorForm, Cta, Footer
-    }
+    },
 };
 </script>

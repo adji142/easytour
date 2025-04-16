@@ -26,19 +26,6 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
-        "@inertiajs/progress": "^0.2.7",
-        "@inertiajs/vue3": "^2.0.3",
-        "@popperjs/core": "^2.11.6",
-        "@vitejs/plugin-vue": "^5.2.1",
-        "@vueform/slider": "^2.1.6",
-        "bootstrap": "^5.2.3",
-        "core-js": "^3.8.3",
-        "firebase": "^11.3.0",
-        "sweetalert2": "^11.17.2",
-        "swiper": "^6.5.0",
-        "vue": "^3.5.13",
-        "vue-router": "^4.5.0",
-        "ziggy-js": "^2.5.1",
         "@coreui/chartjs": "^4.1.0",
         "@coreui/coreui": "^5.3.1",
         "@coreui/icons": "^3.0.1",
@@ -46,8 +33,21 @@
         "@coreui/utils": "^2.0.2",
         "@coreui/vue": "^5.4.1",
         "@coreui/vue-chartjs": "^3.0.0",
+        "@inertiajs/progress": "^0.2.7",
+        "@inertiajs/vue3": "^2.0.3",
+        "@popperjs/core": "^2.11.6",
+        "@vitejs/plugin-vue": "^5.2.1",
+        "@vueform/slider": "^2.1.6",
+        "bootstrap": "^5.2.3",
         "chart.js": "^4.4.7",
+        "core-js": "^3.8.3",
+        "firebase": "^11.3.0",
         "pinia": "^3.0.1",
-        "simplebar-vue": "^2.4.0"
+        "simplebar-vue": "^2.4.0",
+        "sweetalert2": "^11.19.1",
+        "swiper": "^6.5.0",
+        "vue": "^3.5.13",
+        "vue-router": "^4.5.0",
+        "ziggy-js": "^2.5.1"
     }
 }

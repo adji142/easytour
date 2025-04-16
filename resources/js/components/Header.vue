@@ -148,12 +148,12 @@
                             <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <a href="/" class="nav-link active">
+                                        <a href="/" class="nav-link" :class="{ active: isActive('Home') }">
                                             Home
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="/tourdestionation" class="nav-link">
+                                        <a href="/tourdestionation" class="nav-link" :class="{ active: isActive('Tour') }">
                                             Tours
                                         </a>
                                     </li>
@@ -271,6 +271,12 @@ export default {
     props: {
         easyTourSetting: Array,
     },
+    methods: {
+        isActive(pageName) {
+            console.log(pageName + " > " + this.$page.component);
+            return this.$page.component === pageName;
+        }
+    }
 }
 </script>
 

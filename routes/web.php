@@ -21,6 +21,7 @@ use App\Http\Controllers\TopServicesController;
 use App\Http\Controllers\EasyTourSettingController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\BestPartnerController;
+use App\Http\Controllers\BookingSubmitionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -195,12 +196,14 @@ Route::get('/tourtypes/export', [TourTypeController::class,'Export'])->name('tou
 |
 */
 Route::get('/tourdestionation', [TourDetailController::class, 'index'])->name('tourdestionation');
+Route::get('/tour/details/{id}', [TourDetailController::class,'detail'])->name('tour-details');
 Route::get('/tour', [TourDetailController::class,'View'])->name('tour')->middleware('auth');
 Route::get('/tour/form/{id}', [TourDetailController::class,'Form'])->name('tour-form')->middleware('auth');
 Route::post('/tour/store', [TourDetailController::class, 'store'])->name('tour-store')->middleware('auth');
 Route::post('/tour/edit', [TourDetailController::class, 'edit'])->name('tour-edit')->middleware('auth');
 Route::delete('/tour/delete/{id}', [TourDetailController::class, 'deletedata'])->name('tour-delete')->middleware('auth');
 Route::get('/tour/export', [TourDetailController::class,'Export'])->name('tour-export')->middleware('auth');
+
 
 
 /*
@@ -255,3 +258,15 @@ Route::post('/bestpartner/edit', [BestPartnerController::class, 'edit'])->name('
 Route::delete('/bestpartner/delete/{id}', [BestPartnerController::class, 'deletedata'])->name('bestpartner-delete')->middleware('auth');
 Route::get('/bestpartner/export', [BestPartnerController::class, 'Export'])->name('bestpartner-export')->middleware('auth');
 
+
+/*
+|--------------------------------------------------------------------------
+| Booking Submition
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/booking/{encoded}', [BookingSubmitionController::class,'index'])->name('booking'); //->middleware('auth');
+
+// Route::middleware(['auth', 'is_user'])->group(function () {
+//     Route::get('/booking/{encoded}', [BookingSubmitionController::class,'index'])->name('booking');
+// });

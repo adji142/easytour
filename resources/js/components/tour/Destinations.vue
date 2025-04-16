@@ -1,11 +1,11 @@
 <template>
-    <section id="top_testinations" class="section_padding">
+    <section id="top_destinations" class="section_padding">
         <div class="container">
             <!-- Section Heading -->
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="section_heading_center">
-                        <h2>19 destinations found</h2>
+                        <h2>{{ filteredTours.length }} destinations found</h2>
                     </div>
                 </div>
             </div>
@@ -17,216 +17,70 @@
                                 <h5>Filter by price</h5>
                             </div>
                             <div class="filter-price">
-                                <Slider v-model="value" class="apply" />
+                                <Slider v-model="value" class="apply" :min="0" :max="99999" />
                             </div>
                             <button class="apply" type="button">Apply</button>
                         </div>
-                        <!-- <div class="left_side_search_boxed">
-                            <div class="left_side_search_heading">
-                                <h5>Filter by Review</h5>
-                            </div>
-                            <div class="filter_review">
-                                <form class="review_star">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
-                                        <label class="form-check-label" for="flexCheckDefault1">
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
-                                        <label class="form-check-label" for="flexCheckDefault2">
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
-                                        <label class="form-check-label" for="flexCheckDefault3">
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault5">
-                                        <label class="form-check-label" for="flexCheckDefault5">
-                                            <i class="fas fa-star color_theme"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                            <i class="fas fa-star color_asse"></i>
-                                        </label>
-                                    </div>
-                                </form>
-                            </div>
-                        </div> -->
                         <div class="left_side_search_boxed">
                             <div class="left_side_search_heading">
                                 <h5>Tour type</h5>
                             </div>
                             <div class="tour_search_type">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf1">
-                                    <label class="form-check-label" for="flexCheckDefaultf1">
+                                <div class="form-check" v-for="(type, index) in tourType" :key="index">
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        :value="type.TourTypeName"
+                                        v-model="selectedTourTypes"
+                                        :id="'tour-type-' + index"
+                                    />
+                                    <label class="form-check-label" :for="'tour-type-' + index">
                                         <span class="area_flex_one">
-                                            <span>Ecotourism</span>
-                                            <span>17</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf2">
-                                    <label class="form-check-label" for="flexCheckDefaultf2">
-                                        <span class="area_flex_one">
-                                            <span>Escorted tour </span>
-                                            <span>14</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf3">
-                                    <label class="form-check-label" for="flexCheckDefaultf3">
-                                        <span class="area_flex_one">
-                                            <span>Family trips</span>
-                                            <span>30</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf4">
-                                    <label class="form-check-label" for="flexCheckDefaultf4">
-                                        <span class="area_flex_one">
-                                            <span>Group tour</span>
-                                            <span>22</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultf5">
-                                    <label class="form-check-label" for="flexCheckDefaultf5">
-                                        <span class="area_flex_one">
-                                            <span>City trips</span>
-                                            <span>41</span>
+                                            <span>{{ type.TourTypeName }}</span>
+                                            <span>{{ type.TourCount }}</span>
                                         </span>
                                     </label>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="left_side_search_boxed">
-                            <div class="left_side_search_heading">
-                                <h5>Facilities</h5>
-                            </div>
-                            <div class="tour_search_type">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultt1">
-                                    <label class="form-check-label" for="flexCheckDefaultt1">
-                                        <span class="area_flex_one">
-                                            <span>Gymnasium</span>
-                                            <span>20</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultt2">
-                                    <label class="form-check-label" for="flexCheckDefaultt2">
-                                        <span class="area_flex_one">
-                                            <span>Mountain Bike</span>
-                                            <span>14</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultt3">
-                                    <label class="form-check-label" for="flexCheckDefaultt3">
-                                        <span class="area_flex_one">
-                                            <span>Wifi</span>
-                                            <span>62</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultt4">
-                                    <label class="form-check-label" for="flexCheckDefaultt4">
-                                        <span class="area_flex_one">
-                                            <span>Aerobics Room</span>
-                                            <span>08</span>
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefaultt5">
-                                    <label class="form-check-label" for="flexCheckDefaultt5">
-                                        <span class="area_flex_one">
-                                            <span>Golf Cages</span>
-                                            <span>12</span>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
 
                 <div class="col-lg-9">
                     <div class="row">
-
-                        <div v-for='(destinationInfo, index) in items' class="col-lg-4 col-md-6 col-sm-6 col-12">
+                        <div v-for='(item, index) in paginatedTours' :key="index" class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="top_destinations_box img_hover">
                                 <div class="heart_destinations">
                                     <i class="fas fa-heart"></i>
                                 </div>
-                                <router-link to="/top-destinations-details">
-                                    <img :src="require(`@/assets/img/destination/${destinationInfo.topDestinationImage}.png`)"
-                                        alt="{{ destinationInfo.altText }}" />
-                                </router-link>
-
+                                <img v-if="item.TourImage" :src="item.TourImage" alt="icon" />
                                 <div class="top_destinations_box_content">
-                                    <h4><router-link to="/top-destinations-details">{{ destinationInfo.location
-}}</router-link></h4>
-                                    <p><span class="review_rating">{{ destinationInfo.reviewRating }}</span> <span
-                                            class="review_count">({{ destinationInfo.reviewCount }})</span></p>
-                                    <h3>{{ destinationInfo.price }} <span>{{ destinationInfo.startForm }}</span></h3>
+                                    <h4>
+                                        <a :href="'/tour/details/' + item.id">{{ item.TourName }}</a>
+                                    </h4>
+                                    <h3>{{ formatPrice(item.FinalPrice) }} <span>Starting From</span></h3>
                                 </div>
                             </div>
                         </div>
 
-
                         <div class="col-lg-12">
                             <div class="pagination_area">
                                 <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
+                                    <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                                        <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">
+                                            <span>&laquo;</span>
                                         </a>
                                     </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next</span>
+
+                                    <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+                                        <a class="page-link" href="#" @click.prevent="goToPage(page)">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                                        <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">
+                                            <span>&raquo;</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -237,11 +91,12 @@
             </div>
         </div>
     </section>
-
 </template>
+
 <script>
-import Slider from '@vueform/slider'
-import data from '../../assets/tour/data'
+import Slider from '@vueform/slider';
+import data from '../../assets/tour/data';
+import { formatToK } from '../../helper';
 
 export default {
     name: "Destinations",
@@ -250,15 +105,51 @@ export default {
     },
     data() {
         return {
-            value: [0, 75],
-            items: [],
+            value: [0, 75000], // Slider range for price filtering
+            items: [], // Initial data
+            selectedTourTypes: [],
+            currentPage: 1,
+            perPage: 9,
+        };
+    },
+    computed: {
+        // Filter tours based on price range
+        filteredTours() {
+            return this.tours.filter(tour => {
+                const withinPriceRange = (tour.FinalPrice / 1000 ) >= this.value[0] && (tour.FinalPrice / 1000) <= this.value[1];
+                const matchesTourType = this.selectedTourTypes.length === 0 || this.selectedTourTypes.includes(tour.TourTypeName);
+                return withinPriceRange && matchesTourType;
+            });
+        },
+        paginatedTours() {
+            const start = (this.currentPage - 1) * this.perPage;
+            const end = start + this.perPage;
+            return this.filteredTours.slice(start, end);
+        },
+        totalPages() {
+            return Math.ceil(this.filteredTours.length / this.perPage);
         }
     },
     mounted() {
-        this.items = data.topDestinationData
+        this.items = data.topDestinationData;
     },
+    props: {
+        easyTourSetting: Array,
+        tours: Array,
+        tourcount: Number,
+        tourType: Array
+    },
+    methods: {
+        formatPrice(price) {
+            return formatToK(price);
+        },
+        goToPage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+            }
+        }
+    }
 };
 </script>
-<style src="@vueform/slider/themes/default.css">
 
-</style>
+<style src="@vueform/slider/themes/default.css"></style>

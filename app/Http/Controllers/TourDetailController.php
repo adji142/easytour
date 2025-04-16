@@ -19,8 +19,53 @@ class TourDetailController extends Controller
 {
     public function index() {
         $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+
+        $subImage = DB::table('tourimage')
+            ->select('TourID', DB::raw('MIN(TourImage) as TourImage'))
+            ->groupBy('TourID');
+
+        $subPackage = DB::table('tourpackage')
+            ->select('TourID', DB::raw('MIN(TourPackagePrice - TourPackageDiscount) as FinalPrice'))
+            ->groupBy('TourID');
+
+        $tours = DB::table('tourdetail as td')
+            ->leftJoinSub($subImage, 'ti', 'td.id', '=', 'ti.TourID')
+            ->leftJoinSub($subPackage, 'tp', 'td.id', '=', 'tp.TourID')
+            ->leftJoin('tourtype as tt', 'td.TourTypeID', '=', 'tt.id')
+            ->select('td.id','td.TourName', 'ti.TourImage', 'tp.FinalPrice', 'tt.TourTypeName')
+            ->get();
+
+        $tourType = TourType::selectraw("tourtype.TourTypeName, COUNT(tourdetail.id) as TourCount")
+                    ->leftJoin('tourdetail', 'tourtype.id', '=', 'tourdetail.TourTypeID')
+                    ->groupBy('tourtype.TourTypeName')
+                    ->get();
+
         return Inertia::render('Tour',[
             'easyTourSetting' => $easyTourSetting,
+            'tours' => $tours,
+            'tourcount' => count($tours),
+            'tourType' => $tourType,
+        ]);
+    }
+    public function detail($id){
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+
+        $tourDetail = TourDetail::selectRaw('tourdetail.*, tourtype.TourTypeName')
+                        ->leftJoin('tourtype', function ($value){
+                            $value->on('tourtype.id','=','tourdetail.TourTypeID')
+                            ->on('tourtype.RecordOwnerID','=','tourdetail.RecordOwnerID');
+                        })
+                        ->where('tourdetail.id', $id)
+                        ->first();
+        $tourImage = TourImage::where('TourID', $id)->get();
+        $tourItinerary = TourItinerary::where('TourID', $id)->get();
+        $tourpackage = TourPackage::where('TourID', $id)->get();
+        return Inertia::render('TourDetailPage', [
+            'easyTourSetting' => $easyTourSetting,
+            'tourDetail' => $tourDetail,
+            'tourImage' => $tourImage,
+            'tourItinerary' => $tourItinerary,
+            'tourpackage' => $tourpackage
         ]);
     }
     public function View(Request $request)
