@@ -15,7 +15,12 @@ use App\Models\TourPackage;
 use App\Models\TourItinerary;
 use App\Models\EasyTourSetting;
 use App\Models\User;
+use App\Models\BookingSubmition;
+use App\Models\DocumentNumbering;
+
 use Inertia\Inertia;
+use Midtrans\Snap;
+use Midtrans\Config;
 
 class BookingSubmitionController extends Controller
 {
@@ -62,13 +67,162 @@ class BookingSubmitionController extends Controller
                 break;
         }
 
+        // dd(Auth::user());
         return Inertia::render('PaymentPage',[
             'easyTourSetting' => $easyTourSetting,
             'oDataProduk' => $oDataProduk,
             'oDataProdukImage' => $oDataProdukImage,
             'oDataProdukPackage' => $oDataProdukPackage,
             'oDataUser' => $oDataUser,
-            'bookingData' => $bookingData
+            'bookingData' => $bookingData,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
+        ]);
+    }
+
+    public function createMidTransTransaction(Request $request){
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+        Config::$isSanitized = config('midtrans.is_sanitized');
+        Config::$is3ds = config('midtrans.is_3ds');
+
+        // Data transaksi yang akan dikirimkan ke Midtrans
+        $transaction_details = [
+            'order_id' => uniqid().time(),
+            'gross_amount' => floatval($request->amount), // Jumlah total transaksi
+        ];
+
+        $customer_details = [
+            'first_name' => $request->name,
+        ];
+
+        $transaction = [
+            'transaction_details' => $transaction_details,
+            'customer_details' => $customer_details,
+        ];
+
+        try {
+            $snapToken = Snap::getSnapToken($transaction);
+            return response()->json(['snap_token' => $snapToken]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function SaveBooking(Request $request) {
+        $data = array('success' => false, 'message' => '', 'data' => array());
+
+        $dataRequest = $request->formData;
+
+        DB::beginTransaction();
+        try {
+            // $numberingData = new DocumentNumbering();
+            // $NoTransaksi = $numberingData->GetNewDoc("bookingsubmition","DocumentNumber");
+            $currentDate = Carbon::now();
+            $Year = $currentDate->format('y');
+            $Month = $currentDate->format('m');
+
+            $prefix = $Year.$Month;
+            // $lastNoTRX = DB::select(DB::raw("SELECT * FROM bookingsubmition WHERE LEFT(DocumentNumber, ".strlen($prefix).") = '".$prefix."' " ));
+            // // var_dump($lastNoTRX);
+            // $NoTransaksi = $prefix.str_pad(count($lastNoTRX) + 1, $CharLength, '0', STR_PAD_LEFT);
+            $booking = BookingSubmition::create([
+                'DocumentNumber' => time(),
+                'BookingDate' => $dataRequest['BookingDate'],
+                'BookingTime' => Carbon::now(),
+                'UserID' => $dataRequest['UserID'],
+                'BookingType' => $dataRequest['BookingType'],
+                'ProductID' => $dataRequest['ProductID'],
+                'PackageID' => $dataRequest['PackageID'],
+                'PartnerCode' => $dataRequest['PartnerCode'],
+                'BookingFullName' => $dataRequest['BookingFullName'],
+                'BookingEmail' => $dataRequest['BookingEmail'],
+                'BookingPhone' => $dataRequest['BookingPhone'] ?? '',
+                'BookingIdentityID' => $dataRequest['BookingIdentityID'] ?? '',
+                'AdultBookingPerson' => $dataRequest['AdultBookingPerson'],
+                'ChildBookingPerson' => $dataRequest['ChildBookingPerson'],
+                'InfantBookingPerson' => $dataRequest['InfantBookingPerson'],
+                'TransactionAmt' => $dataRequest['TransactionAmt'],
+                'TransactionTax' => $dataRequest['TransactionTax'],
+                'TransactionDiscount' => $dataRequest['TransactionDiscount'],
+                'DiscountVoucerCode' => $dataRequest['DiscountVoucerCode'] ?? '',
+                'DiscountVoucerAmt' => $dataRequest['DiscountVoucerAmt'],
+                'TotalNetTransaction' => $dataRequest['TotalNetTransaction'],
+                'TotalPayment' => $dataRequest['TotalPayment'],
+                'PaymentMethod' => $dataRequest['PaymentMethod'] ?? null,
+                'PaymentReff' => $dataRequest['PaymentReff'] ?? null,
+                'PaymentIssued' => $dataRequest['PaymentIssued'],
+                'SpecialRequest' => $dataRequest['SpecialRequest'],
+                'BookingStatus' => 1, // Success
+            ]);
+
+            DB::commit();
+
+            // return redirect()->back()->with('success', 'Booking saved successfully!');
+            $data['success'] = true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $data['success'] = false;
+            $data['message']='Failed to save booking: ' . $e->getMessage();
+            // return redirect()->back()->with('error', 'Failed to save booking: ' . $e->getMessage());
+        }
+        return response()->json($data);
+    }
+
+    public function BookingHistoryList(Request $request){
+        // $TglAwal = $requst->input('TglAwal');
+        // $TglAkhir = $request->input('TglAkhir');
+
+        $sql = "bookingsubmition.id     as BookingID, 
+                bookingsubmition.DocumentNumber,
+                bookingsubmition.BookingDate, 
+                bookingsubmition.BookingTime,
+                bookingsubmition.BookingType,
+                bookingsubmition.BookingFullName,
+                bookingsubmition.BookingEmail,
+                bookingsubmition.AdultBookingPerson,
+                bookingsubmition.ChildBookingPerson,
+                bookingsubmition.InfantBookingPerson,
+                CASE WHEN bookingsubmition.BookingType = 'Tour' THEN tourdetail.TourName ELSE 
+                    CASE WHEN bookingsubmition.BookingType = 'Hotel' THEN hoteldetail.HotelName ELSE 
+                        CASE WHEN bookingsubmition.BookingType = 'Travel' THEN '' ELSE '' END
+                    END
+                END BookingItem, 
+                CASE WHEN bookingsubmition.BookingType = 'Tour' THEN tourpackage.TourPackageName ELSE 
+                    CASE WHEN bookingsubmition.BookingType = 'Hotel' THEN hotelroom.RoomName ELSE 
+                        CASE WHEN bookingsubmition.BookingType = 'Travel' THEN '' ELSE '' END
+                    END
+                END BookingPackage, 
+                bookingsubmition.TotalNetTransaction, 
+                bookingsubmition.PaymentMethod,
+                bookingsubmition.PaymentReff, 
+                bookingsubmition.PaymentIssued ";
+        $bookings = BookingSubmition::selectRaw($sql)
+                        ->leftJoin('users', function ($value){
+                            $value->on('bookingsubmition.UserID','=','users.id');
+                        })
+                        ->leftJoin('tourdetail', function ($value){
+                            $value->on('tourdetail.id','=','bookingsubmition.ProductID')
+                            ->on('tourdetail.RecordOwnerID','=','bookingsubmition.PartnerCode');
+                        })
+                        ->leftJoin('tourpackage', function ($value){
+                            $value->on('tourpackage.id','=','bookingsubmition.PackageID')
+                            ->on('tourpackage.RecordOwnerID','=','bookingsubmition.PartnerCode');
+                        })
+                        ->leftJoin('hoteldetail', function ($value){
+                            $value->on('hoteldetail.id','=','bookingsubmition.ProductID')
+                            ->on('hoteldetail.RecordOwnerID','=','bookingsubmition.ProductID');
+                        })
+                        ->leftJoin('hotelroom', function ($value){
+                            $value->on('hotelroom.id','=','bookingsubmition.PackageID')
+                            ->on('hotelroom.RecordOwnerID','=','bookingsubmition.PartnerCode');
+                        })
+                        // Transport
+                        // ->whereBetween('bookingsubmition.BookingDate',[$TglAwal, $TglAkhir])
+                        ->where('bookingsubmition.PartnerCode',Auth::user()->RecordOwnerID )
+                        ->get();
+        return view("Booking.BookingList", [
+            'bookings' => $bookings
         ]);
     }
 }

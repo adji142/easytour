@@ -129,7 +129,7 @@ export default {
             this.isLoading = false;
         },
         loginWithGoogle() {
-            window.location.href = "http://127.0.0.1:8000/auth/google";
+            window.location.href = "/auth/google";
         }
     },
     mounted() {

@@ -10,12 +10,64 @@ use Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 use App\Models\HotelDetail;
+use App\Models\HotelImage;
+use App\Models\HotelRoom;
 use App\Models\dem_negara;
 use App\Models\dem_provinsi;
 use App\Models\dem_kota;
+use App\Models\EasyTourSetting;
+use Inertia\Inertia;
 
 class HotelDetailController extends Controller
 {
+    public function index(){
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+
+        $subImage = DB::table('hotelimage')
+            ->select('HotelID', DB::raw('MIN(RoomImage) as RoomImage'))
+            ->groupBy('HotelID');
+
+        $subPackage = DB::table('HotelRoom')
+            ->select('HotelID', DB::raw('MIN(RoomPrice - RoomDiscount) as FinalPrice'))
+            ->groupBy('HotelID');
+
+        $hotels = DB::table('hoteldetail as td')
+            ->leftJoinSub($subImage, 'ti', 'td.id', '=', 'ti.HotelID')
+            ->leftJoinSub($subPackage, 'tp', 'td.id', '=', 'tp.HotelID')
+            ->leftJoin('dem_kota', function ($value){
+                $value->on('dem_kota.city_id','=','td.HotelCity');
+            })
+            ->select('td.id','td.HotelName', 'ti.RoomImage', 'tp.FinalPrice', 'dem_kota.city_name', DB::raw('CAST(td.HotelRating AS integer) HotelRating'))
+            ->get();
+
+        return Inertia::render('Hotels',[
+            'easyTourSetting' => $easyTourSetting,
+            'hotels' => $hotels,
+            'hotelcount' => count($hotels),
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
+        ]);
+    }
+    public function detail($id){
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+
+        $hotelDetail = HotelDetail::selectRaw('hoteldetail.*, dem_city.city_name')
+                        ->leftJoin('dem_city', function ($value){
+                            $value->on('dem_city.city_id','=','hoteldetail.HotelCity');
+                        })
+                        ->where('hoteldetail.id', $id)
+                        ->first();
+        $hotelImage = HotelImage::where('HotelID', $id)->get();
+        $hotelRoom = HotelRoom::where('HotelID', $id)->get();
+        return Inertia::render('HotelDetail', [
+            'easyTourSetting' => $easyTourSetting,
+            'hotelDetail' => $hotelDetail,
+            'hotelImage' => $hotelImage,
+            'hotelRoom' => $hotelRoom,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
+        ]);
+    }
     public function View(Request $request)
     {
         $keyword = $request->input('keyword');

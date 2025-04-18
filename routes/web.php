@@ -261,12 +261,24 @@ Route::get('/bestpartner/export', [BestPartnerController::class, 'Export'])->nam
 
 /*
 |--------------------------------------------------------------------------
+| Hotels
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/hotels', [HotelDetailController::class, 'index'])->name('hotels');
+Route::get('/hotels/details/{id}', [HotelDetailController::class,'detail'])->name('hotel-details');
+
+/*
+|--------------------------------------------------------------------------
 | Booking Submition
 |--------------------------------------------------------------------------
 |
 */
-Route::get('/booking/{encoded}', [BookingSubmitionController::class,'index'])->name('booking'); //->middleware('auth');
 
-// Route::middleware(['auth', 'is_user'])->group(function () {
-//     Route::get('/booking/{encoded}', [BookingSubmitionController::class,'index'])->name('booking');
-// });
+Route::get('/bookingList', [BookingSubmitionController::class,'BookingHistoryList'])->name('bookingList')->middleware('auth');
+
+Route::middleware(['is_user'])->group(function () {
+    Route::get('/booking/{encoded}', [BookingSubmitionController::class,'index'])->name('booking');
+    Route::post('/booking/pay', [BookingSubmitionController::class,'createMidTransTransaction'])->name('booking-pay');
+    Route::post('/booking/savepayment', [BookingSubmitionController::class,'SaveBooking'])->name('savepayment');
+});

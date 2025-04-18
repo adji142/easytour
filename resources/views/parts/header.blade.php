@@ -20,6 +20,11 @@
 
 
 		<link rel="shortcut icon" href="{{ asset('media/logos/favicon.ico')}}" />
+
+		<!-- Moment.js -->
+		<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+		<!-- Moment Locale Indonesia -->
+		<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/locale/id.js"></script>
 	</head>
 
 	<body id="tc_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-fixed">
@@ -165,7 +170,7 @@
 										</div>
 									@else
 										<li class="nav-item">
-											<a class="nav-link" data-bs-toggle="collapse"  href="{{ url($lv1['Link']) }}">
+											<a class="nav-link"  href="{{ url($lv1['Link']) }}">
 												<span class="svg-icon nav-icon">
 													<i class="{{$lv1['Icon']}} font-size-h4"></i>
 												</span>

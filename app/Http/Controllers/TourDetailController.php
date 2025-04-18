@@ -45,6 +45,8 @@ class TourDetailController extends Controller
             'tours' => $tours,
             'tourcount' => count($tours),
             'tourType' => $tourType,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
         ]);
     }
     public function detail($id){
@@ -65,7 +67,9 @@ class TourDetailController extends Controller
             'tourDetail' => $tourDetail,
             'tourImage' => $tourImage,
             'tourItinerary' => $tourItinerary,
-            'tourpackage' => $tourpackage
+            'tourpackage' => $tourpackage,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
         ]);
     }
     public function View(Request $request)

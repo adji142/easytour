@@ -20,8 +20,10 @@
                         <div class="col-lg-6 col-md-6">
                             <ul class="topbar-others-options">
                                 <!-- <li><router-link to="/login">Login</router-link></li> -->
-                                <li><a href="/login">Login</a></li>
-                                <li><a href="/register">Sign up</a></li>
+                                <li id="lnkLogin" v-if="!isLoggedIn"><a href="/login">Login</a></li>
+                                <li id="lnkRegister" v-if="!isLoggedIn"><a href="/register">Sign up</a></li>
+
+                                <li v-if="isLoggedIn"><a href="#">Hi, {{ user.name }}</a></li>
                                 <li>
                                     <div class="dropdown language-option">
                                         <select v-model="language">
@@ -86,7 +88,7 @@
                                             </li>
 
                                             <li class="nav-item dropdown">
-                                                <a href="/" class="dropdown-item dropdown-toggle">
+                                                <a href="/hotels" class="dropdown-item dropdown-toggle">
                                                     Hotels
                                                 </a>
                                             </li>
@@ -165,7 +167,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="#" class="nav-link">
+                                        <a href="/hotels" class="nav-link">
                                             Hotels
                                         </a>
                                     </li>
@@ -270,6 +272,8 @@ export default {
     },
     props: {
         easyTourSetting: Array,
+        isLoggedIn: Boolean,
+        user: Object
     },
     methods: {
         isActive(pageName) {

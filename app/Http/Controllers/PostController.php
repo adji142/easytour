@@ -12,6 +12,8 @@ class PostController extends Controller
     {
         return Inertia::render('Posts/Index', [
             'posts' => Post::latest()->get(),
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
         ]);
     }
 

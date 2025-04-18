@@ -1,11 +1,11 @@
 <template>
 
     <!-- Common Banner Area -->
-    <Header easyTourSetting="easyTourSetting"/>
+    <Header :easyTourSetting="easyTourSetting" :isLoggedIn="isLoggedIn" :user="user"/>
 
     <TopDestinationBanner />
     <!-- Tour Booking Submission Areas -->
-    <TourBookingSubmission :oDataProduk="oDataProduk" :oDataProdukImage="oDataProdukImage" :oDataProdukPackage="oDataProdukPackage" :oDataUser="oDataUser" :bookingData="bookingData"/>
+    <TourBookingSubmission :oDataProduk="oDataProduk" :oDataProdukImage="oDataProdukImage" :oDataProdukPackage="oDataProdukPackage" :oDataUser="oDataUser" :bookingData="bookingData" :user="user"/>
 
 
 </template>
@@ -29,7 +29,9 @@ export default {
         bookingData: {
             type: Object,
             default: () => ({})
-        }
-    }
+        },
+        isLoggedIn: Boolean,
+        user: Array
+    },
 };
 </script>

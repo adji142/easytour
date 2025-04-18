@@ -55,6 +55,8 @@ class HomeController extends Controller
             'easyTourSetting' => $easyTourSetting,
             'testimonial' => $testimonial,
             'bestPartner' => $bestPartner,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
         ]);
     }
 }

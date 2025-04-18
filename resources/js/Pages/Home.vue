@@ -1,6 +1,6 @@
 <template>
 
-    <Header :easyTourSetting="easyTourSetting"/>
+    <Header :easyTourSetting="easyTourSetting" :isLoggedIn="isLoggedIn" :user="user"/>
   
     <!-- Banner Area -->
     <Banner :easyTourSetting="easyTourSetting" />
@@ -37,6 +37,8 @@
       easyTourSetting: Array,
       testimonial: Array,
       bestPartner: Array,
+      isLoggedIn: Boolean,
+      user: Object
     },
   }
   </script>

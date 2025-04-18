@@ -16,6 +16,8 @@ class LandingPageController extends Controller
         return Inertia::render('BecomeVendorView', [
             'negara' => $negara,
             'easyTourSetting' => $easyTourSetting,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
         ]);
     }
 }

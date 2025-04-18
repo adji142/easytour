@@ -37,6 +37,7 @@ return new class extends Migration
             $table->double('TotalPayment');
             $table->string('PaymentMethod');
             $table->string('PaymentReff');
+            $table->datetime('PaymentIssued');
             $table->longtext('SpecialRequest');
             $table->integer('BookingStatus'); // 0: WaitingPayment, 1: Paid, 2: Booking Confirmed, 3: Checkin, 4: Done
             $table->timestamps();

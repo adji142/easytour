@@ -122,7 +122,8 @@ export default {
             
         },
         loginWithGoogle() {
-            console.log("Login with Google");
+            // console.log("Login with Google");
+            window.location.href = "/auth/google";
         },
     },
 };

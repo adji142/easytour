@@ -47,7 +47,12 @@
 
                             <div class="tour_booking_amount_area">
                                 <ul>
-                                    <li>Adult Price x {{ adult }} <span>{{ formatNumber((oDataProdukPackage.TourPackageDiscountPrice > 0 ? oDataProdukPackage.TourPackageDiscountPrice : oDataProdukPackage.TourPackagePrice) * adult) }}</span></li>
+                                    <li>Adult Price x {{ adult }} <span>{{ formatNumber(oDataProdukPackage.TourPackagePrice * adult) }}</span></li>
+                                </ul>
+                                <div class="tour_bokking_subtotal_area">
+                                    <h6>Subtotal <span>{{ formatNumber(subtotal) }}</span></h6>   
+                                </div>
+                                <ul>
                                     <li>
                                         Discount ({{ discountPercent }}%)
                                         <span>
@@ -57,14 +62,18 @@
                                         </span>
                                     </li>
                                 </ul>
-                                <div class="tour_bokking_subtotal_area">
-                                    <h6>Subtotal <span>{{ formatNumber(subtotal) }}</span></h6>   
-                                </div>
                                 <div class="total_subtotal_booking">
                                     <h6>Total Amount <span>{{ formatNumber(totalAmount) }}</span></h6>
                                 </div>
                                 <div class="coupon_code_submit">
-                                    <button class="btn btn_theme btn_md">Submit</button>
+                                    <button class="btn btn_theme btn_md" @click="payWithMidtrans" :disabled="isProcessing">
+                                        <span v-if="isProcessing">
+                                            <i class="fas fa-spinner fa-spin"></i> Processing...
+                                        </span>
+                                        <span v-else>
+                                            Process Booking
+                                        </span>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +88,7 @@
                             <div class="edit_date_form">
                                 <div class="form-group">
                                     <label for="dates">Edit Date</label>
-                                    <input type="date" id="dates" class="form-control" :min="oDataProdukPackage.TourStartDate" :max="oDataProdukPackage.TourEndDate" :value="bookingData.BookingDate">
+                                    <input type="date" id="dates" class="form-control" :min="oDataProdukPackage.TourStartDate" :max="oDataProdukPackage.TourEndDate" :value="bookingData.BookingDate" readonly>
                                 </div>
                             </div>
                             <div class="tour_package_details_bar_list">
@@ -186,6 +195,16 @@
 import { convertDate } from '../helper';
 import { formatToK } from '../helper';
 import { formatNumber } from '../helper';
+import Swal from 'sweetalert2';
+import axios from 'axios'
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+let token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+  axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+}
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 export default {
     name: "TourBookingSubmission",
@@ -197,7 +216,8 @@ export default {
             children: 0,
             infant: 0,
             note: '',
-            acceptedTerms: false
+            acceptedTerms: false,
+            isProcessing: false,
         }
     },
     mounted() {
@@ -223,15 +243,14 @@ export default {
         },
         // Hitung subtotal
         subtotal() {
-            const price = this.oDataProdukPackage.TourPackageDiscountPrice > 0 
-                ? this.oDataProdukPackage.TourPackageDiscountPrice 
-                : this.oDataProdukPackage.TourPackagePrice;
+            const price = this.oDataProdukPackage.TourPackagePrice;
             
-            return (price * this.adult) + (price * this.children * 0.75) + (price * this.infant * 0.5); // Misal anak 75% dan infant 50% dari harga
+            return (price * this.adult) ;
+            // + (price * this.children * 0.75) + (price * this.infant * 0.5); // Misal anak 75% dan infant 50% dari harga
         },
         // Hitung diskon dalam rupiah
         discountAmount() {
-            return (this.oDataProdukPackage.TourPackagePrice - this.oDataProdukPackage.TourPackageDiscountPrice) * this.adult;
+            return this.oDataProdukPackage.TourPackageDiscountPrice > 0 ?(this.oDataProdukPackage.TourPackagePrice - this.oDataProdukPackage.TourPackageDiscountPrice) * this.adult : 0;
         },
         // Hitung pajak
         taxAmount() {
@@ -239,6 +258,8 @@ export default {
         },
         // Hitung total amount
         totalAmount() {
+            console.log(this.subtotal);
+            console.log(this.discountAmount);
             return this.subtotal  - this.discountAmount;
         }
     },
@@ -258,6 +279,107 @@ export default {
         decrease(type) {
             if (this[type] > 0) this[type]--;
         },
+        async payWithMidtrans() {
+            this.isProcessing = true;
+            try {
+                const response = await fetch('/booking/pay', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({
+                        amount: this.totalAmount,
+                        name: this.user.name,
+                        email: this.user.email,
+                    }),
+                });
+
+                const data = await response.json();
+                const snapToken = data.snap_token;
+                console.log(data);
+
+                window.snap.pay(snapToken, {
+                    onSuccess: (result) => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Payment Successfull',
+                            text: 'Saving Your Booking',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        // get VA Number :
+                        console.log(result);
+                        var PaymentMethodgateWay = result.payment_type;
+                        if (result.va_numbers) {
+                            PaymentMethodgateWay += "_"+result.va_numbers[0]["bank"]+"_"+result.va_numbers[0]["va_number"]
+                        }
+                        const formData = {
+                            "BookingDate": this.bookingData.BookingDate,
+                            "UserID": this.user.id,
+                            "BookingType" : this.bookingData.BookingType,
+                            "ProductID" : this.bookingData.ProductID,
+                            "PackageID" : this.bookingData.PackageID,
+                            "PartnerCode" : this.bookingData.PartnerCode,
+                            "BookingFullName": this.user.name,
+                            "BookingEmail" : this.user.email,
+                            "BookingPhone" : "",
+                            "BookingIdentityID" : "",
+                            "AdultBookingPerson" : this.bookingData.AdultBookingPerson,
+                            "ChildBookingPerson" : this.bookingData.ChildBookingPerson,
+                            "InfantBookingPerson" : this.bookingData.InfantBookingPerson,
+                            "TransactionAmt" : this.subtotal,
+                            "TransactionTax" : 0,
+                            "TransactionDiscount" : this.discountAmount,
+                            "DiscountVoucerCode" : "",
+                            "DiscountVoucerAmt" : 0,
+                            "TotalNetTransaction" : this.totalAmount,
+                            "TotalPayment" : result.gross_amount,
+                            "PaymentMethod" : PaymentMethodgateWay,
+                            "PaymentReff" : result.order_id,
+                            "PaymentIssued" : result.transaction_time,
+                            "SpecialRequest" : this.note,
+                            "BookingStatus" : 1
+                        }
+
+                        axios.post('/booking/savepayment', {
+                            formData
+                        }).then(res=>{
+                            // console.log(res);
+                            if(res.data.success){
+                                Swal.fire('Success', 'Payment Saved Successfuly', 'success').then(() => {
+                                    window.location.href = '/';
+                                });
+                               
+                            }
+                        }).catch(err => {
+                            console.log(res);
+                        });
+
+
+
+                        // console.log(formData);
+                    },
+                    onPending: (result) => {
+                        alert("Menunggu pembayaran!");
+                        console.log(result);
+                    },
+                    onError: (result) => {
+                        alert("Pembayaran gagal!");
+                        console.log(result);
+                    },
+                    onClose: () => {
+                        alert('Kamu menutup popup tanpa menyelesaikan pembayaran');
+                    }
+                });
+            } catch (err) {
+                console.error(err);
+            } finally {
+                this.isProcessing = false;
+            }
+        }
     },
     props:{
         easyTourSetting: Array,
@@ -268,7 +390,9 @@ export default {
         bookingData: {
             type: Object,
             default: () => ({})
-        }
+        },
+        isLoggedIn: Boolean,
+        user: Array
     }
 };
 </script>

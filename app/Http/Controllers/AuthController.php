@@ -23,6 +23,8 @@ use App\Models\Permission;
 
 use Laravel\Socialite\Facades\Socialite;
 
+use RealRashid\SweetAlert\Facades\Alert;
+
 class AuthController extends Controller
 {
     public function login()
@@ -199,6 +201,7 @@ class AuthController extends Controller
             // Cek apakah user sudah ada
             $user = User::where('email', $googleUser->email)->first();
             $token = "";
+            // dd($user);
             if (!$user) {
                 $user = User::create([
                     'name' => $googleUser->name,
@@ -211,37 +214,47 @@ class AuthController extends Controller
                     'VerificationToken' => null,
                 ]);
 
-                // return redirect('/register')->with('success', 'Login Successfuly');
-                $datalogin = [
-                    'email' => $googleUser->email,
-                    'password' => env('DFL_PWD'),
-                ];
+                Auth::login($user);
+                Alert::success('Success', 'Welcome! Account created and logged in.');
 
-                if (Auth::attempt($datalogin)) {
-                    $token = $user->createToken('authToken')->plainTextToken;
-                    return redirect('dashboard');
-                }
-                else{
-                    return redirect('/register')->with('error', 'Login Failed');
-                }
+                // return redirect('/register')->with('success', 'Login Successfuly');
+                // $datalogin = [
+                //     'email' => $googleUser->email,
+                //     'password' => env('DFL_PWD'),
+                // ];
+
+                // if (Auth::attempt($datalogin)) {
+                //     $token = $user->createToken('authToken')->plainTextToken;
+                //     return redirect('/');
+                // }
+                // else{
+                //     return redirect('/register')->with('error', 'Login Failed');
+                // }
             }
             else{
                 // return redirect('/register')->with('error', 'User is already registered');
-                $datalogin = [
-                    'email' => $googleUser->email,
-                    'password' => env('DFL_PWD'),
-                ];
+                // $datalogin = [
+                //     'email' => $googleUser->email,
+                //     'password' => env('DFL_PWD'),
+                // ];
+                // // dd($datalogin);
 
-                if (Auth::attempt($datalogin)) {
-                    $token = $user->createToken('authToken')->plainTextToken;
-                    return redirect('dashboard');
-                }
+                // if (Auth::attempt($datalogin)) {
+                //     $token = $user->createToken('authToken')->plainTextToken;
+                //     return redirect('/');
+                // }
+
+                Auth::login($user);
+
+                Alert::success('Welcome Back', 'You are now logged in.');
             }
-
+            return redirect()->intended('/');
             // Buat token JWT
-            $token = $user->createToken('authToken')->plainTextToken;
+            // $token = $user->createToken('authToken')->plainTextToken;
         } catch (\Exception $e) {
-            return redirect('/register')->with('error', 'User is already registered');
+            // return redirect('/register')->with('error', 'User is already registered');
+            Alert::error('Login Failed', 'Google authentication failed.');
+            return redirect('/login');
         }
     }
 

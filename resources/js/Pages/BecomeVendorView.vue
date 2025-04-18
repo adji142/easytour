@@ -1,5 +1,5 @@
 <template>
-    <Header :easyTourSetting="easyTourSetting"/>
+    <Header :easyTourSetting="easyTourSetting" :isLoggedIn="isLoggedIn" :user="user"/>
     <!-- Common Banner Area -->
     <Banner />
 
@@ -42,5 +42,9 @@ export default {
     components: {
         Header, Banner, HowWork, AboutService, VendorForm, Cta, Footer
     },
+    props:{
+        isLoggedIn: Boolean,
+        user: Object
+    }
 };
 </script>
