@@ -46,26 +46,37 @@ class HotelDetailController extends Controller
             'hotelcount' => count($hotels),
             'isLoggedIn' => Auth::check(),
             'user' => Auth::user(),
+            'BannerName' => "Hotel"
         ]);
     }
     public function detail($id){
         $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
 
-        $hotelDetail = HotelDetail::selectRaw('hoteldetail.*, dem_city.city_name')
-                        ->leftJoin('dem_city', function ($value){
-                            $value->on('dem_city.city_id','=','hoteldetail.HotelCity');
+        $hotelDetail = HotelDetail::selectRaw('hoteldetail.*, dem_kota.city_name')
+                        ->leftJoin('dem_kota', function ($value){
+                            $value->on('dem_kota.city_id','=','hoteldetail.HotelCity');
                         })
                         ->where('hoteldetail.id', $id)
                         ->first();
         $hotelImage = HotelImage::where('HotelID', $id)->get();
-        $hotelRoom = HotelRoom::where('HotelID', $id)->get();
-        return Inertia::render('HotelDetail', [
+        $hotelRoom = HotelRoom::selectRaw("hotelroom.*, roomtype.RoomTypeName, bedtype.BedTypeName")
+                        ->leftJoin('roomtype', function ($value){
+                            $value->on('roomtype.id','=','hotelroom.RoomType')
+                            ->on('roomtype.RecordOwnerID','=', 'hotelroom.RecordOwnerID');
+                        })
+                        ->leftJoin('bedtype', function ($value){
+                            $value->on('bedtype.id','=','hotelroom.RoomBedType')
+                            ->on('bedtype.RecordOwnerID','=', 'hotelroom.RecordOwnerID');
+                        })
+                        ->where('HotelID', $id)->get();
+        return Inertia::render('HotelDetailPage', [
             'easyTourSetting' => $easyTourSetting,
             'hotelDetail' => $hotelDetail,
             'hotelImage' => $hotelImage,
             'hotelRoom' => $hotelRoom,
             'isLoggedIn' => Auth::check(),
             'user' => Auth::user(),
+            'BannerName' => "Hotel Detail"
         ]);
     }
     public function View(Request $request)
@@ -128,6 +139,7 @@ class HotelDetailController extends Controller
             $model->HotelEmail = $request->input('HotelEmail');
             $model->HotelWebsite = $request->input('HotelWebsite');
             $model->HotelDescription = $request->input('HotelDescription');
+            $model->HotelIncludeExclude = $request->input('HotelIncludeExclude');
             $model->HotelRating = $request->input('HotelRating');
             $model->HotelStatus = $request->input('HotelStatus');
             $model->RecordOwnerID = Auth::user()->RecordOwnerID;
@@ -159,6 +171,7 @@ class HotelDetailController extends Controller
             $model->HotelEmail = $request->input('HotelEmail');
             $model->HotelWebsite = $request->input('HotelWebsite');
             $model->HotelDescription = $request->input('HotelDescription');
+            $model->HotelIncludeExclude = $request->input('HotelIncludeExclude');
             $model->HotelRating = $request->input('HotelRating');
             $model->HotelStatus = $request->input('HotelStatus');
             $model->save();

@@ -161,8 +161,19 @@
 
 										<div class="col-md-12">
 	                            			<label  class="text-body">Hotel Description</label>
-	                            			<fieldset class="form-group mb-3">
-												<textarea rows="4" class="form-control" id="HotelDescription" name="HotelDescription" placeholder="Hotel Description" required="">{{ count($hotel) > 0 ? $hotel[0]['HotelDescription'] : '' }}</textarea>
+											<fieldset class="form-group mb-3">
+												<div id="HotelDescription">
+													{!! count($hotel) > 0 ? $hotel[0]['HotelDescription'] : '' !!}
+												</div>
+	                            			</fieldset>
+	                            		</div>
+
+										<div class="col-md-12">
+	                            			<label  class="text-body">Hotel Include Exclude</label>
+											<fieldset class="form-group mb-3">
+												<div id="HotelIncludeExclude">
+													{!! count($hotel) > 0 ? $hotel[0]['HotelIncludeExclude'] : '' !!}
+												</div>
 	                            			</fieldset>
 	                            		</div>
 
@@ -250,6 +261,13 @@
         }
 
         google.maps.event.addDomListener(window, 'load', initMap);
+
+		const quill_HotelDescription = new Quill('#HotelDescription', {
+			theme: 'snow'
+		});
+		const quill_HotelIncludeExclude = new Quill('#HotelIncludeExclude', {
+			theme: 'snow'
+		});
 		jQuery(document).ready(function() {
 			jQuery('.js-example-basic-single').select2();
 			oProvinsi = <?php echo $provinsi; ?>;
@@ -307,11 +325,17 @@
             e.preventDefault(); // Prevent default form submission
 
             var form = $(this);
-            var formData = form.serialize();
+            var formData = form.serializeArray();
             var actionUrl = form.attr('action');
 			var submitButton = form.find("button[type='submit']");
 			submitButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Processing...');
 
+
+			var HotelDescription = quill_HotelDescription.root.innerHTML;
+			var HotelIncludeExclude = quill_HotelIncludeExclude.root.innerHTML;
+
+			formData.push({ name: "HotelDescription", value: HotelDescription });
+			formData.push({ name: "HotelIncludeExclude", value: HotelIncludeExclude });
             $.ajax({
                 url: actionUrl,
                 type: 'POST',

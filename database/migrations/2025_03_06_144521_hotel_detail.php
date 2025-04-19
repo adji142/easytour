@@ -24,7 +24,8 @@ return new class extends Migration
             $table->string('HotelPhone')->nullable();
             $table->string('HotelEmail')->nullable();
             $table->string('HotelWebsite')->nullable();
-            $table->string('HotelDescription')->nullable();
+            $table->longtext('HotelDescription')->nullable();
+            $table->longtext('HotelIncludeExclude')->nullable();
             $table->string('HotelRating')->nullable();
             $table->string('HotelStatus')->default('Y');
             $table->string('RecordOwnerID');

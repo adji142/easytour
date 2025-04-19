@@ -6,8 +6,8 @@
                     <div class="tour_details_leftside_wrapper">
                         <div class="tour_details_heading_wrapper">
                             <div class="tour_details_top_heading">
-                                <h2>{{ tourDetail.TourName }}</h2>
-                                <h5><i class="fas fa-map-marker-alt"></i> {{ tourDetail.TourLocation }}</h5>
+                                <h2>{{ hotelDetail.HotelName }}</h2>
+                                <h5><i class="fas fa-map-marker-alt"></i> {{ hotelDetail.city_name }}</h5>
                             </div>
                             <!-- <div class="tour_details_top_heading_right">
                                 <h4>Excellent</h4>
@@ -15,44 +15,40 @@
                                 <p>(1214 reviewes)</p>
                             </div> -->
                         </div>
-                        <div class="tour_details_top_bottom">
+                        <!-- <div class="tour_details_top_bottom">
                             <div class="toru_details_top_bottom_item">
                                 <div class="tour_details_top_bottom_icon">
-                                    <i class="fas fa-clock"></i>
+                                    <img src="../../assets/img/icon/ac.png" alt="icon">
                                 </div>
                                 <div class="tour_details_top_bottom_text">
-                                    <h5>Duration</h5>
-                                    <p>{{ tourDetail.TourDuration }} days</p>
+                                    <p>Air condition</p>
                                 </div>
                             </div>
                             <div class="toru_details_top_bottom_item">
                                 <div class="tour_details_top_bottom_icon">
-                                    <i class="fas fa-paw"></i>
+                                    <img src="../../assets/img/icon/tv.png" alt="icon">
                                 </div>
                                 <div class="tour_details_top_bottom_text">
-                                    <h5>Tour type</h5>
-                                    <p>{{ tourDetail.TourTypeName }}</p>
+                                    <p>Flat television</p>
                                 </div>
                             </div>
                             <div class="toru_details_top_bottom_item">
                                 <div class="tour_details_top_bottom_icon">
-                                    <i class="fas fa-users"></i>
+                                    <img src="../../assets/img/icon/gym.png" alt="icon">
                                 </div>
                                 <div class="tour_details_top_bottom_text">
-                                    <h5>Group size</h5>
-                                    <p>{{ tourDetail.TourGroupSize }} people</p>
+                                    <p>Fitness center</p>
                                 </div>
                             </div>
                             <div class="toru_details_top_bottom_item">
                                 <div class="tour_details_top_bottom_icon">
-                                    <i class="fas fa-map-marked"></i>
+                                    <img src="../../assets/img/icon/wifi.png" alt="icon">
                                 </div>
                                 <div class="tour_details_top_bottom_text">
-                                    <h5>Location</h5>
-                                    <p>{{ tourDetail.TourLocation }}</p>
+                                    <p>Free Wi-fi</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="tour_details_img_wrapper">
                             <div class="image__gallery">
                                 <div class="gallery">
@@ -60,13 +56,13 @@
                                         <div class="gallery__slides">
                                             <div
                                                 class="gallery__slide"
-                                                v-for="(slide, index) in tourImage"
+                                                v-for="(slide, index) in hotelImage"
                                                 :key="index"
                                                 v-show="slideIndex === index"
                                             >
                                                 <img
                                                     class="gallery__img slick-slide"
-                                                    :src="slide.TourImage"
+                                                    :src="slide.RoomImage"
                                                     alt="Gallery Slide"
                                                 />
                                             </div>
@@ -79,12 +75,12 @@
                                         <div class="gallery__items">
                                             <div
                                                 class="gallery__item"
-                                                v-for="(slide, index) in tourImage"
+                                                v-for="(slide, index) in hotelImage"
                                                 :key="`item-${index}`"
                                                 :class="{ 'gallery__item--is-active': slideIndex === index }"
                                             >
                                                 <img
-                                                    :src="slide.TourImage"
+                                                    :src="slide.RoomImage"
                                                     class="gallery__item-img"
                                                     @click="currentSlide(index)"
                                                 />
@@ -98,92 +94,45 @@
                         <div class="tour_details_boxed">
                             <h3 class="heading_theme">Overview</h3>
                             <div class="tour_details_boxed_inner">
-                                <p v-html="tourDetail.TourDescription"></p>
-                            </div>
-                        </div>
-                        <div class="tour_details_boxed">
-                            <h3 class="heading_theme">Itinerary</h3>
-                            <div class="tour_details_boxed_inner">
-                                <div class="accordion" id="accordionExample">
-                                    <div class="accordion_flex_area" v-for="(item, index) in tourItinerary" 
-                                    :key="index">
-                                        <div class="accordion_left_side">
-                                            <h5>Day {{ item.DayNumber }}</h5>
-                                        </div>
-                                        <div class="accordion-item">
-                                            <h2 class="accordion-header" :id="`heading_${ item.id }`">
-                                                <button
-                                                    class="accordion-button"
-                                                    :class="{ collapsed: index !== 0 }"
-                                                    type="button"
-                                                    data-bs-toggle="collapse"
-                                                    :data-bs-target="`#collapse_${item.id}`"
-                                                    :aria-expanded="index === 0 ? 'true' : 'false'"
-                                                    :aria-controls="`collapse_${item.id}`"
-                                                >
-                                                    {{ item.TourItineraryName }}
-                                                </button>
-                                            </h2>
-                                            <div
-                                                :id="`collapse_${item.id}`"
-                                                class="accordion-collapse collapse"
-                                                :class="{ show: index === 0 }"
-                                                :aria-labelledby="`heading_${item.id}`"
-                                                data-bs-parent="#accordionItinerary"
-                                            >
-                                                <div class="accordion-body">
-                                                    <div class="accordion_itinerary_list">
-                                                        <p v-html="item.TourItineraryDescription"></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <p v-html="hotelDetail.HotelDescription"></p>
                             </div>
                         </div>
                         <div class="tour_details_boxed">
                             <h3 class="heading_theme">Included/Excluded</h3>
                             <div class="tour_details_boxed_inner">
-                                <p v-html="tourDetail.TourIncludeExclude"></p>
+                                <p v-html="hotelDetail.HotelIncludeExclude"></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4">
                     <div class="tour_details_right_sidebar_wrapper" style="position: relative; z-index: 1;">
-                        <div class="tour_detail_right_sidebar" v-for="(item, index) in tourpackage" 
+                        <div class="tour_detail_right_sidebar" v-for="(item, index) in hotelRoom" 
                         :key="index">
                             <div class="tour_details_right_boxed">
                                 <div class="tour_details_right_box_heading">
-                                    <h3>{{ item.TourPackageName }}</h3>
-                                </div>
-                                <div class="valid_date_area">
-                                    <div class="valid_date_area_one">
-                                        <h5>Valid from</h5>
-                                        <p>{{ formatDate(item.TourStartDate) }}</p>
-                                    </div>
-                                    <div class="valid_date_area_one">
-                                        <h5>Valid till</h5>
-                                        <p>{{ formatDate(item.TourEndDate) }}</p>
-                                    </div>
-                                </div>
-                                <div class="tour_package_details_bar_list">
-                                    <h5>Package details</h5>
-                                    <p v-html="item.TourPackageDescription"></p>
+                                    <h3>{{ item.RoomName }}</h3>
                                 </div>
                                 <div class="tour_package_details_bar_price">
                                     <h5>Price</h5>
                                     <div class="tour_package_bar_price">
-                                        <h6 v-if="item.TourPackageDiscountPrice > 0">
-                                            <del> {{ formatPrice(item.TourPackagePrice) }}</del>
+                                        <h6 v-if="item.RoomDiscount > 0">
+                                            <del> {{ formatPrice(item.RoomPrice) }}</del>
                                         </h6>
                                         <h3>
-                                             {{ formatPrice(item.TourPackageDiscountPrice > 0 ? item.TourPackageDiscountPrice : item.TourPackagePrice) }}
-                                            <sub>/Per person</sub>
+                                             {{ formatPrice(item.RoomDiscount > 0 ? item.RoomDiscount : item.RoomPrice) }}
+                                            <sub>/Per person Per Night</sub>
                                         </h3>
                                     </div>
                                 </div>
+                                <div class="tour_package_details_bar_list">
+                                    <h5>Room details</h5>
+                                    <p><sub>Room Size <strong>{{ item.RoomSize }} m<sup>2</sup></strong></sub></p>
+                                    <p><sub>Room Type <strong>{{ item.RoomTypeName }}</strong> </sub></p>
+                                    <p><sub>Bed Type <strong>{{ item.BedTypeName }}</strong> </sub></p>
+                                    <p v-html="item.RoomDescription"></p>
+                                </div>
+                            
                             </div>
                             <div class="tour_select_offer_bar_bottom">
                                 <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
@@ -285,7 +234,7 @@
                                 </div>
 
                                     <div class="proceed_booking_btn">
-                                <a href="#!" class="btn btn_theme btn_md w-100" @click.prevent="submitBooking(item.TourID, item.id, item.RecordOwnerID)">Proceed to Booking</a>
+                                <a href="#!" class="btn btn_theme btn_md w-100" @click.prevent="submitBooking(item.HotelID, item.id, item.RecordOwnerID)">Proceed to Booking</a>
                                 </div>
                             </div>
 
@@ -352,6 +301,7 @@ export default {
             if (this[type] > 0) this[type]--;
         },
         submitBooking(_productid,_packageid, _partnerCode) {
+            // console.log(this.travelDate)
             if (this.travelDate == "") {
                 Swal.fire({
                     icon: 'warning',
@@ -402,7 +352,7 @@ export default {
             });
 
             const formData = {
-                BookingType: 'Tour',
+                BookingType: 'Hotel',
                 ProductID: _productid,
                 PackageID:_packageid,
                 AdultBookingPerson: this.adult,
@@ -431,10 +381,11 @@ export default {
     },
     props:{
         easyTourSetting: Array,
-        tourDetail: Array,
-        tourImage: Array,
-        tourItinerary: Array,
-        tourpackage: Array
+        hotelDetail: Array,
+        hotelImage: Array,
+        hotelRoom: Array,
+        isLoggedIn: Boolean,
+        user: Object
     }
 
 };

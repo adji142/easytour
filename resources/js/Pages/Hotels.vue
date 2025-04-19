@@ -2,7 +2,7 @@
     <!-- Common Banner Area -->
     <Header :easyTourSetting="easyTourSetting"/>
 
-    <TopDestinationBanner ></TopDestinationBanner>
+    <TopDestinationBanner :BannerName="BannerName"></TopDestinationBanner>
 
     <!-- Hotel Search Areas -->
     <SearchResult :hotels="hotels" :hotelcount="hotelcount" :isLoggedIn="isLoggedIn" :user="user"/>
@@ -24,7 +24,8 @@ export default {
         hotels: Array,
         hotelcount: Number,
         isLoggedIn: Boolean,
-        user: Object
+        user: Object,
+        BannerName:String
     }
 }
 </script>

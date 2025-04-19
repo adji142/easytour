@@ -91,7 +91,7 @@
 												<tr>
 													<td>{{ $v['HotelName'] }}</td>
 													<td>{{ $v['HotelAddress'] }}</td>
-													<td>{{ $v['HotelDescription'] }}</td>
+													<td>{!! $v['HotelDescription']  !!}</td>
                                                     <td>{{ $v['HotelRating'] }}</td>
 													<td> <div class="{{ $v['HotelStatus'] == 'Y' ? 'mr-0 text-success' : 'mr-0 text-danger' }} ">{{ $v['HotelStatusDesc'] }}</div> </td>
 													<td>

@@ -22,6 +22,7 @@ use App\Http\Controllers\EasyTourSettingController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\BestPartnerController;
 use App\Http\Controllers\BookingSubmitionController;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -265,8 +266,8 @@ Route::get('/bestpartner/export', [BestPartnerController::class, 'Export'])->nam
 |--------------------------------------------------------------------------
 |
 */
-Route::get('/hotels', [HotelDetailController::class, 'index'])->name('hotels');
-Route::get('/hotels/details/{id}', [HotelDetailController::class,'detail'])->name('hotel-details');
+Route::get('/searchhotel', [HotelDetailController::class, 'index'])->name('searchhotel');
+Route::get('/searchhotel/details/{id}', [HotelDetailController::class,'detail'])->name('searchhotel-details');
 
 /*
 |--------------------------------------------------------------------------
@@ -281,4 +282,7 @@ Route::middleware(['is_user'])->group(function () {
     Route::get('/booking/{encoded}', [BookingSubmitionController::class,'index'])->name('booking');
     Route::post('/booking/pay', [BookingSubmitionController::class,'createMidTransTransaction'])->name('booking-pay');
     Route::post('/booking/savepayment', [BookingSubmitionController::class,'SaveBooking'])->name('savepayment');
+    Route::get('/userdashboard', [DashboardController::class,'index'])->name('userdashboard');
+    Route::get('/editprofile', [DashboardController::class,'Profile'])->name('editprofile');
+    Route::post('/saveprofile', [DashboardController::class,'update'])->name('saveprofile');
 });

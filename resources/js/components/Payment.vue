@@ -350,7 +350,7 @@ export default {
                             // console.log(res);
                             if(res.data.success){
                                 Swal.fire('Success', 'Payment Saved Successfuly', 'success').then(() => {
-                                    window.location.href = '/';
+                                    window.location.href = '/userdashboard';
                                 });
                                
                             }

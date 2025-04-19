@@ -17,6 +17,9 @@ use App\Models\EasyTourSetting;
 use App\Models\User;
 use App\Models\BookingSubmition;
 use App\Models\DocumentNumbering;
+use App\Models\HotelDetail;
+use App\Models\HotelImage;
+use App\Models\HotelRoom;
 
 use Inertia\Inertia;
 use Midtrans\Snap;
@@ -50,6 +53,18 @@ class BookingSubmitionController extends Controller
         switch ($BookingType) {
             case 'Hotel':
                 # code...
+                $oDataProduk = HotelDetail::where('id',$ProductID)->first();
+                $oDataProdukImage = HotelImage::where('HotelID', $ProductID)->get();
+                $oDataProdukPackage = HotelRoom::selectRaw("hotelroom.*, roomtype.RoomTypeName, bedtype.BedTypeName")
+                                        ->leftJoin('roomtype', function ($value){
+                                            $value->on('roomtype.id','=','hotelroom.RoomType')
+                                            ->on('roomtype.RecordOwnerID','=', 'hotelroom.RecordOwnerID');
+                                        })
+                                        ->leftJoin('bedtype', function ($value){
+                                            $value->on('bedtype.id','=','hotelroom.RoomBedType')
+                                            ->on('bedtype.RecordOwnerID','=', 'hotelroom.RecordOwnerID');
+                                        })
+                                        ->first();
                 break;
             case 'Tour':
                 $oDataProduk = TourDetail::where('id',$ProductID)->first();
@@ -77,6 +92,7 @@ class BookingSubmitionController extends Controller
             'bookingData' => $bookingData,
             'isLoggedIn' => Auth::check(),
             'user' => Auth::user(),
+            'BannerName' => 'Booking Payment'
         ]);
     }
 

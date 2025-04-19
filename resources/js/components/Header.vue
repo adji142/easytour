@@ -23,7 +23,7 @@
                                 <li id="lnkLogin" v-if="!isLoggedIn"><a href="/login">Login</a></li>
                                 <li id="lnkRegister" v-if="!isLoggedIn"><a href="/register">Sign up</a></li>
 
-                                <li v-if="isLoggedIn"><a href="#">Hi, {{ user.name }}</a></li>
+                                <li v-if="isLoggedIn"><a href="/userdashboard">Hi, {{ user.name }}</a></li>
                                 <li>
                                     <div class="dropdown language-option">
                                         <select v-model="language">
@@ -88,7 +88,7 @@
                                             </li>
 
                                             <li class="nav-item dropdown">
-                                                <a href="/hotels" class="dropdown-item dropdown-toggle">
+                                                <a href="/searchhotels" class="dropdown-item dropdown-toggle">
                                                     Hotels
                                                 </a>
                                             </li>
@@ -167,7 +167,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="/hotels" class="nav-link">
+                                        <a href="/searchhotel" class="nav-link">
                                             Hotels
                                         </a>
                                     </li>

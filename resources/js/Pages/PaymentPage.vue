@@ -3,24 +3,33 @@
     <!-- Common Banner Area -->
     <Header :easyTourSetting="easyTourSetting" :isLoggedIn="isLoggedIn" :user="user"/>
 
-    <TopDestinationBanner />
+    <TopDestinationBanner :BannerName="BannerName"/>
     <!-- Tour Booking Submission Areas -->
-    <TourBookingSubmission :oDataProduk="oDataProduk" :oDataProdukImage="oDataProdukImage" :oDataProdukPackage="oDataProdukPackage" :oDataUser="oDataUser" :bookingData="bookingData" :user="user"/>
-
+    <!-- <TourBookingSubmission :oDataProduk="oDataProduk" :oDataProdukImage="oDataProdukImage" :oDataProdukPackage="oDataProdukPackage" :oDataUser="oDataUser" :bookingData="bookingData" :user="user"/> -->
+    <component
+        :is="TourBookingComponent"
+        :oDataProduk="oDataProduk"
+        :oDataProdukImage="oDataProdukImage"
+        :oDataProdukPackage="oDataProdukPackage"
+        :oDataUser="oDataUser"
+        :bookingData="bookingData"
+        :user="user"
+    />
 
 </template>
 <script>
-
+import { defineAsyncComponent } from 'vue';
 import Header from '@/components/Header.vue'
 import TopDestinationBanner from '@/components/tour/TopDestinationBanner.vue'
-import TourBookingSubmission from '@/components/Payment.vue'
+// import TourBookingSubmission from '@/components/Payment.vue'
 
 export default {
     name: "BookingSubmissionView",
     components: {
-        Header, TopDestinationBanner, TourBookingSubmission
+        Header,
+        TopDestinationBanner
     },
-    props:{
+    props: {
         easyTourSetting: Array,
         oDataProduk: Array,
         oDataProdukImage: Array,
@@ -31,7 +40,18 @@ export default {
             default: () => ({})
         },
         isLoggedIn: Boolean,
-        user: Array
+        user: Array,
+        BannerName: String
     },
-};
+    computed: {
+        TourBookingComponent() {
+            if (this.bookingData.BookingType === 'Hotel') {
+                return defineAsyncComponent(() => import('@/components/Payment_Hotel.vue'));
+            } else if(this.bookingData.BookingType === 'Tour') {
+                return defineAsyncComponent(() => import('@/components/Payment.vue'));
+            }
+        }
+    }
+}
+
 </script>

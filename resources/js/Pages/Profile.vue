@@ -1,15 +1,27 @@
-<script setup>
-import MainLayout from '../Layouts/MainLayout.vue';
-
-defineProps({
-    user: Object
-});
-</script>
-
 <template>
-    <MainLayout>
-        <h1 class="text-xl font-bold">User Profile</h1>
-        <p v-if="user">Welcome, {{ user.name }}</p>
-        <p v-else>Please log in to see your profile.</p>
-    </MainLayout>
+    <Header :easyTourSetting="easyTourSetting" :isLoggedIn="isLoggedIn" :user="user"/>
+    <!-- Common Banner Area -->
+    <TopDestinationBanner />
+
+    <!-- Dashboard Area -->
+    <DashboardArea :user="user"/>
+
+
 </template>
+<script>
+import Header from '@/components/Header.vue'
+import TopDestinationBanner from '@/components/tour/TopDestinationBanner.vue'
+import DashboardArea from '@/components/dashboard/editProfile.vue'
+
+export default {
+    name: "Profile",
+    components: {
+        Header, TopDestinationBanner, DashboardArea
+    },
+    props:{
+        easyTourSetting: Array,
+        isLoggedIn: Boolean,
+        user: Object
+    }
+};
+</script>

@@ -48,14 +48,14 @@
                         <div v-for='(item, index) in paginatedHotels' :key="index" class="col-lg-4 col-md-6 col-sm-6 col-12">
                             <div class="theme_common_box_two img_hover">
                                 <div class="theme_two_box_img">
-                                    <a :href="'/hotels/details/'+ item.id">
+                                    <a :href="'/searchhotel/details/'+ item.id">
                                         <img v-if="item.RoomImage" :src="item.RoomImage" alt="icon" />
                                     </a>
                                     <p><i class="fas fa-map-marker-alt"></i>{{ item.city_name }}</p>
                                 </div>
                                 <div class="theme_two_box_content">
                                     <h4>
-                                        <a :href="'/hotels/details/'+ item.id">{{ item.HotelName }}</a>
+                                        <a :href="'/searchhotel/details/'+ item.id">{{ item.HotelName }}</a>
                                     </h4>
                                     
                                     <h3><span class="review_rating">{{ formatPrice(item.FinalPrice) }}</span> <span>Price Start From</span></h3>
