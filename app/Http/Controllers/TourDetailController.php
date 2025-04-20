@@ -47,6 +47,7 @@ class TourDetailController extends Controller
             'tourType' => $tourType,
             'isLoggedIn' => Auth::check(),
             'user' => Auth::user(),
+            'BannerName' => "Tour in Batam"
         ]);
     }
     public function detail($id){

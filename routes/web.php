@@ -23,6 +23,7 @@ use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\BestPartnerController;
 use App\Http\Controllers\BookingSubmitionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TransportationDetailController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -259,7 +260,19 @@ Route::post('/bestpartner/edit', [BestPartnerController::class, 'edit'])->name('
 Route::delete('/bestpartner/delete/{id}', [BestPartnerController::class, 'deletedata'])->name('bestpartner-delete')->middleware('auth');
 Route::get('/bestpartner/export', [BestPartnerController::class, 'Export'])->name('bestpartner-export')->middleware('auth');
 
-
+/*
+|--------------------------------------------------------------------------
+| Transportation
+|--------------------------------------------------------------------------
+|
+*/
+// Testimonial Routes
+Route::get('/transportation', [TransportationDetailController::class, 'View'])->name('transportation')->middleware('auth');
+Route::get('/transportation/form/{id}', [TransportationDetailController::class, 'Form'])->name('transportation-form')->middleware('auth');
+Route::post('/transportation/store', [TransportationDetailController::class, 'store'])->name('transportation-store')->middleware('auth');
+Route::post('/transportation/edit', [TransportationDetailController::class, 'edit'])->name('transportation-edit')->middleware('auth');
+Route::delete('/transportation/delete/{id}', [TransportationDetailController::class, 'deletedata'])->name('transportation-delete')->middleware('auth');
+Route::get('/transportation/export', [TransportationDetailController::class, 'Export'])->name('transportation-export')->middleware('auth');
 /*
 |--------------------------------------------------------------------------
 | Hotels

@@ -1,7 +1,7 @@
 <template>
     <Header :easyTourSetting="easyTourSetting" :isLoggedIn="isLoggedIn" :user="user"/>
     <!-- Common Banner Area -->
-    <TopDestinationBanner />
+    <TopDestinationBanner :BannerName="BannerName" />
 
     <!-- Destinations Areas -->
     <Destinations :tours="tours" :tourcount="tourcount" :tourType="tourType"/>
@@ -24,7 +24,8 @@ export default {
       tourcount: Number,
       tourType: Array,
       isLoggedIn: Boolean,
-      user: Object
+      user: Object,
+      BannerName:String
     },
 };
 </script>
