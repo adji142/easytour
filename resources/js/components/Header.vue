@@ -88,7 +88,7 @@
                                             </li>
 
                                             <li class="nav-item dropdown">
-                                                <a href="/searchhotels" class="dropdown-item dropdown-toggle">
+                                                <a href="/searchhotel" class="dropdown-item dropdown-toggle">
                                                     Accomodation
                                                 </a>
                                             </li>
