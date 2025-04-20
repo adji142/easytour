@@ -302,7 +302,7 @@ class AuthController extends Controller
                     }
                     else{
                         $data['success'] = true;
-                        $data['redirect'] = 'dashboard';
+                        $data['redirect'] = 'userdashboard';
                     }
                 }
             }
