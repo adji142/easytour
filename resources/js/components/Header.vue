@@ -77,58 +77,29 @@
 
                                             <li class="nav-item dropdown">
                                                 <a href="/tourdestionation" class="dropdown-item dropdown-toggle">
-                                                    Tours
+                                                    Tours Package
                                                 </a>
                                             </li>
 
                                             <li class="nav-item dropdown">
                                                 <a href="/" class="dropdown-item dropdown-toggle">
-                                                    Vihacle
+                                                    Transportation
                                                 </a>
                                             </li>
 
                                             <li class="nav-item dropdown">
                                                 <a href="/searchhotels" class="dropdown-item dropdown-toggle">
-                                                    Hotels
+                                                    Accomodation
                                                 </a>
                                             </li>
                                             
-                                            
-                                            <li class="nav-item dropdown">
-                                                <a href="/" class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                                    Pages
-                                                </a>
-                                                <ul class="dropdown-menu shadow">
-                                                    <li class="nav-item">
-                                                        <a href="/" class="dropdown-item">
-                                                            Article
-                                                        </a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="/" class="dropdown-item">
-                                                            FAQ
-                                                        </a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="/" class="dropdown-item">
-                                                            Testimonials
-                                                        </a>
-                                                    </li>
-                                                    <li class="nav-item">
-                                                        <a href="/" class="dropdown-item">
-                                                            Privacy Policy
-                                                        </a>
-                                                    </li>
-
-                                                </ul>
-                                            </li>
                                             <li class="nav-item dropdown">
                                                 <a href="/" class="dropdown-item dropdown-toggle">
-                                                    Contact
+                                                    Article
                                                 </a>
                                             </li>
                                             <li class="nav-item dropdown">
-                                                <a href="/" class="dropdown-item dropdown-toggle">
+                                                <a href="#about_two_area" class="dropdown-item dropdown-toggle">
                                                     About Us
                                                 </a>
                                             </li>
@@ -156,57 +127,29 @@
                                     </li>
                                     <li class="nav-item">
                                         <a href="/tourdestionation" class="nav-link" :class="{ active: isActive('Tour') }">
-                                            Tours
+                                            Tour Packages
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
                                         <a href="#" class="nav-link">
-                                            Vihacle
+                                            Transportation
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
                                         <a href="/searchhotel" class="nav-link">
-                                            Hotels
+                                            Accomodation
                                         </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            Pages
-                                            <i class="fas fa-angle-down"></i>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="nav-item">
-                                                <a href="/" class="nav-link">
-                                                    Article
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="/" class="nav-link">
-                                                    FAQ
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="/" class="nav-link">
-                                                    Testimonials
-                                                </a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a href="/" class="nav-link">
-                                                    Privacy Policy
-                                                </a>
-                                            </li>
-                                        </ul>
                                     </li>
                                     <li class="nav-item">
                                         <a href="/" class="nav-link">
-                                            Contact
+                                            Article
                                         </a>
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="/" class="nav-link">
+                                        <a href="#about_two_area" class="nav-link">
                                             About Us
                                         </a>
                                     </li>

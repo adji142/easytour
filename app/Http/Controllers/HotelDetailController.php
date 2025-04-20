@@ -27,7 +27,7 @@ class HotelDetailController extends Controller
             ->select('HotelID', DB::raw('MIN(RoomImage) as RoomImage'))
             ->groupBy('HotelID');
 
-        $subPackage = DB::table('HotelRoom')
+        $subPackage = DB::table('hotelroom')
             ->select('HotelID', DB::raw('MIN(RoomPrice - RoomDiscount) as FinalPrice'))
             ->groupBy('HotelID');
 
@@ -37,7 +37,7 @@ class HotelDetailController extends Controller
             ->leftJoin('dem_kota', function ($value){
                 $value->on('dem_kota.city_id','=','td.HotelCity');
             })
-            ->select('td.id','td.HotelName', 'ti.RoomImage', 'tp.FinalPrice', 'dem_kota.city_name', DB::raw('CAST(td.HotelRating AS integer) HotelRating'))
+            ->select('td.id','td.HotelName', 'ti.RoomImage', 'tp.FinalPrice', 'dem_kota.city_name', DB::raw('CAST(td.HotelRating AS decimal) HotelRating'))
             ->get();
 
         return Inertia::render('Hotels',[

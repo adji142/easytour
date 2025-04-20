@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Models\dem_negara;
 use App\Models\EasyTourSetting;
 
+use Illuminate\Support\Facades\Auth;
+
 class LandingPageController extends Controller
 {
     public function becomevendor()
