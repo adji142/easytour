@@ -13,7 +13,7 @@
         <!-- Service Data Loop -->
         <div class="row">
           <div
-            class="col-lg-3 col-md-6 col-sm-12 col-12"
+            class="col-lg-6 col-md-6 col-sm-12 col-12"
             v-for="(item, index) in topServices" 
             :key="index"
           >
