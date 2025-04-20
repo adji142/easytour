@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { computed } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -48,4 +48,4 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
             </div>
         </form>
     </GuestLayout>
-</template>
+</template> -->
