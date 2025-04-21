@@ -11,9 +11,57 @@ use Log;
 use App\Models\TransportationDetail;
 use App\Models\TransportationPackage;
 use App\Models\TransportationImage;
+use App\Models\EasyTourSetting;
+use Inertia\Inertia;
 
 class TransportationDetailController extends Controller
 {
+    public function index() {
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+
+        $subImage = DB::table('transportationimage')
+            ->select('TransportationID', DB::raw('MIN(TransportationImage) as TransportationImage'))
+            ->groupBy('TransportationID');
+
+        $subPackage = DB::table('transportationpackage')
+            ->select('TransportationID', DB::raw('MIN(CASE WHEN transportationpackage.PackagePriceDiscount > 0 THEN transportationpackage.PackagePriceDiscount ELSE transportationpackage.PackagePrice END) as FinalPrice'))
+            ->groupBy('TransportationID');
+
+        $transportation = DB::table('transportationdetail as td')
+            ->leftJoinSub($subImage, 'ti', 'td.id', '=', 'ti.TransportationID')
+            ->leftJoinSub($subPackage, 'tp', 'td.id', '=', 'tp.TransportationID')
+            ->select('td.id','td.TransportationName','td.TransportationType', 'ti.TransportationImage', DB::raw("COALESCE(tp.FinalPrice, 0) AS FinalPrice"))
+            ->get();
+
+        $transportationtype = array('Mini Bus' => 'Mini Bus', 'City Car' => 'City Car', 'Bus' => 'Bus', 'Elf' => 'Elf', 'Motor Cycle'=> 'Motor Cycle');
+
+        return Inertia::render('TransportationPage',[
+            'easyTourSetting' => $easyTourSetting,
+            'transportation' => $transportation,
+            'transportationcount' => count($transportation),
+            'transportationtype' => $transportationtype,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
+            'BannerName' => "Transportation"
+        ]);
+    }
+    public function detail($id){
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+        $transportationDetail = TransportationDetail::selectRaw('transportationdetail.*')
+                        ->where('id', $id)
+                        ->first();
+        $transportationImage = TransportationImage::where('TransportationID', $id)->get();
+        $transportationpackage = TransportationPackage::where('TransportationID', $id)->get();
+        return Inertia::render('TransportationDetailPage', [
+            'easyTourSetting' => $easyTourSetting,
+            'transportationDetail' => $transportationDetail,
+            'transportationImage' => $transportationImage,
+            'transportationpackage' => $transportationpackage,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
+            'BannerName' => "Transportation Booking Detail"
+        ]);
+    }
     public function View(Request $request)
     {
         $keyword = $request->input('keyword');

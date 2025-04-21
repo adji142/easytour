@@ -314,8 +314,8 @@
 			var oImage = jQuery('#imagePreview').css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
 			var selectedValues = jQuery('.js-example-basic-multiple').val();
 			var oData = {
-				'image': oImage,
-				'category': selectedValues
+				'TransportationImage': oImage,
+				'ImageCategory': selectedValues
 			};
 			oImageData.push(oData);
 

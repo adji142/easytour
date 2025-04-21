@@ -62,7 +62,10 @@
                                         <td>#{{ item.DocumentNumber }}</td>
                                         <td>{{ item.BookingType }}</td>
                                         <td>{{ formatPrice(item.TotalNetTransaction) }}</td>
-                                        <td><i class="fas fa-download"></i></td>
+                                        <td><a :href="`/downloadvoucher/${item.DocumentNumber}`" target="_blank">
+                                                <i class="fas fa-download"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -20,10 +20,14 @@ use App\Models\DocumentNumbering;
 use App\Models\HotelDetail;
 use App\Models\HotelImage;
 use App\Models\HotelRoom;
+use App\Models\TransportationDetail;
+use App\Models\TransportationImage;
+use App\Models\TransportationPackage;
 
 use Inertia\Inertia;
 use Midtrans\Snap;
 use Midtrans\Config;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BookingSubmitionController extends Controller
 {
@@ -74,7 +78,12 @@ class BookingSubmitionController extends Controller
                                         ->first();
                 break;
             case 'Transport':
-
+                $oDataProduk = TransportationDetail::where('id',$ProductID)->first();
+                $oDataProdukImage = TransportationImage::where('TransportationID', $ProductID)->get();
+                $oDataProdukPackage = TransportationPackage::selectRaw("id, TransportationID, PackageName, CAST(PackagePrice AS double) PackagePrice, CAST(PackagePriceDiscount AS double) PackagePriceDiscount, TransportationCapacity, TransportationRentDuration, RecordOwnerID")
+                                        ->where('TransportationID', $ProductID)
+                                        ->where('id', $PackageID)
+                                        ->first();
                 break;
             
             default:
@@ -240,5 +249,72 @@ class BookingSubmitionController extends Controller
         return view("Booking.BookingList", [
             'bookings' => $bookings
         ]);
+    }
+
+    function DownloadPDF($documentnumber) {
+        // $BookingType = $request->BookingType;
+        // $BookingID = $request->BookingID;
+
+        $sql = "bookingsubmition.id     as BookingID, 
+                bookingsubmition.DocumentNumber,
+                bookingsubmition.BookingDate, 
+                bookingsubmition.BookingTime,
+                bookingsubmition.BookingType,
+                bookingsubmition.BookingFullName,
+                bookingsubmition.BookingEmail,
+                bookingsubmition.AdultBookingPerson,
+                bookingsubmition.ChildBookingPerson,
+                bookingsubmition.InfantBookingPerson,
+                CASE WHEN bookingsubmition.BookingType = 'Tour' THEN tourdetail.TourName ELSE 
+                    CASE WHEN bookingsubmition.BookingType = 'Hotel' THEN hoteldetail.HotelName ELSE 
+                        CASE WHEN bookingsubmition.BookingType = 'Travel' THEN '' ELSE '' END
+                    END
+                END BookingItem, 
+                CASE WHEN bookingsubmition.BookingType = 'Tour' THEN tourpackage.TourPackageName ELSE 
+                    CASE WHEN bookingsubmition.BookingType = 'Hotel' THEN hotelroom.RoomName ELSE 
+                        CASE WHEN bookingsubmition.BookingType = 'Travel' THEN '' ELSE '' END
+                    END
+                END BookingPackage, 
+                bookingsubmition.TotalNetTransaction, 
+                bookingsubmition.PaymentMethod,
+                bookingsubmition.PaymentReff, 
+                bookingsubmition.PaymentIssued,
+                company.PartnerName, 
+                company.BillingAddress,
+                company.Phone as CompanyPhone,
+                company.Email as CompanyEmail,
+                bookingsubmition.SpecialRequest ";
+        $bookings = BookingSubmition::selectRaw($sql)
+                        ->leftJoin('users', function ($value){
+                            $value->on('bookingsubmition.UserID','=','users.id');
+                        })
+                        ->leftJoin('tourdetail', function ($value){
+                            $value->on('tourdetail.id','=','bookingsubmition.ProductID')
+                            ->on('tourdetail.RecordOwnerID','=','bookingsubmition.PartnerCode');
+                        })
+                        ->leftJoin('tourpackage', function ($value){
+                            $value->on('tourpackage.id','=','bookingsubmition.PackageID')
+                            ->on('tourpackage.RecordOwnerID','=','bookingsubmition.PartnerCode');
+                        })
+                        ->leftJoin('hoteldetail', function ($value){
+                            $value->on('hoteldetail.id','=','bookingsubmition.ProductID')
+                            ->on('hoteldetail.RecordOwnerID','=','bookingsubmition.ProductID');
+                        })
+                        ->leftJoin('hotelroom', function ($value){
+                            $value->on('hotelroom.id','=','bookingsubmition.PackageID')
+                            ->on('hotelroom.RecordOwnerID','=','bookingsubmition.PartnerCode');
+                        })
+                        ->leftJoin('company', function ($value){
+                            $value->on('company.PartnerCode','=','bookingsubmition.PartnerCode');
+                        })
+                        // Transport
+                        // ->whereBetween('bookingsubmition.BookingDate',[$TglAwal, $TglAkhir])
+                        ->where('bookingsubmition.DocumentNumber',$documentnumber )
+                        ->first();
+        $pdf = Pdf::loadView('pdf.voucherbooking', ['data' => $bookings]);
+        $filename = 'voucher_' . now()->format('Ymd_His') . '.pdf';
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->stream();
+        }, $filename);
     }
 }

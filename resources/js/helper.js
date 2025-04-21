@@ -7,6 +7,7 @@ export function formatToK(number) {
 }
 
 export function formatNumber(number) {
+    // console.log(number.toLocaleString('id-ID'));
     return number.toLocaleString('id-ID'); // untuk format seperti 999 → 999, atau 1.000
 }
 

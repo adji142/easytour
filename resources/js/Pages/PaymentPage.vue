@@ -49,6 +49,8 @@ export default {
                 return defineAsyncComponent(() => import('@/components/Payment_Hotel.vue'));
             } else if(this.bookingData.BookingType === 'Tour') {
                 return defineAsyncComponent(() => import('@/components/Payment.vue'));
+            } else if(this.bookingData.BookingType === 'Transport') {
+                return defineAsyncComponent(() => import('@/components/Payment_Transport.vue'));
             }
         }
     }

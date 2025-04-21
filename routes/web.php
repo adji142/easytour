@@ -266,7 +266,8 @@ Route::get('/bestpartner/export', [BestPartnerController::class, 'Export'])->nam
 |--------------------------------------------------------------------------
 |
 */
-// Testimonial Routes
+Route::get('/transportationpage', [TransportationDetailController::class, 'index'])->name('transportationpage');
+Route::get('/transportationpage/details/{id}', [TransportationDetailController::class,'detail'])->name('transportationpage-details');
 Route::get('/transportation', [TransportationDetailController::class, 'View'])->name('transportation')->middleware('auth');
 Route::get('/transportation/form/{id}', [TransportationDetailController::class, 'Form'])->name('transportation-form')->middleware('auth');
 Route::post('/transportation/store', [TransportationDetailController::class, 'store'])->name('transportation-store')->middleware('auth');
@@ -298,4 +299,5 @@ Route::middleware(['is_user'])->group(function () {
     Route::get('/userdashboard', [DashboardController::class,'index'])->name('userdashboard');
     Route::get('/editprofile', [DashboardController::class,'Profile'])->name('editprofile');
     Route::post('/saveprofile', [DashboardController::class,'update'])->name('saveprofile');
+    Route::get('/downloadvoucher/{documentnumber}', [BookingSubmitionController::class,'DownloadPDF'])->name('downloadvoucher');
 });
