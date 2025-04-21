@@ -23,7 +23,7 @@ class VendorDashboardController extends Controller
         $sql = "PartnerCode, 
                 SUM(CASE WHEN BookingType = 'Tour' THEN TotalNetTransaction ELSE 0 END ) AS TOUR,
                 SUM(CASE WHEN BookingType = 'Hotel' THEN TotalNetTransaction ELSE 0 END ) AS HOTEL,
-                SUM(CASE WHEN BookingType = 'Travel' THEN TotalNetTransaction ELSE 0 END ) AS Travel ";
+                SUM(CASE WHEN BookingType = 'Transport' THEN TotalNetTransaction ELSE 0 END ) AS Travel ";
 
         $rawData = BookingSubmition::selectRaw($sql)
                     ->whereBetween('BookingDate', [$TglAwal, $TglAkhir])
