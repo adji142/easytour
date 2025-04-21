@@ -130,7 +130,7 @@
 	                            		<div class="col-md-12">
 	                            			<label  class="text-body">Transportation Name</label>
 	                            			<fieldset class="form-group mb-3">
-												<input type="text" class="form-control" id="TransportationName" name="TransportationName" placeholder="Transportation Name" value="{{ count($transportationdetail) > 0 ? $transportationdetail[0]['TourName'] : '' }}">
+												<input type="text" class="form-control" id="TransportationName" name="TransportationName" placeholder="Transportation Name" value="{{ count($transportationdetail) > 0 ? $transportationdetail[0]['TransportationName'] : '' }}">
 	                            				<input type="hidden" class="form-control" id="id" name="id" placeholder="<AUTO>" value="{{ count($transportationdetail) > 0 ? $transportationdetail[0]['id'] : '' }}" readonly="" >
 	                            			</fieldset>
 	                            		</div>
@@ -280,6 +280,7 @@
 				tags: true
 			});
 			var transportationpackage = <?php echo $transportationpackage ?>;
+			var transportationimage = <?php echo $transportationimage ?>;
 
 			for (let index = 0; index < transportationpackage.length; index++) {
 				var oData = {
@@ -293,8 +294,20 @@
 				};
 				oPackageData.push(oData);
 			}
+			for (let index = 0; index < transportationimage.length; index++) {
+				var oData = {
+					'id': transportationimage[index]['id'],
+					'TransportationID': transportationimage[index]['TransportationID'],
+					'TransportationImage': transportationimage[index]['TransportationImage'],
+					'isBanner': transportationimage[index]['isBanner'],
+					'ImageCategory': transportationimage[index]['ImageCategory'],
+					'expanded': true
+				};
+				oImageData.push(oData);
+			}
 			
 			LoadPackage();
+			LoadImage();
 		});
 
         jQuery('#btSaveImage').click(function() {
@@ -329,7 +342,11 @@
 			formData.push({ name: "TransportationTnC", value: TransportationTnC });
 
 			if (Array.isArray(oPackageData) && oPackageData.length > 0) {
-				formData.push({ name: "oTourPackageData", value: JSON.stringify(oPackageData) });
+				formData.push({ name: "oPackageData", value: JSON.stringify(oPackageData) });
+			}
+
+			if (Array.isArray(oImageData) && oImageData.length > 0) {
+				formData.push({ name: "oImageData", value: JSON.stringify(oImageData) });
 			}
             $.ajax({
                 url: actionUrl,
@@ -448,7 +465,7 @@
 
 			// Loop through images and append dynamically
 			oImageData.forEach((data, index) => {
-				let imageUrl = data.image;
+				let imageUrl = data.TransportationImage;
 
 				if (!imageUrl) {
 					console.warn("Skipping image with invalid URL:", data);

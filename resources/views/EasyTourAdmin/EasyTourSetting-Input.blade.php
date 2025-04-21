@@ -22,6 +22,18 @@
       width: 414px;
       height: 311px;
     }
+	.image_result_home_banner{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid black;
+      /*flex-grow: 1;*/
+      vertical-align: middle;
+      align-content: center;
+      flex-basis: 200;
+      width: 814px;
+      height: 311px;
+    }
 	.image_result_icon{
       display: flex;
       justify-content: center;
@@ -34,7 +46,27 @@
       width: 63px;
       height: 69px;
     }
+	.image_result_banner{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		border: 1px solid black;
+		/*flex-grow: 1;*/
+		vertical-align: middle;
+		align-content: center;
+		flex-basis: 200;
+		width: 414px;
+		height: 311px;
+    }
     .image_result img {
+      max-width: 100%; /* Fit the image to the container width */
+      height: 100%; /* Maintain the aspect ratio */
+    }
+	.image_result_icon img {
+      max-width: 100%; /* Fit the image to the container width */
+      height: 100%; /* Maintain the aspect ratio */
+    }
+	.image_result_home_banner img {
       max-width: 100%; /* Fit the image to the container width */
       height: 100%; /* Maintain the aspect ratio */
     }
@@ -91,6 +123,15 @@
 												</li>
 												<li class="nav-item" >
 													<a class="nav-link" id="about-tab2" data-bs-toggle="pill" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
+												</li>
+												<li class="nav-item" >
+													<a class="nav-link" id="about-tab2" data-bs-toggle="pill" href="#bannersetting" role="tab" aria-controls="bannersetting" aria-selected="true">Banner</a>
+												</li>
+												<li class="nav-item" >
+													<a class="nav-link" id="about-tab2" data-bs-toggle="pill" href="#privacypolicysetting" role="tab" aria-controls="privacypolicysetting" aria-selected="true">Privacy & Policy</a>
+												</li>
+												<li class="nav-item" >
+													<a class="nav-link" id="about-tab2" data-bs-toggle="pill" href="#faqsetting" role="tab" aria-controls="faqsetting" aria-selected="true">FaQ</a>
 												</li>
 											</ul>
 										</div>
@@ -312,6 +353,74 @@
 													</div>
 												</div>
 
+												<div class="tab-pane fade show" id="bannersetting" role="tabpanel" >
+													<div class="form-group row">
+
+														<div class="col-md-12">
+															<fieldset class="form-group mb-3">
+																<textarea id = "image_banner_base64" name = "image_banner_base64" style="display: none;">{{ count($easytoursetting) > 0 ? $easytoursetting[0]['BannerImage'] : '' }}</textarea>
+																
+																<input type="file" id="AttachmentBanner" name="AttachmentBanner" accept=".jpg" class="btn btn-warning" style="display: none;"/>
+																<div class="xContainer">
+																	<div id="image_result_BannerImage" class="image_result_home_banner">
+																		<img src="{{ !empty($easytoursetting[0]['BannerImage']) ? $easytoursetting[0]['BannerImage'] : asset('images/about-1.png') }}">
+																	</div>
+																	<small><span class="text-danger">* Image size should be 1920 x 920 px</span><br></small>
+																</div>
+															</fieldset>
+														</div>
+
+														<div class="col-md-12">
+															<label  class="text-body">Banner Headline</label>
+															<fieldset class="form-group mb-3">
+																<input type="text" class="form-control" id="BannerHeadline" name="BannerHeadline" placeholder="Enter Banner Headline" value="{{ count($easytoursetting) > 0 ? $easytoursetting[0]['BannerHeadline'] : '' }}"  >
+															</fieldset>
+														</div>
+
+														<div class="col-md-12">
+															<label  class="text-body">Banner Sub Headline</label>
+															<fieldset class="form-group mb-3">
+																<input type="text" class="form-control" id="BannerSubHeadline" name="BannerSubHeadline" placeholder="Enter Banner Sub Headline" value="{{ count($easytoursetting) > 0 ? $easytoursetting[0]['BannerSubHeadline'] : '' }}"  >
+															</fieldset>
+														</div>
+
+													</div>
+												</div>
+
+												<div class="tab-pane fade show" id="privacypolicysetting" role="tabpanel" >
+													<div class="form-group row">
+														<div class = "col-md-12">
+															<label  class="text-body">Privacy & Policy</label>
+															<fieldset class="form-group mb-3">
+																<div id="PrivacyPolicy">
+																	{!! count($easytoursetting) > 0 ? $easytoursetting[0]['PrivacyPolicy'] : '' !!}
+																</div>
+															</fieldset>
+														</div>
+
+													</div>
+												</div>
+
+												<div class="tab-pane fade show" id="faqsetting" role="tabpanel" >
+													<div class="form-group row">
+														<div class="col-md-12">
+															<button type="button" id="btAddFaQ" class="btn btn-primary text-white font-weight-bold me-1 mb-1">Add FaQ </button>
+														</div>
+				
+														<div class="col-md-12">
+															<div id="iteneraryData">
+																<div class="accordion" id="accordionFaQData">
+				
+																</div>
+															</div>
+															
+														</div>
+
+													</div>
+												</div>
+
+												
+
 											</div>
 										</div>
 
@@ -332,6 +441,47 @@
 	
 </div>
 
+<div class="modal fade text-left" id="LookupFaQ" tabindex="-1" role="dialog" aria-labelledby="LookupFaQ" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+		<div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="myModalLabel1444">Add FaQ</h3>
+                <button type="button" class="close rounded-pill btn btn-sm btn-icon btn-light btn-hover-primary m-0" data-bs-dismiss="modal" aria-label="Close">
+                <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmFaQ" class="form-group row">
+                    <div class="col-md-12">
+                        <label  class="text-body">FaQ Title</label>
+                        <fieldset class="form-group mb-3">
+                            <input type="text" class="form-control" id="FaqHeader" name="FaqHeader" placeholder="FaQ Title">
+                            <input type="hidden" class="form-control" id="FaQid" name="FaQid" placeholder="<AUTO>" value="" readonly="">
+                        </fieldset>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label  class="text-body">FaQ Detail</label>
+                        <fieldset class="form-group mb-3">
+                            <div id="FaqDetail">
+                                
+                            </div>
+                        </fieldset>
+                    </div>
+                </form>
+                <hr>
+                <div class="form-group row justify-content-end mb-0">
+                    <div class="col-md-6  text-end">
+                        <button type="button" class="btn btn-primary" id="btSaveFaQ">Save</button>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>	  	  
+</div>
+
 @endsection
 
 @push('scripts')
@@ -341,24 +491,46 @@
 	// });
     var _URL = window.URL || window.webkitURL;
     var _URLePub = window.URL || window.webkitURL;
+
+	var oFaQData = [];
+
+	const quill_AppsAddress = new Quill('#AppsAddress', {
+		theme: 'snow'
+	});
+	const quill_AboutDescriptionSubHeadline1 = new Quill('#AboutDescriptionSubHeadline1', {
+		theme: 'snow'
+	});
+	const quill_AboutDescriptionSubHeadline2 = new Quill('#AboutDescriptionSubHeadline2', {
+		theme: 'snow'
+	});
+	const quill_AboutDescriptionSubHeadline3 = new Quill('#AboutDescriptionSubHeadline3', {
+		theme: 'snow'
+	});
+	const quill_About = new Quill('#About', {
+		theme: 'snow'
+	});
+
+	const quill_PrivacyPolicy = new Quill('#PrivacyPolicy', {
+		theme: 'snow'
+	});
+
+	const quill_FaqDetail = new Quill('#FaqDetail', {
+		theme: 'snow'
+	});
+
 	jQuery(function () {
-        const quill_AppsAddress = new Quill('#AppsAddress', {
-            theme: 'snow'
-        });
-		const quill_AboutDescriptionSubHeadline1 = new Quill('#AboutDescriptionSubHeadline1', {
-			theme: 'snow'
-		});
-		const quill_AboutDescriptionSubHeadline2 = new Quill('#AboutDescriptionSubHeadline2', {
-			theme: 'snow'
-		});
-		const quill_AboutDescriptionSubHeadline3 = new Quill('#AboutDescriptionSubHeadline3', {
-			theme: 'snow'
-		});
-		const quill_About = new Quill('#About', {
-			theme: 'snow'
-		});
+		// FaqDetail
 		jQuery(document).ready(function() {
-			
+			var faq = <?php echo $faq ?>;
+			for (let index = 0; index < faq.length; index++) {
+				var oData = {
+					'FaqHeader': faq[index]['FaqHeader'],
+					'FaqDetail': faq[index]['FaqDetail'],
+				};
+				oFaQData.push(oData);
+				
+			}
+			LoadFaQ()
 		});
 
         jQuery('#image_result_AboutImage').click(function(){
@@ -372,6 +544,9 @@
 		});
 		jQuery('#image_result_icon3').click(function(){
 			$('#AttachmentIcon3').click();
+		});
+		jQuery('#image_result_BannerImage').click(function(){
+			$('#AttachmentBanner').click();
 		});
 
 		// Handle form submission
@@ -395,6 +570,10 @@
 			var AboutIcon1 = $('#image_icon1_base64').val();
 			var AboutIcon2 = $('#image_icon2_base64').val();
 			var AboutIcon3 = $('#image_icon3_base64').val();
+
+			if (Array.isArray(oFaQData) && oFaQData.length > 0) {
+				formData.push({ name: "oFAQ", value: JSON.stringify(oFaQData) });
+			}
 
 			formData.push({ name: "AppsAddress", value: AppsAddress });
 			formData.push({ name: "AboutDescriptionSubHeadline1", value: AboutDescriptionSubHeadline1 });
@@ -433,7 +612,116 @@
                 },
             });
         });
+
+		jQuery('#btAddFaQ').click(function() {
+            jQuery('#LookupFaQ').modal('show');
+        });
+
+		jQuery('#btSaveFaQ').click(function() {
+            var FaQid = jQuery('#FaQid').val();
+            var FaqHeader = jQuery('#FaqHeader').val();
+            var FaqDetail = quill_FaqDetail.root.innerHTML;
+
+			console.log(oFaQData);
+            
+            if (FaQid) {
+                oFaQData = oFaQData.map(item => {
+                    if (item.id === FaQid) {
+                        item.FaqHeader = FaqHeader;
+                        item.FaqDetail = FaqDetail;
+                    }
+                    return item;
+                });
+                jQuery('#FaQid').val('');
+            } else {
+                var oData = {
+                    'FaqHeader': FaqHeader,
+                    'FaqDetail': FaqDetail,
+                    'expanded': true
+                };
+                oFaQData.push(oData);
+            }
+            jQuery('#LookupFaQ').modal('hide');
+            LoadFaQ();
+            // frmItinerary
+        });
+
+		jQuery('#LookupFaQ').on('hidden.bs.modal', function () {
+            jQuery('#frmFaQ')[0].reset();
+            quill_FaqDetail.root.innerHTML = "";
+        });
 	});
+
+	function LoadFaQ() {
+        // iteneraryData
+        var previewContainer = document.getElementById("accordionFaQData");
+        previewContainer.innerHTML = "";
+
+        if (!Array.isArray(oFaQData) || oFaQData.length === 0) {
+            let noImageDiv = document.createElement("div");
+            noImageDiv.className = "col-12 text-center";
+            noImageDiv.innerText = "No FaQ Data Found";
+            previewContainer.appendChild(noImageDiv);
+            return;
+        }
+
+        oFaQData.forEach((item, index) => {
+            const randomID = generateRandomText(5);
+            item.id = randomID;
+            item.expanded = false;
+            const isExpanded = item.expanded ? "true" : "false";
+            const showClass = item.expanded ? "show" : "";
+            const collapsedClass = item.expanded ? "" : "collapsed";
+
+            const accordionItem = document.createElement("div");
+            accordionItem.classList.add("accordion-item");
+
+            accordionItem.innerHTML = `
+                <h2 class="accordion-header" id="heading${item.id}">
+                    <button class="accordion-button ${collapsedClass}" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#collapse${item.id}" aria-expanded="${isExpanded}" aria-controls="collapse${item.id}">
+                        <h2><strong>${item.FaqHeader}</strong></h2>
+                    </button>
+                </h2>
+                <div id="collapse${item.id}" class="accordion-collapse collapse ${showClass}" 
+                    aria-labelledby="heading${item.id}" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">${item.FaqDetail}</div>
+
+                    <div class="d-flex justify-content-end mt-2 p-2">
+                        <button type="button" class="btn btn-danger" onclick="deleteFaQ('${item.id}')">Delete</button>
+                        <button type="button" class="btn btn-success ms-2" onclick="editFaQ('${item.id}')">Edit</button>
+                    </div>
+                </div>
+            `;
+
+            previewContainer.appendChild(accordionItem);
+        });
+
+    }
+
+	function deleteFaQ(params) {
+        oFaQData = oFaQData.filter(item => item.id !== params);
+        LoadFaQ();
+    }
+	function editFaQ(params) {
+        const selectedFaQ = oFaQData.find(item => item.id === params);
+        jQuery('#FaqHeader').val(selectedFaQ.FaqHeader);
+		jQuery('#FaQid').val(selectedFaQ.id);
+
+        quill_FaqDetail.root.innerHTML = selectedFaQ.FaqDetail;
+
+        jQuery('#LookupFaQ').modal('show');
+    }
+
+	function generateRandomText(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let randomText = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomText += characters[randomIndex];
+        }
+        return randomText;
+    }
 
     $("#AttachmentAboutImage").change(function(){
       var file = $(this)[0].files[0];
@@ -499,6 +787,35 @@
 	  encodeImagetoBase64_3(this);
 	});
 
+	$("#AttachmentBanner").change(function(){
+      var file = $(this)[0].files[0];
+      img = new Image();
+      img.src = _URL.createObjectURL(file);
+      var imgwidth = 0;
+      var imgheight = 0;
+      img.onload = function () {
+        imgwidth = this.width;
+        imgheight = this.height;
+        $('#width').val(imgwidth);
+        $('#height').val(imgheight);
+      }
+      readURLBanner(this);
+      encodeImagetoBase64Banner(this);
+      // alert("Current width=" + imgwidth + ", " + "Original height=" + imgheight);
+    });
+
+	function readURLBanner(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+          
+        reader.onload = function (e) {
+          // console.log(e.target.result);
+          $('#image_result_BannerImage').html("<img src ='"+e.target.result+"'> ");
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
     function readURL(input) {
       if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -546,7 +863,17 @@
 	  }
 	}
 	
-
+	function encodeImagetoBase64Banner(element) {
+      $('#image_banner_base64').val('');
+        var file = element.files[0];
+        var reader = new FileReader();
+        reader.onloadend = function() {
+          // $(".link").attr("href",reader.result);
+          // $(".link").text(reader.result);
+          $('#image_banner_base64').val(reader.result);
+        }
+        reader.readAsDataURL(file);
+    }
     function encodeImagetoBase64(element) {
       $('#Icon_Base64').val('');
         var file = element.files[0];

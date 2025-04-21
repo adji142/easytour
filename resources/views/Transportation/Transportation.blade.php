@@ -53,7 +53,7 @@
 											<label  class="text-body">Transportation Status</label>
 											<select name="HotelStatus" id="HotelStatus" class="js-example-basic-single js-states form-control bg-transparent">
 												<option value="" {{ ($oldStatus) == '' ? 'selected' : '' }}>Pilih Status</option>
-                                                @foreach($transportation as $key => $value)
+                                                @foreach($status as $key => $value)
                                                     <option value="{{ $key }}" {{ ($oldStatus) == $key ? 'selected' : '' }}>{{ $value }}</option>   
                                                 @endforeach
 												

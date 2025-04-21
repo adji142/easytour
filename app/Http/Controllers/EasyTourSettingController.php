@@ -9,6 +9,7 @@ use Log;
 use Illuminate\Http\Request;
 
 use App\Models\EasyTourSetting;
+use App\Models\FaQ;
 
 class EasyTourSettingController extends Controller
 {
@@ -16,7 +17,7 @@ class EasyTourSettingController extends Controller
     {
         $easytourSetting = EasyTourSetting::all();
 
-        $title = 'Delete Top Services !';
+        $title = 'Delete tour Setting !';
         $text = "Are you sure you want to delete ?";
         confirmDelete($title, $text);
 
@@ -30,9 +31,11 @@ class EasyTourSettingController extends Controller
         $sql = "easytoursetting.*";
         $easytoursetting = EasyTourSetting::selectRaw($sql)
             ->where('easytoursetting.id', '=', 1)->get();
+        $faq = FaQ::all();
 
         return view("EasyTourAdmin.EasyTourSetting-Input", [
             'easytoursetting' => $easytoursetting,
+            'faq' => $faq
         ]);
     }
 
@@ -58,11 +61,15 @@ class EasyTourSettingController extends Controller
             $model->AboutSubHeadline3 = $request->input('AboutSubHeadline3');
             $model->AboutDescriptionSubHeadline3 = $request->input('AboutDescriptionSubHeadline3');
             $model->AboutImage = $request->input('Base64_AboutImage');
+            $model->BannerImage = $request->input('image_banner_base64');
+            $model->BannerHeadline = $request->input('BannerHeadline');
+            $model->BannerSubHeadline = $request->input('BannerSubHeadline');
+
 
             $model->save();
 
             $data['success'] = true;
-            $data['message'] = 'Top Services Saved Successfully';
+            $data['message'] = 'tour Setting Saved Successfully';
         } catch (\Throwable $th) {
             $data['message'] = $th->getMessage();
             $data['success'] = false;
@@ -104,6 +111,26 @@ class EasyTourSettingController extends Controller
                 }
             }
 
+            if($request->input('image_banner_base64') != null || $request->input('image_banner_base64') != "") {
+                if($this->ValidateImage($request->input('image_banner_base64'), 1920, 920) != "OK"){
+                    $data['message'] = $this->ValidateImage($request->input('image_banner_base64'), 1920, 920);
+                    $data['success'] = false;
+                    return response()->json($data);
+                }
+            }
+
+            $oFAQ = json_decode($request->input('oFAQ'), true);
+
+
+            if (!empty($oFAQ)) {
+                FaQ::query()->delete();
+                foreach ($oFAQ as $faq) {
+                    $faqData = new FaQ;
+                    $faqData->FaqHeader = $faq['FaqHeader'];
+                    $faqData->FaqDetail = $faq['FaqDetail'];
+                    $faqData->save();
+                }
+            }
 
             $id = $request->input('id');
             $model = EasyTourSetting::findOrFail($id);
@@ -125,10 +152,13 @@ class EasyTourSettingController extends Controller
             $model->AboutSubHeadline3 = $request->input('AboutSubHeadline3');
             $model->AboutDescriptionSubHeadline3 = $request->input('AboutDescriptionSubHeadline3');
             $model->AboutImage = $request->input('Base64_AboutImage');
+            $model->BannerImage = $request->input('image_banner_base64');
+            $model->BannerHeadline = $request->input('BannerHeadline');
+            $model->BannerSubHeadline = $request->input('BannerSubHeadline');
             $model->save();
 
             $data['success'] = true;
-            $data['message'] = 'Top Services Updated Successfully';
+            $data['message'] = 'Easy tour Setting Updated Successfully';
         } catch (\Throwable $th) {
             $data['message'] = $th->getMessage();
             $data['success'] = false;
@@ -143,10 +173,10 @@ class EasyTourSettingController extends Controller
 	                ->delete();
 
 	        if ($easytoursetting) {
-	        	alert()->success('Success','Delete Top Services Successfuly.');
+	        	alert()->success('Success','Delete tour Setting Successfuly.');
 	        }
 	        else{
-	        	alert()->error('Error','Delete Top Services Failed.');
+	        	alert()->error('Error','Delete tour Setting Failed.');
 	        }
 	        return redirect('bedtypes');
     	} catch (Exception $e) {

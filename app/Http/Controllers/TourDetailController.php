@@ -91,8 +91,8 @@ class TourDetailController extends Controller
     public function Form($id = null)
     {
         $tourDetail = TourDetail::selectRaw("*")
-            ->where('tourDetail.RecordOwnerID', '=', Auth::user()->RecordOwnerID)
-            ->where('tourDetail.id', '=', $id)->get();
+            ->where('tourdetail.RecordOwnerID', '=', Auth::user()->RecordOwnerID)
+            ->where('tourdetail.id', '=', $id)->get();
         $tourType = TourType::where('RecordOwnerID', Auth::user()->RecordOwnerID)->get();
         $tourImage = TourImage::where('RecordOwnerID', Auth::user()->RecordOwnerID)
                         ->where('TourID', $id)->get();

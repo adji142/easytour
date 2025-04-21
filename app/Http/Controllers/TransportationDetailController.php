@@ -10,6 +10,7 @@ use Log;
 
 use App\Models\TransportationDetail;
 use App\Models\TransportationPackage;
+use App\Models\TransportationImage;
 
 class TransportationDetailController extends Controller
 {
@@ -24,8 +25,8 @@ class TransportationDetailController extends Controller
         $transportation = TransportationDetail::selectRaw($sql)
             ->where('RecordOwnerID', '=', Auth::user()->RecordOwnerID);
 
-        if ($request->input('Status') != null) {
-            $transportation->where('Status', $request->input('Status'));
+        if ($request->input('HotelStatus') != null) {
+            $transportation->where('Status', $request->input('HotelStatus'));
         }
 
         return view("Transportation.Transportation", [
@@ -45,9 +46,14 @@ class TransportationDetailController extends Controller
             ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
             ->get();
 
+        $transportationimage = TransportationImage::where('TransportationID', $id)
+            ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
+            ->get();
+
         return view("Transportation.Transportation-Input", [
             'transportationdetail' => $transportationdetail,
-            'transportationpackage' => $transportationpackage
+            'transportationpackage' => $transportationpackage,
+            'transportationimage' => $transportationimage
         ]);
     }
 
@@ -58,14 +64,15 @@ class TransportationDetailController extends Controller
         DB::beginTransaction();
 
         try {
+            $oPackageData = json_decode($request->input('oPackageData'), true);
             $oImageData = json_decode($request->input('oImageData'), true);
 
             $model = new TransportationDetail;
-            $model->Name = $request->input('Name');
-            $model->Type = $request->input('Type');
-            $model->Capacity = $request->input('Capacity');
-            $model->Price = $request->input('Price');
-            $model->Description = $request->input('Description');
+            $model->TransportationName = $request->input('TransportationName');
+            $model->TransportationType = $request->input('TransportationType');
+            $model->TransportationDescription = $request->input('TransportationDescription');
+            $model->TransportationTnC = $request->input('TransportationTnC');
+            $model->TransportationCapacity = $request->input('TransportationCapacity');
             $model->Status = 'Y';
             $model->RecordOwnerID = Auth::user()->RecordOwnerID;
             $oSaved = $model->save();
@@ -73,11 +80,24 @@ class TransportationDetailController extends Controller
             if ($oSaved) {
                 if (!empty($oImageData)) {
                     foreach ($oImageData as $image) {
+                        $oTourImage = new TransportationImage;
+                        $oTourImage->TransportationID = $model->id;
+                        $oTourImage->TransportationImage = $image['TransportationImage'];
+                        $oTourImage->isBanner = 0;
+                        $oTourImage->ImageCategory = json_encode($image['ImageCategory']);
+                        $oTourImage->RecordOwnerID = Auth::user()->RecordOwnerID;
+                        $oTourImage->save();
+                    }
+                }
+                if (!empty($oPackageData)) {
+                    foreach ($oPackageData as $oItem) {
                         $oImage = new TransportationPackage;
                         $oImage->TransportationID = $model->id;
-                        $oImage->ImageData = $image['image'];
-                        $oImage->ImageCategory = json_encode($image['category']);
-                        $oImage->isBanner = 0;
+                        $oImage->PackageName = $oItem['PackageName'];
+                        $oImage->PackagePrice = $oItem['PackagePrice'];
+                        $oImage->PackagePriceDiscount = $oItem['PackagePriceDiscount'];
+                        $oImage->TransportationCapacity = $oItem['TransportationCapacity'];
+                        $oImage->TransportationRentDuration = $oItem['TransportationRentDuration'];
                         $oImage->RecordOwnerID = Auth::user()->RecordOwnerID;
                         $oImage->save();
                     }
@@ -105,26 +125,44 @@ class TransportationDetailController extends Controller
 
             $id = $request->input('id');
             $model = TransportationDetail::where('RecordOwnerID', Auth::user()->RecordOwnerID)->findOrFail($id);
-            $model->Name = $request->input('Name');
-            $model->Type = $request->input('Type');
-            $model->Capacity = $request->input('Capacity');
-            $model->Price = $request->input('Price');
-            $model->Description = $request->input('Description');
+            $model->TransportationName = $request->input('TransportationName');
+            $model->TransportationType = $request->input('TransportationType');
+            $model->TransportationDescription = $request->input('TransportationDescription');
+            $model->TransportationTnC = $request->input('TransportationTnC');
+            $model->TransportationCapacity = $request->input('TransportationCapacity');
             $model->Status = 'Y';
+            $model->RecordOwnerID = Auth::user()->RecordOwnerID;
             $oSaved = $model->save();
 
             if ($oSaved) {
                 TransportationPackage::where('TransportationID', $model->id)
                     ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
                     ->delete();
+                TransportationImage::where('TransportationID', $model->id)
+                    ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
+                    ->delete();
 
                 if (!empty($oImageData)) {
                     foreach ($oImageData as $image) {
+                        $oTourImage = new TransportationImage;
+                        $oTourImage->TransportationID = $model->id;
+                        $oTourImage->TransportationImage = $image['TransportationImage'];
+                        $oTourImage->isBanner = 0;
+                        $oTourImage->ImageCategory = json_encode($image['ImageCategory']);
+                        $oTourImage->RecordOwnerID = Auth::user()->RecordOwnerID;
+                        $oTourImage->save();
+                    }
+                }
+                
+                if (!empty($oPackageData)) {
+                    foreach ($oPackageData as $oItem) {
                         $oImage = new TransportationPackage;
                         $oImage->TransportationID = $model->id;
-                        $oImage->ImageData = $image['image'];
-                        $oImage->ImageCategory = json_encode($image['category']);
-                        $oImage->isBanner = 0;
+                        $oImage->PackageName = $oItem['PackageName'];
+                        $oImage->PackagePrice = $oItem['PackagePrice'];
+                        $oImage->PackagePriceDiscount = $oItem['PackagePriceDiscount'];
+                        $oImage->TransportationCapacity = $oItem['TransportationCapacity'];
+                        $oImage->TransportationRentDuration = $oItem['TransportationRentDuration'];
                         $oImage->RecordOwnerID = Auth::user()->RecordOwnerID;
                         $oImage->save();
                     }
