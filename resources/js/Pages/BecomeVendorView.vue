@@ -4,17 +4,16 @@
     <Banner />
 
     <!-- How It Work -->
-    <HowWork />
+    <HowWork :easyTourSetting="easyTourSetting" />
 
     <!-- About Service Area -->
-    <AboutService />
+    <!-- <AboutService /> -->
 
     <!-- Vendor Form Area -->
     <VendorForm :negara="negaraData" />
 
     <!-- Cta Area -->
-    <Cta />
-    <Footer />
+    <Footer :easyTourSetting="easyTourSetting"/>
 </template>
 
 <script setup>
@@ -43,6 +42,7 @@ export default {
         Header, Banner, HowWork, AboutService, VendorForm, Cta, Footer
     },
     props:{
+        easyTourSetting: Array,
         isLoggedIn: Boolean,
         user: Object
     }

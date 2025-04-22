@@ -155,6 +155,12 @@
 			}
 		});
 
+		var SearchBox = "<?php echo $SearchBox ?>";
+
+		// console.log(SearchBox);
+		
+
+		table.search(SearchBox).draw();
         // Filter logic
         jQuery('#startDate, #endDate, #bookingType').on('change', function () {
             table.draw();

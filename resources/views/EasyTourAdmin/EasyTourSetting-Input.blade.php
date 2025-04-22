@@ -133,6 +133,12 @@
 												<li class="nav-item" >
 													<a class="nav-link" id="about-tab2" data-bs-toggle="pill" href="#faqsetting" role="tab" aria-controls="faqsetting" aria-selected="true">FaQ</a>
 												</li>
+												<li class="nav-item" >
+													<a class="nav-link" id="about-tab2" data-bs-toggle="pill" href="#howitworks" role="tab" aria-controls="howitworks" aria-selected="true">How It'S Works</a>
+												</li>
+												<li class="nav-item" >
+													<a class="nav-link" id="about-tab2" data-bs-toggle="pill" href="#termandcondition" role="tab" aria-controls="termandcondition" aria-selected="true">Term and Condition</a>
+												</li>
 											</ul>
 										</div>
 
@@ -419,8 +425,138 @@
 													</div>
 												</div>
 
-												
+												<div class="tab-pane fade show" id="howitworks" role="tabpanel" >
+													<div class="form-group row">
+														<div class="col-md-6"> 
+															<fieldset class="form-group mb-3">
+																<textarea id = "Base64_HiWImage1" name = "Base64_HiWImage1" style="display: none;">{{ count($easytoursetting) > 0 ? $easytoursetting[0]['HiWImage1'] : '' }}</textarea>
+																
+																<input type="file" id="AttachmentHiWImage1" name="AttachmentHiWImage1" accept=".jpg" class="btn btn-warning" style="display: none;"/>
+																<div class="xContainer">
+																	<div id="image_result_HiWImage1" class="image_result">
+																		<img src="{{ !empty($easytoursetting[0]['HiWImage1']) ? $easytoursetting[0]['HiWImage1'] : "" }}">
+																	</div>
+																</div>
+																<small><span class="text-danger">* Image size should be 387 x 356 px</span><br></small>
+															</fieldset>
+														</div>
 
+														<div class="col-md-6"> 
+															<div class="row">
+																<div class="col-md-12"> 
+																	<label  class="text-body">Headline Text 1</label>
+																	<fieldset class="form-group mb-3">
+																		<input type="text" class="form-control" id="HiWHeadline1" name="HiWHeadline1" placeholder="Enter Banner Sub Headline" value="{{ count($easytoursetting) > 0 ? $easytoursetting[0]['HiWHeadline1'] : '' }}"  >
+																	</fieldset>
+																</div>
+
+																<div class="col-md-12"> 
+																	<label  class="text-body">How It'S Work Text 1</label>
+																	<fieldset class="form-group mb-3">
+																		<div id="HiWText1">
+																			{!! count($easytoursetting) > 0 ? $easytoursetting[0]['HiWText1'] : '' !!}
+																		</div>
+																	</fieldset>
+																</div>
+
+															</div>
+														</div>
+
+
+
+														<div class="col-md-6"> 
+															<fieldset class="form-group mb-3">
+																<textarea id = "Base64_HiWImage2" name = "Base64_HiWImage2" style="display: none;">{{ count($easytoursetting) > 0 ? $easytoursetting[0]['HiWImage2'] : '' }}</textarea>
+																
+																<input type="file" id="AttachmentHiWImage2" name="AttachmentHiWImage2" accept=".jpg" class="btn btn-warning" style="display: none;"/>
+																<div class="xContainer">
+																	<div id="image_result_HiWImage2" class="image_result">
+																		<img src="{{ !empty($easytoursetting[0]['HiWImage2']) ? $easytoursetting[0]['HiWImage2'] : "" }}">
+																	</div>
+																</div>
+																<small><span class="text-danger">* Image size should be 387 x 356 px</span><br></small>
+															</fieldset>
+														</div>
+
+														<div class="col-md-6"> 
+															<div class="row">
+																<div class="col-md-12"> 
+																	<label  class="text-body">Headline Text 2</label>
+																	<fieldset class="form-group mb-3">
+																		<input type="text" class="form-control" id="HiWHeadline2" name="HiWHeadline2" placeholder="Enter Banner Sub Headline" value="{{ count($easytoursetting) > 0 ? $easytoursetting[0]['HiWHeadline2'] : '' }}"  >
+																	</fieldset>
+																</div>
+
+																<div class="col-md-12"> 
+																	<label  class="text-body">How It'S Work Text 2</label>
+																	<fieldset class="form-group mb-3">
+																		<div id="HiWText2">
+																			{!! count($easytoursetting) > 0 ? $easytoursetting[0]['HiWText2'] : '' !!}
+																		</div>
+																	</fieldset>
+																</div>
+
+															</div>
+														</div>
+
+
+														<div class="col-md-6"> 
+															<fieldset class="form-group mb-3">
+																<textarea id = "Base64_HiWImage3" name = "Base64_HiWImage3" style="display: none;">{{ count($easytoursetting) > 0 ? $easytoursetting[0]['HiWImage3'] : '' }}</textarea>
+																
+																<input type="file" id="AttachmentHiWImage3" name="AttachmentHiWImage3" accept=".jpg" class="btn btn-warning" style="display: none;"/>
+																<div class="xContainer">
+																	<div id="image_result_HiWImage3" class="image_result">
+																		<img src="{{ !empty($easytoursetting[0]['HiWImage3']) ? $easytoursetting[0]['HiWImage3'] : "" }}">
+																	</div>
+																</div>
+																<small><span class="text-danger">* Image size should be 387 x 356 px</span><br></small>
+															</fieldset>
+														</div>
+
+														<div class="col-md-6"> 
+															<div class="row">
+																<div class="col-md-12"> 
+																	<label  class="text-body">Headline Text 3</label>
+																	<fieldset class="form-group mb-3">
+																		<input type="text" class="form-control" id="HiWHeadline3" name="HiWHeadline3" placeholder="Enter Banner Sub Headline" value="{{ count($easytoursetting) > 0 ? $easytoursetting[0]['HiWHeadline3'] : '' }}"  >
+																	</fieldset>
+																</div>
+
+																<div class="col-md-12"> 
+																	<label  class="text-body">How It'S Work Text 3</label>
+																	<fieldset class="form-group mb-3">
+																		<div id="HiWText3">
+																			{!! count($easytoursetting) > 0 ? $easytoursetting[0]['HiWText3'] : '' !!}
+																		</div>
+																	</fieldset>
+																</div>
+
+															</div>
+														</div>
+
+														
+
+													</div>
+												</div>
+
+												<div class="tab-pane fade show" id="termandcondition" role="tabpanel" >
+													<div class="form-group row">
+
+														<div class="col-md-12"> 
+															<label  class="text-body">Term and Condition</label>
+															<fieldset class="form-group mb-3">
+																<div id="TermandCondition">
+																	{!! count($easytoursetting) > 0 ? $easytoursetting[0]['TermandCondition'] : '' !!}
+																</div>
+															</fieldset>
+														</div>
+
+													</div>
+												</div>
+
+												
+{{-- termandcondition --}}
 											</div>
 										</div>
 
@@ -518,6 +654,22 @@
 		theme: 'snow'
 	});
 
+	const quill_HiWText1 = new Quill('#HiWText1', {
+		theme: 'snow'
+	});
+
+	const quill_HiWText2 = new Quill('#HiWText2', {
+		theme: 'snow'
+	});
+
+	const quill_HiWText3 = new Quill('#HiWText3', {
+		theme: 'snow'
+	});
+
+	const quill_TermandCondition = new Quill('#TermandCondition', {
+		theme: 'snow'
+	});
+
 	jQuery(function () {
 		// FaqDetail
 		jQuery(document).ready(function() {
@@ -548,6 +700,15 @@
 		jQuery('#image_result_BannerImage').click(function(){
 			$('#AttachmentBanner').click();
 		});
+		jQuery('#image_result_HiWImage1').click(function(){
+			$('#AttachmentHiWImage1').click();
+		});
+		jQuery('#image_result_HiWImage2').click(function(){
+			$('#AttachmentHiWImage2').click();
+		});
+		jQuery('#image_result_HiWImage3').click(function(){
+			$('#AttachmentHiWImage3').click();
+		});
 
 		// Handle form submission
 
@@ -567,9 +728,20 @@
 			var AboutDescriptionSubHeadline3 = quill_AboutDescriptionSubHeadline3.root.innerHTML;
 			var About = quill_About.root.innerHTML;
 
+			var HiWText1 = quill_HiWText1.root.innerHTML;
+			var HiWText2 = quill_HiWText2.root.innerHTML;
+			var HiWText3 = quill_HiWText3.root.innerHTML;
+
+			var TermandCondition = quill_TermandCondition.root.innerHTML;
+			var PrivacyPolicy = quill_PrivacyPolicy.root.innerHTML;
+
 			var AboutIcon1 = $('#image_icon1_base64').val();
 			var AboutIcon2 = $('#image_icon2_base64').val();
 			var AboutIcon3 = $('#image_icon3_base64').val();
+
+			var HiWImage1 = $('#Base64_HiWImage1').val();
+			var HiWImage2 = $('#Base64_HiWImage2').val();
+			var HiWImage3 = $('#Base64_HiWImage3').val();
 
 			if (Array.isArray(oFaQData) && oFaQData.length > 0) {
 				formData.push({ name: "oFAQ", value: JSON.stringify(oFaQData) });
@@ -583,6 +755,14 @@
 			formData.push({ name: "AboutIcon1", value: AboutIcon1 });
 			formData.push({ name: "AboutIcon2", value: AboutIcon2 });
 			formData.push({ name: "AboutIcon3", value: AboutIcon3 });
+			formData.push({ name: "HiWImage1", value: HiWImage1 });
+			formData.push({ name: "HiWImage2", value: HiWImage2 });
+			formData.push({ name: "HiWImage3", value: HiWImage3 });
+			formData.push({ name: "HiWText1", value: HiWText1 });
+			formData.push({ name: "HiWText2", value: HiWText2 });
+			formData.push({ name: "HiWText3", value: HiWText3 });
+			formData.push({ name: "TermandCondition", value: TermandCondition });
+			formData.push({ name: "PrivacyPolicy", value: PrivacyPolicy });
 
             $.ajax({
                 url: actionUrl,
@@ -723,6 +903,58 @@
         return randomText;
     }
 
+
+	$("#AttachmentHiWImage1").change(function(){
+      var file = $(this)[0].files[0];
+      img = new Image();
+      img.src = _URL.createObjectURL(file);
+      var imgwidth = 0;
+      var imgheight = 0;
+      img.onload = function () {
+        imgwidth = this.width;
+        imgheight = this.height;
+        $('#width').val(imgwidth);
+        $('#height').val(imgheight);
+      }
+      readURL_Hiw1(this);
+      encodeImagetoBase64_Hiw1(this);
+      // alert("Current width=" + imgwidth + ", " + "Original height=" + imgheight);
+    });
+
+	$("#AttachmentHiWImage2").change(function(){
+      var file = $(this)[0].files[0];
+      img = new Image();
+      img.src = _URL.createObjectURL(file);
+      var imgwidth = 0;
+      var imgheight = 0;
+      img.onload = function () {
+        imgwidth = this.width;
+        imgheight = this.height;
+        $('#width').val(imgwidth);
+        $('#height').val(imgheight);
+      }
+      readURL_Hiw2(this);
+      encodeImagetoBase64_Hiw2(this);
+      // alert("Current width=" + imgwidth + ", " + "Original height=" + imgheight);
+    });
+
+	$("#AttachmentHiWImage3").change(function(){
+      var file = $(this)[0].files[0];
+      img = new Image();
+      img.src = _URL.createObjectURL(file);
+      var imgwidth = 0;
+      var imgheight = 0;
+      img.onload = function () {
+        imgwidth = this.width;
+        imgheight = this.height;
+        $('#width').val(imgwidth);
+        $('#height').val(imgheight);
+      }
+      readURL_Hiw3(this);
+      encodeImagetoBase64_Hiw3(this);
+      // alert("Current width=" + imgwidth + ", " + "Original height=" + imgheight);
+    });
+
     $("#AttachmentAboutImage").change(function(){
       var file = $(this)[0].files[0];
       img = new Image();
@@ -862,6 +1094,42 @@
 		reader.readAsDataURL(input.files[0]);
 	  }
 	}
+
+	function readURL_Hiw1(input) {
+	  if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		  
+		reader.onload = function (e) {
+		  // console.log(e.target.result);
+		  $('#image_result_HiWImage1').html("<img src ='"+e.target.result+"'> ");
+		}
+		reader.readAsDataURL(input.files[0]);
+	  }
+	}
+
+	function readURL_Hiw2(input) {
+	  if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		  
+		reader.onload = function (e) {
+		  // console.log(e.target.result);
+		  $('#image_result_HiWImage2').html("<img src ='"+e.target.result+"'> ");
+		}
+		reader.readAsDataURL(input.files[0]);
+	  }
+	}
+
+	function readURL_Hiw3(input) {
+	  if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		  
+		reader.onload = function (e) {
+		  // console.log(e.target.result);
+		  $('#image_result_HiWImage3').html("<img src ='"+e.target.result+"'> ");
+		}
+		reader.readAsDataURL(input.files[0]);
+	  }
+	}
 	
 	function encodeImagetoBase64Banner(element) {
       $('#image_banner_base64').val('');
@@ -915,6 +1183,42 @@
 		  // $(".link").attr("href",reader.result);
 		  // $(".link").text(reader.result);
 		  $('#image_icon3_base64').val(reader.result);
+		}
+		reader.readAsDataURL(file);
+	}
+
+	function encodeImagetoBase64_Hiw1(element) {
+		$('#Base64_HiWImage1').val('');
+		var file = element.files[0];
+		var reader = new FileReader();
+		reader.onloadend = function() {
+		  // $(".link").attr("href",reader.result);
+		  // $(".link").text(reader.result);
+		  $('#Base64_HiWImage1').val(reader.result);
+		}
+		reader.readAsDataURL(file);
+	}
+
+	function encodeImagetoBase64_Hiw2(element) {
+		$('#Base64_HiWImage2').val('');
+		var file = element.files[0];
+		var reader = new FileReader();
+		reader.onloadend = function() {
+		  // $(".link").attr("href",reader.result);
+		  // $(".link").text(reader.result);
+		  $('#Base64_HiWImage2').val(reader.result);
+		}
+		reader.readAsDataURL(file);
+	}
+
+	function encodeImagetoBase64_Hiw3(element) {
+		$('#Base64_HiWImage3').val('');
+		var file = element.files[0];
+		var reader = new FileReader();
+		reader.onloadend = function() {
+		  // $(".link").attr("href",reader.result);
+		  // $(".link").text(reader.result);
+		  $('#Base64_HiWImage3').val(reader.result);
 		}
 		reader.readAsDataURL(file);
 	}

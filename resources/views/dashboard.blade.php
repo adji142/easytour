@@ -21,19 +21,21 @@
                     <div class="col-lg-6 col-xl-4">
                         <div class="card card-custom gutter-b bg-white border-0 theme-circle theme-circle-primary">
 
-                            <div class="card-body">
-                                <h3 class="text-body font-weight-bold">Tour</h3>
-                                <div class="mt-3">
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-dark font-weight-bold font-size-h1 me-3">
-                                            {{ $omset_tour }}
-                                        </span>
-
+                            <a href="{{ route('bookingList')."?SearchBox=Tour" }}">
+                                <div class="card-body">
+                                    <h3 class="text-body font-weight-bold">Tour</h3>
+                                    <div class="mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-dark font-weight-bold font-size-h1 me-3">
+                                                {{ $omset_tour }}
+                                            </span>
+    
+                                        </div>
+                                        {{-- <div class="text-black-50 mt-3">Compare to last year (2019)</div> --}}
                                     </div>
-                                    {{-- <div class="text-black-50 mt-3">Compare to last year (2019)</div> --}}
+    
                                 </div>
-
-                            </div>
+                            </a>
 
                             
                         </div>
@@ -41,20 +43,21 @@
 
                     <div class="col-lg-6 col-xl-4">
                         <div class="card card-custom gutter-b bg-white border-0 theme-circle theme-circle theme-circle-secondary">
-
-                            <div class="card-body">
-                                <h3 class="text-body font-weight-bold">Hotel</h3>
-                                <div class="mt-3">
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-dark font-weight-bold font-size-h1 me-3">
-                                            {{ $omset_hotel }}
-                                        </span>
-
+                            <a href="{{ route('bookingList')."?SearchBox=Hotel" }}">
+                                <div class="card-body">
+                                    <h3 class="text-body font-weight-bold">Hotel</h3>
+                                    <div class="mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-dark font-weight-bold font-size-h1 me-3">
+                                                {{ $omset_hotel }}
+                                            </span>
+    
+                                        </div>
+                                        {{-- <div class="text-black-50 mt-3">Compare to last year (2019)</div> --}}
                                     </div>
-                                    {{-- <div class="text-black-50 mt-3">Compare to last year (2019)</div> --}}
+    
                                 </div>
-
-                            </div>
+                            </a>
 
                             
                         </div>
@@ -63,19 +66,21 @@
                     <div class="col-lg-6 col-xl-4">
                         <div class="card card-custom gutter-b bg-white border-0 theme-circle theme-circle-success">
 
-                            <div class="card-body">
-                                <h3 class="text-body font-weight-bold">Travel</h3>
-                                <div class="mt-3">
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-dark font-weight-bold font-size-h1 me-3">
-                                            {{ $omset_travel }}
-                                        </span>
-
+                            <a href="{{ route('bookingList')."?SearchBox=Transport" }}">
+                                <div class="card-body">
+                                    <h3 class="text-body font-weight-bold">Transportation</h3>
+                                    <div class="mt-3">
+                                        <div class="d-flex align-items-center">
+                                            <span class="text-dark font-weight-bold font-size-h1 me-3">
+                                                {{ $omset_travel }}
+                                            </span>
+    
+                                        </div>
+                                        {{-- <div class="text-black-50 mt-3">Compare to last year (2019)</div> --}}
                                     </div>
-                                    {{-- <div class="text-black-50 mt-3">Compare to last year (2019)</div> --}}
+    
                                 </div>
-
-                            </div>
+                            </a>
 
                             
                         </div>

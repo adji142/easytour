@@ -170,6 +170,7 @@ class TransportationDetailController extends Controller
 
         try {
             $oImageData = json_decode($request->input('oImageData'), true);
+            $oPackageData = json_decode($request->input('oPackageData'), true);
 
             $id = $request->input('id');
             $model = TransportationDetail::where('RecordOwnerID', Auth::user()->RecordOwnerID)->findOrFail($id);

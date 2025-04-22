@@ -301,3 +301,9 @@ Route::middleware(['is_user'])->group(function () {
     Route::post('/saveprofile', [DashboardController::class,'update'])->name('saveprofile');
     Route::get('/downloadvoucher/{documentnumber}', [BookingSubmitionController::class,'DownloadPDF'])->name('downloadvoucher');
 });
+
+
+// Other Page
+
+Route::get('/faq', [EasyTourSettingController::class, 'viewfaq'])->name('faq');
+Route::get('/privacy-police', [EasyTourSettingController::class, 'viewprivacy'])->name('privacy-police');

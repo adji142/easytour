@@ -5063,7 +5063,6 @@ textarea {
     Become A Vendor Page
 ====================================*/
 .how_it_boxed {
-    text-align: center;
     padding-top: 30px;
 }
 
@@ -5072,11 +5071,13 @@ textarea {
 }
 
 .how_it_boxed h3 {
+    text-align: center;
     padding-top: 30px;
     font-weight: 500;
 }
 
 .how_it_boxed p {
+    text-align: left;
     padding-top: 10px;
 }
 

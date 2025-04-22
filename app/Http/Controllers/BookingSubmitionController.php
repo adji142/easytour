@@ -198,6 +198,9 @@ class BookingSubmitionController extends Controller
         // $TglAwal = $requst->input('TglAwal');
         // $TglAkhir = $request->input('TglAkhir');
 
+        $Search = $request->SearchBox;
+        // dd($Search);
+
         $sql = "bookingsubmition.id     as BookingID, 
                 bookingsubmition.DocumentNumber,
                 bookingsubmition.BookingDate, 
@@ -247,7 +250,8 @@ class BookingSubmitionController extends Controller
                         ->where('bookingsubmition.PartnerCode',Auth::user()->RecordOwnerID )
                         ->get();
         return view("Booking.BookingList", [
-            'bookings' => $bookings
+            'bookings' => $bookings,
+            'SearchBox' => $Search
         ]);
     }
 

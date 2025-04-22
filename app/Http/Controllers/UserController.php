@@ -10,7 +10,7 @@ use Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
-use App\Models\Roles;
+use App\Models\roles;
 use App\Models\User;
 use App\Models\UserRole;
 
@@ -39,7 +39,7 @@ class UserController extends Controller
         }
 
         // KelompokAkses
-        $roles = Roles::selectRaw("*")
+        $roles = roles::selectRaw("*")
         		->where('RecordOwnerID','=',Auth::user()->RecordOwnerID)->get();
 
         $title = 'Delete User !';
@@ -62,7 +62,7 @@ class UserController extends Controller
 	        ->where('users.RecordOwnerID','=',Auth::user()->RecordOwnerID)
 	        ->where('users.id','=', $id)->get();
         
-        $roles = Roles::selectRaw("*")
+        $roles = roles::selectRaw("*")
         		->where('RecordOwnerID','=',Auth::user()->RecordOwnerID)->get();
 
         return view("master.Auth.User-Input",[

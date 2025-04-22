@@ -5,18 +5,18 @@
 
     <!-- Destinations Areas -->
     <Destinations :transportationDetail="transportationDetail" :transportationImage="transportationImage" :transportationpackage="transportationpackage" />
-
+    <Footer :easyTourSetting="easyTourSetting"/>
 </template>
 <script>
 import Header from '@/components/Header.vue'
 import TopDestinationBanner from '@/components/tour/TopDestinationBanner.vue'
 import Destinations from '@/components/transportation/TransportationDetail.vue'
-
+import Footer from '@/components/Footer.vue'
 
 export default {
     name: "TourDetail",
     components: {
-        Header,TopDestinationBanner, Destinations
+        Header,TopDestinationBanner, Destinations, Footer
     },
     props:{
         easyTourSetting: Array,

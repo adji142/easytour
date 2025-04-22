@@ -15,19 +15,21 @@
         :bookingData="bookingData"
         :user="user"
     />
-
+    <Footer :easyTourSetting="easyTourSetting"/>
 </template>
 <script>
 import { defineAsyncComponent } from 'vue';
 import Header from '@/components/Header.vue'
 import TopDestinationBanner from '@/components/tour/TopDestinationBanner.vue'
+import Footer from '@/components/Footer.vue'
 // import TourBookingSubmission from '@/components/Payment.vue'
 
 export default {
     name: "BookingSubmissionView",
     components: {
         Header,
-        TopDestinationBanner
+        TopDestinationBanner,
+        Footer
     },
     props: {
         easyTourSetting: Array,

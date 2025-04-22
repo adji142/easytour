@@ -6,17 +6,18 @@
     <!-- Dashboard Area -->
     <DashboardArea :user="user" :bookingList="bookingList" :startDate="startDate" :endDate="endDate"/>
 
-
+    <Footer :easyTourSetting="easyTourSetting"/>
 </template>
 <script>
 import Header from '@/components/Header.vue'
 import TopDestinationBanner from '@/components/tour/TopDestinationBanner.vue'
 import DashboardArea from '@/components/dashboard/DashboardArea.vue'
+import Footer from '@/components/Footer.vue'
 
 export default {
     name: "DashboardView",
     components: {
-        Header, TopDestinationBanner, DashboardArea
+        Header, TopDestinationBanner, DashboardArea, Footer
     },
     props:{
         easyTourSetting: Array,

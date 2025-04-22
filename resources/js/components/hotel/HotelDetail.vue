@@ -136,13 +136,13 @@
                             </div>
                             <div class="tour_select_offer_bar_bottom">
                                 <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Select
+                                    :data-bs-target="`#offcanvasRight-${index}`" :aria-controls="`offcanvasRight-${index}`">Select
                                     offer</button>
                             </div>
 
-                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                            <div class="offcanvas offcanvas-end" tabindex="-1" :id="`offcanvasRight-${index}`" :aria-labelledby="`offcanvasRightLabel-${index}`">
                                 <div class="offcanvas-header">
-                                    <h5 id="offcanvasRightLabel">Book now</h5>
+                                    <h5 :id="`offcanvasRightLabel-${index}`">Book now</h5>
                                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
 

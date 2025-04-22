@@ -20,7 +20,7 @@
                                 <h5>Follow us on</h5>
                                 <ul class="soical_icon_footer">
                                     <li><a :href="easyTourSetting.FacebookPage"><i class="fab fa-facebook"></i></a></li>
-                                    <li><a :href="easyTourSetting.TwitterPage"><i class="fab fa-twitter-square"></i></a></li>
+                                    <li><a :href="easyTourSetting.TwitterPage"><i class="fab fa-tiktok"></i></a></li>
                                     <li><a :href="easyTourSetting.InstagramPage"><i class="fab fa-instagram"></i></a></li>
                                     <li><a :href="easyTourSetting.YoutubePage"><i class="fab fa-youtube"></i></a></li>
                                 </ul>
@@ -33,12 +33,10 @@
                         </div>
                         <div class="footer_link_area">
                             <ul>
-                                <li><router-link to="/about">About Us</router-link></li>
-                                <li><router-link to="/testimonials">Testimonials</router-link></li>
-                                <li><router-link to="/faqs">Rewards</router-link></li>
-                                <li><router-link to="/terms-service">Work with Us</router-link></li>
-                                <li><router-link to="/tour-guides">Meet the Team </router-link></li>
-                                <li><router-link to="/news">Blog</router-link></li>
+                                <li><a :href="baseUrl + '#about_two_area'">About Us</a></li>
+                                <li><a href="#hometwo_clinet_area">Testimonials</a></li>
+                                <li><a href="/becomevendor">Work with Us</a></li>
+                                <li><a href="#">Article</a></li>
                             </ul>
                         </div>
                     </div>
@@ -48,42 +46,23 @@
                         </div>
                         <div class="footer_link_area">
                             <ul>
-                                <li><router-link to="/dashboard">Account</router-link></li>
-                                <li><router-link to="/faq">Faq</router-link></li>
-                                <li><router-link to="/testimonials">Legal</router-link></li>
-                                <li><router-link to="/contact">Contact</router-link></li>
-                                <li><router-link to="/top-destinations"> Affiliate Program</router-link></li>
-                                <li><router-link to="/privacy-policy">Privacy Policy</router-link></li>
+                                <li><a href="/login">Login</a></li>
+                                <li><a href="/register">Register</a></li>
+                                <li><a href="/faq">Faq</a></li>
+                                <li><a href="/contact">Contact</a></li>
+                                <li><a href="/privacy-police">Privacy Policy</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-4 col-sm-6 col-12">
                         <div class="footer_heading_area">
-                            <h5>Other Services</h5>
+                            <h5>Our Services</h5>
                         </div>
                         <div class="footer_link_area">
                             <ul>
-                                <li><router-link to="/top-destinations-details">Community program</router-link></li>
-                                <li><router-link to="/top-destinations-details">Investor Relations</router-link></li>
-                                <li><router-link to="/flight-search-result">Rewards Program</router-link></li>
-                                <li><router-link to="/room-booking">PointsPLUS</router-link></li>
-                                <li><router-link to="/testimonials">Partners</router-link></li>
-                                <li><router-link to="/hotel-search">List My Hotel</router-link></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-4 col-sm-6 col-12">
-                        <div class="footer_heading_area">
-                            <h5>Top cities</h5>
-                        </div>
-                        <div class="footer_link_area">
-                            <ul>
-                                <li><router-link to="/room-details">Chicago</router-link></li>
-                                <li><router-link to="/hotel-details">New York</router-link></li>
-                                <li><router-link to="/hotel-booking">San Francisco</router-link></li>
-                                <li><router-link to="/tour-search">California</router-link></li>
-                                <li><router-link to="/tour-booking">Ohio </router-link></li>
-                                <li><router-link to="/tour-guides">Alaska</router-link></li>
+                                <li><a href="/tourdestination">List Tour Package</a></li>
+                                <li><a href="/searchhotel">List Accomodation</a></li>
+                                <li><a href="/transportationpage">List Transportation</a></li>
                             </ul>
                         </div>
                     </div>
@@ -95,12 +74,12 @@
                 <div class="row align-items-center">
                     <div class="co-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="copyright_left">
-                            <p>Copyright © 2022 All Rights Reserved</p>
+                            <p>Copyright © {{ new Date().getFullYear() }} All Rights Reserved</p>
                         </div>
                     </div>
                     <div class="co-lg-6 col-md-6 col-sm-12 col-12">
                         <div class="copyright_right">
-                            <img src="../assets/img/common/cards.png" alt="img">
+                            <img src="../assets/img/easytour.png" alt="img">
                         </div>
                     </div>
                 </div>
@@ -114,6 +93,11 @@ export default {
     name: 'Footer',
     props: {
         easyTourSetting: Array
+    },
+    data() {
+        return {
+        baseUrl: window.location.origin, // ambil dari browser
+        };
     },
 }
 </script>

@@ -73,8 +73,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="tour_details_right_sidebar_wrapper" style="position: relative; z-index: 1;">
-                        <div class="tour_detail_right_sidebar" v-for="(item, index) in transportationpackage" 
-                        :key="index">
+                        <div class="tour_detail_right_sidebar" v-for="(item, index) in transportationpackage"  :key="index">
                             <div class="tour_details_right_boxed">
                                 <div class="tour_details_right_box_heading">
                                     <h3>{{ item.PackageName }}</h3>
@@ -94,13 +93,13 @@
                             </div>
                             <div class="tour_select_offer_bar_bottom">
                                 <button class="btn btn_theme btn_md w-100" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Select
+                                    :data-bs-target="`#offcanvasRight-${index}`" :aria-controls="offcanvasRight">Select
                                     offer</button>
                             </div>
 
-                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                            <div class="offcanvas offcanvas-end" tabindex="-1" :id="`offcanvasRight-${index}`" :aria-labelledby="`offcanvasRightLabel-${index}`">
                                 <div class="offcanvas-header">
-                                    <h5 id="offcanvasRightLabel">Book now</h5>
+                                    <h5 :id="`offcanvasRightLabel-${index}`">Book now</h5>
                                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                                 </div>
 
@@ -175,7 +174,7 @@
 
                                             <!-- Special Note -->
                                             <div class="write_spical_not">
-                                                <label for="textse">Write any special note</label>
+                                                <label for="textse">Write any special note {{ item.PackageName }}</label>
                                                 <textarea rows="5" id="textse" v-model="note" class="form-control" placeholder="Write any special note"></textarea>
                                             </div>
 
@@ -183,7 +182,7 @@
                                                 <input class="form-check-input" type="checkbox" id="flexCheckDefaultf1" v-model="acceptedTerms" />
                                                 <label class="form-check-label" for="flexCheckDefaultf1">
                                                 <span class="main_spical_check">
-                                                    <span>I read and accept all <router-link to="/terms-service">Terms and conditions</router-link></span>
+                                                    <span>I read and accept all <router-link to="#">Terms and conditions</router-link></span>
                                                 </span>
                                                 </label>
                                             </div>
@@ -191,8 +190,8 @@
                                     </div>
                                 </div>
 
-                                    <div class="proceed_booking_btn">
-                                <a href="#!" class="btn btn_theme btn_md w-100" @click.prevent="submitBooking(item.TransportationID, item.id, item.RecordOwnerID)">Proceed to Booking</a>
+                                <div class="proceed_booking_btn">
+                                    <a href="#!" class="btn btn_theme btn_md w-100" @click.prevent="submitBooking(item.TransportationID, item.id, item.RecordOwnerID)">Proceed to Booking {{ item.id }}</a>
                                 </div>
                             </div>
 
@@ -308,6 +307,8 @@ export default {
                 note: this.note
             });
 
+            console.log(this.transportationpackage);
+
             const formData = {
                 BookingType: 'Transport',
                 ProductID: _productid,
@@ -323,7 +324,7 @@ export default {
 
             const encoded = btoa(JSON.stringify(formData));
             window.location.href = `/booking/${encodeURIComponent(encoded)}`;
-            // console.log(formData);
+            // console.log(_productid + " " + _packageid);
             // alert("Booking submitted!");
             // axios.post('/booking', formData)
             //     .then(response => {

@@ -9,7 +9,7 @@ use DB;
 use Log;
 use Maatwebsite\Excel\Facades\Excel;
 
-use App\Models\Roles;
+use App\Models\roles;
 use App\Models\PermissionRole;
 use App\Models\UserRole;
 use App\Models\Permission;
@@ -23,7 +23,7 @@ class RolesController extends Controller
 
         $sql = "*";
 
-        $roles = Roles::selectRaw($sql)
+        $roles = roles::selectRaw($sql)
         		->where('roles.RecordOwnerID','=',Auth::user()->RecordOwnerID);
 
         $roles = $roles->paginate(4);
@@ -38,7 +38,7 @@ class RolesController extends Controller
 
     public function Form($id = null)
     {
-    	$roles = Roles::where('id','=',$id)->get();
+    	$roles = roles::where('id','=',$id)->get();
         $permission = Permission::all();
         
         // PermissionRoles
@@ -186,7 +186,7 @@ class RolesController extends Controller
 
         try {
 
-            $save = Roles::insertGetId([
+            $save = roles::insertGetId([
                 'RoleName' => $jsonData['RoleName'],
                 'RecordOwnerID' => Auth::user()->RecordOwnerID
             ]);

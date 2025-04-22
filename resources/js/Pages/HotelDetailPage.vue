@@ -6,17 +6,19 @@
     <!-- Destinations Areas -->
     <Destinations :hotelDetail="hotelDetail" :hotelImage="hotelImage" :hotelRoom="hotelRoom"/>
 
+    <Footer :easyTourSetting="easyTourSetting"/>
 </template>
 <script>
 import Header from '@/components/Header.vue'
 import TopDestinationBanner from '@/components/tour/TopDestinationBanner.vue'
 import Destinations from '@/components/hotel/HotelDetail.vue'
+import Footer from '@/components/Footer.vue'
 
 
 export default {
     name: "HotelDetail",
     components: {
-        Header,TopDestinationBanner, Destinations
+        Header,TopDestinationBanner, Destinations, Footer
     },
     props:{
         easyTourSetting: Array,

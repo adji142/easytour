@@ -4,11 +4,11 @@
           <div class="row">
               <div class="col-lg-12">
                   <div class="common_bannner_text">
-                      <h2>Become Vendor</h2>
-                      <ul>
-                          <li><router-link to="/">Home</router-link></li>
-                          <li><span><i class="fas fa-circle"></i></span> Become Vendor</li>
-                      </ul>
+                    <h2>{{ BannerName }}</h2>
+                    <ul>
+                        <li><router-link to="/">Home</router-link></li>
+                        <li><span><i class="fas fa-circle"></i></span> {{ BannerName }}</li>
+                    </ul>
                   </div>
               </div>
           </div>
@@ -18,6 +18,9 @@
 <script>
 
 export default {
-  name: "Banner"
+  name: "Banner",
+  props:{
+    BannerName: String
+ }
 };
 </script>

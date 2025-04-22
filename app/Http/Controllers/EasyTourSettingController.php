@@ -11,8 +11,35 @@ use Illuminate\Http\Request;
 use App\Models\EasyTourSetting;
 use App\Models\FaQ;
 
+use Inertia\Inertia;
+
 class EasyTourSettingController extends Controller
 {
+
+    public function viewfaq(){
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+        $faqList = Faq::selectRaw('id, FaqHeader as question, FaqDetail as answer')->get();
+        // dd($faqData);
+
+        return Inertia::render('faqPage',[
+            'easyTourSetting' => $easyTourSetting,
+            'faqList' => $faqList,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
+            'BannerName' => "FaQ"
+        ]);
+    }
+    public function viewprivacy(){
+        $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();
+        // dd($faqData);
+
+        return Inertia::render('PrivacyPolicePage',[
+            'easyTourSetting' => $easyTourSetting,
+            'isLoggedIn' => Auth::check(),
+            'user' => Auth::user(),
+            'BannerName' => "Privacy Police"
+        ]);
+    }
     public function View(Request $request)
     {
         $easytourSetting = EasyTourSetting::all();
@@ -119,6 +146,30 @@ class EasyTourSettingController extends Controller
                 }
             }
 
+            if($request->input('Base64_HiWImage1') != null || $request->input('Base64_HiWImage1') != "") {
+                if($this->ValidateImage($request->input('Base64_HiWImage1'), 400, 360) != "OK"){
+                    $data['message'] = $this->ValidateImage($request->input('Base64_HiWImage1'), 400, 360);
+                    $data['success'] = false;
+                    return response()->json($data);
+                }
+            }
+
+            if($request->input('Base64_HiWImage2') != null || $request->input('Base64_HiWImage2') != "") {
+                if($this->ValidateImage($request->input('Base64_HiWImage2'), 400, 360) != "OK"){
+                    $data['message'] = $this->ValidateImage($request->input('Base64_HiWImage2'), 400, 360);
+                    $data['success'] = false;
+                    return response()->json($data);
+                }
+            }
+
+            if($request->input('Base64_HiWImage3') != null || $request->input('Base64_HiWImage3') != "") {
+                if($this->ValidateImage($request->input('Base64_HiWImage3'), 400, 360) != "OK"){
+                    $data['message'] = $this->ValidateImage($request->input('Base64_HiWImage3'), 400, 360);
+                    $data['success'] = false;
+                    return response()->json($data);
+                }
+            }
+
             $oFAQ = json_decode($request->input('oFAQ'), true);
 
 
@@ -155,6 +206,17 @@ class EasyTourSettingController extends Controller
             $model->BannerImage = $request->input('image_banner_base64');
             $model->BannerHeadline = $request->input('BannerHeadline');
             $model->BannerSubHeadline = $request->input('BannerSubHeadline');
+            $model->HiWImage1 = $request->input('Base64_HiWImage1');
+            $model->HiWImage2 = $request->input('Base64_HiWImage2');
+            $model->HiWImage3 = $request->input('Base64_HiWImage3');
+            $model->HiWHeadline1 = $request->input('HiWHeadline1');
+            $model->HiWHeadline2 = $request->input('HiWHeadline2');
+            $model->HiWHeadline3 = $request->input('HiWHeadline3');
+            $model->HiWText1 = $request->input('HiWText1');
+            $model->HiWText2 = $request->input('HiWText2');
+            $model->HiWText3 = $request->input('HiWText3');
+            $model->TermandCondition = $request->input('TermandCondition');
+            $model->PrivacyPolicy = $request->input('PrivacyPolicy');
             $model->save();
 
             $data['success'] = true;
