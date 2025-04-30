@@ -948,11 +948,11 @@ jQuery(document).ready(function() {
 //     console.error( error );
 // });
 
-InlineEditor
-.create( document.querySelector( '#editor2' ) )
-.catch( error => {
-    console.error( error );
-} );
+// InlineEditor
+// .create( document.querySelector( '#editor2' ) )
+// .catch( error => {
+//     console.error( error );
+// } );
 
 // for data tables
 jQuery(document).ready( function () {

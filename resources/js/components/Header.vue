@@ -94,7 +94,7 @@
                                             </li>
                                             
                                             <li class="nav-item dropdown">
-                                                <a href="/" class="dropdown-item dropdown-toggle">
+                                                <a href="/articleview" class="dropdown-item dropdown-toggle">
                                                     Article
                                                 </a>
                                             </li>
@@ -143,7 +143,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="/" class="nav-link">
+                                        <a href="/articleview" class="nav-link">
                                             Article
                                         </a>
                                     </li>

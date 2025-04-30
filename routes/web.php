@@ -24,6 +24,7 @@ use App\Http\Controllers\BestPartnerController;
 use App\Http\Controllers\BookingSubmitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransportationDetailController;
+use App\Http\Controllers\ArticleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -260,6 +261,34 @@ Route::post('/bestpartner/edit', [BestPartnerController::class, 'edit'])->name('
 Route::delete('/bestpartner/delete/{id}', [BestPartnerController::class, 'deletedata'])->name('bestpartner-delete')->middleware('auth');
 Route::get('/bestpartner/export', [BestPartnerController::class, 'Export'])->name('bestpartner-export')->middleware('auth');
 
+
+/*
+|--------------------------------------------------------------------------
+| Article
+|--------------------------------------------------------------------------
+|
+*/
+// Testimonial Routes
+Route::get('/article', [ArticleController::class, 'View'])->name('article')->middleware('auth');
+Route::get('/article/form/{id}', [ArticleController::class, 'Form'])->name('article-form')->middleware('auth');
+Route::post('/article/store', [ArticleController::class, 'store'])->name('article-store')->middleware('auth');
+Route::post('/article/edit', [ArticleController::class, 'edit'])->name('article-edit')->middleware('auth');
+Route::get('/article/archive/{id}', [ArticleController::class, 'archive'])->name('article-archive')->middleware('auth');
+Route::get('/article/publish/{id}', [ArticleController::class, 'publish'])->name('article-publish')->middleware('auth');
+Route::get('/article/export', [ArticleController::class, 'Export'])->name('article-export')->middleware('auth');
+Route::post('/upload', function (Illuminate\Http\Request $request) {
+    if ($request->hasFile('upload')) {
+        $file = $request->file('upload');
+        $filename = time().'_'.$file->getClientOriginalName();
+        $path = $file->storeAs('uploads', $filename, 'public');
+
+        return response()->json([
+            'uploaded' => 1,
+            'fileName' => $filename,
+            'url' => Storage::url($path)
+        ]);
+    }
+});
 /*
 |--------------------------------------------------------------------------
 | Transportation
@@ -307,3 +336,6 @@ Route::middleware(['is_user'])->group(function () {
 
 Route::get('/faq', [EasyTourSettingController::class, 'viewfaq'])->name('faq');
 Route::get('/privacy-police', [EasyTourSettingController::class, 'viewprivacy'])->name('privacy-police');
+
+Route::get('/articleview', [ArticleController::class, 'index'])->name('articleview');
+Route::get('/articleviewdetail/{id}', [ArticleController::class, 'detail'])->name('articleviewdetail');

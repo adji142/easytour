@@ -174,7 +174,7 @@
                                     <div id="accordion1">
                                         <ul class="nav flex-column">
                                             <li class="nav-item">
-                                                <a href="#" class="nav-link sub-nav-link">
+                                                <a href="{{ route('article') }}" class="nav-link sub-nav-link">
                                                     <span class="svg-icon nav-icon d-flex justify-content-center">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="10px" height="10px" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
                                                             <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
@@ -435,13 +435,13 @@
 	<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script><script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 	{{-- <script src="{{asset('api/editor/classic.ckeditor.js')}}"></script> --}}
 	{{-- <script src="{{asset('api/editor/inline.ckeditor.js')}}"></script> --}}
-	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 	<script src="{{asset('api/datatable/jquery.dataTables.min.js')}}"></script>
 	<script src="{{asset('api/select2/select2.min.js')}}"></script>
 	<script src="{{asset('api/multiple-select/multiple-select.min.js')}}"></script>
 	<script src="{{asset('js/script.bundle.js')}}"></script>
 	<script src="{{asset('js/script-slick.js')}}"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 	<script>
 		// In your Javascript (external .js resource or <script> tag)
 		jQuery(document).ready(function() {
