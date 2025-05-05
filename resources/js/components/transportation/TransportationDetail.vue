@@ -33,8 +33,8 @@
                                                 />
                                             </div>
                                         </div>
-                                        <a @click.prevent="move(-1)" class="gallery__prev">&#10094;</a>
-                                        <a @click.prevent="move(1)" class="gallery__next">&#10095;</a>
+                                        <a @click.prevent="move(-1)" class="gallery__next">&#10094;</a>
+                                        <a @click.prevent="move(1)" class="gallery__prev">&#10095;</a>
                                     </div>
 
                                     <div class="gallery__content">
@@ -234,10 +234,10 @@ export default {
     methods: {
 
         move(n) {
-            if (this.gallerySlides.length <= this.slideIndex + n) {
+            if (this.transportationImage.length <= this.slideIndex + n) {
                 this.slideIndex = 0
             } else if (this.slideIndex + n < 0) {
-                this.slideIndex = this.gallerySlides.length - 1
+                this.slideIndex = this.transportationImage.length - 1
             } else {
                 this.slideIndex += n
             }

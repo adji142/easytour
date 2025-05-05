@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\URL;
 use Carbon\Carbon;
 use App\Mail\VerificationEmail;
 use Log;
+use Illuminate\Support\Facades\Validator;
 
 use Inertia\Inertia;
 use App\Models\dem_negara;
@@ -107,6 +108,73 @@ class AuthController extends Controller
             $user->VerificationToken = Str::random(64);
             $user->is_verified = false;
             $user->save();
+
+            // Kirim Email Verifikasi
+            Mail::to($user->email)->send(new VerificationEmail($user));
+
+            DB::commit();
+
+            $data['success'] = true;
+            $data['message'] = 'Registration Complate, Please Check Tour email to Confirm Your Identity';
+            $data['data'] = $request->Phone;
+            // if($save){
+            //     $data['success'] = true;
+            //     $data['message'] = 'Data berhasil disimpan';
+            //     $data['data'] = $request->Phone;
+            // }else{
+            //     $data['success'] = false;
+            //     $data['message'] = 'Data gagal disimpan';
+            // }
+        } catch (\Throwable $th) {
+            DB::rollback();
+            $data['success'] = false;
+            $data['message'] = 'Data gagal disimpan '.$th->getMessage();
+        }
+        return response()->json($data);
+    }
+
+    public function UserRegistrationAction(Request $request)  {
+        $data = array('success' => false, 'message'=>'', 'data'=>array());
+
+        $validator = Validator::make($request->all(), [
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|max:20',
+            'password' => 'required|string|min:6|same:repassword',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ]);
+        }
+
+        DB::beginTransaction();
+
+        // return response()->json($data);
+
+        // Validasi Email
+        $email = User::where('email', $request->Email)->first();
+        if ($email) {
+            $data['success'] = false;
+            $data['message'] = 'Email Has Been Registered';
+            return response()->json($data);
+        }
+
+        try {
+
+            $user = User::create([
+                'name' => $request->firstName . ' ' . $request->lastName,
+                'email' => $request->email,
+                'password' => Hash::make($request->password), // Password random
+                'google_id' => '',
+                'RecordOwnerID' => '-',
+                'is_verified' => false,
+                'VerificationOn' => Carbon::now(),
+                'VerificationToken' => Str::random(64),
+            ]);
 
             // Kirim Email Verifikasi
             Mail::to($user->email)->send(new VerificationEmail($user));

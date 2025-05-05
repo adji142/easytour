@@ -13,6 +13,18 @@
     @vite('resources/js/app.js')
 </head>
 <body>
+    @if (session('success'))
+    <script>
+        window.successMessage = @json(session('success'));
+    </script>
+    @endif
+
+    @if (session('error'))
+    <script>
+        window.errorMessage = @json(session('error'));
+    </script>
+@endif
+
     @inertia
 </body>
 </html>

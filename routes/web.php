@@ -94,6 +94,8 @@ Route::get('/verify-email/{token}', [AuthController::class, 'verifyEmail'])->nam
 Route::get('/dashboard', [VendorDashboardController::class, 'dashboard'])->name('dashboard')->middleware('auth');
 Route::get('/admin', [VendorDashboardController::class, 'dashboardadmin'])->name('admin')->middleware('auth');
 Route::post('/action-login', [AuthController::class, 'action_login'])->name('action-login');
+Route::post('/registration-login', [AuthController::class, 'UserRegistrationAction'])->name('registration-login');
+// UserRegistrationAction
 // Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 /*
