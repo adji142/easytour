@@ -30,16 +30,21 @@ class DashboardController extends Controller
                     ->orderBy('BookingDate', 'desc')
                     ->paginate(10)
                     ->withQueryString();
-        
-        return Inertia::render('userDashboard',[
-            'easyTourSetting' => $easyTourSetting,
-            'startDate' => $startDate,
-            'endDate' => $endDate,
-            'bookingList' => $bookingList,
-            'isLoggedIn' => Auth::check(),
-            'user' => Auth::user(),
-            'BannerName' => 'User Dashboard'
-        ]);
+
+        if($user->RecordOwnerID == '-'){
+            return Inertia::render('userDashboard',[
+                'easyTourSetting' => $easyTourSetting,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+                'bookingList' => $bookingList,
+                'isLoggedIn' => Auth::check(),
+                'user' => Auth::user(),
+                'BannerName' => 'User Dashboard'
+            ]);
+        }
+        else{
+            return redirect('dashboard');
+        }
     }
     public function Profile(){
         $easyTourSetting = EasyTourSetting::orderBy('created_at', 'desc')->first();

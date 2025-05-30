@@ -282,4 +282,29 @@ class TourDetailController extends Controller
         }
         return response()->json($data);
     }
+
+    public function delete(Request $request){
+        $data = array('success' => false, 'message' => '', 'data' => array());
+        try {
+            $id = $request->id;
+            $model = TourDetail::where('RecordOwnerID', Auth::user()->RecordOwnerID)->findOrFail($id);
+            $model->delete();
+
+            TourImage::where('TourID', $id)
+                ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
+                ->delete();
+            TourPackage::where('TourID', $id)
+                ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
+                ->delete();
+            TourItinerary::where('TourID', $id)
+                ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
+                ->delete();
+
+            alert()->success('Success','Delete Tour Successfuly.');
+            
+        } catch (\Throwable $th) {
+            alert()->error('Error',$th->getMessage());
+        }
+        return redirect('tour');
+    }
 }

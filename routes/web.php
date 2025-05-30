@@ -162,7 +162,7 @@ Route::get('/hotels', [HotelDetailController::class,'View'])->name('hotels')->mi
 Route::get('/hotels/form/{id}', [HotelDetailController::class,'Form'])->name('hotels-form')->middleware('auth');
 Route::post('/hotels/store', [HotelDetailController::class, 'store'])->name('hotels-store')->middleware('auth');
 Route::post('/hotels/edit', [HotelDetailController::class, 'edit'])->name('hotels-edit')->middleware('auth');
-Route::delete('/hotels/delete/{id}', [HotelDetailController::class, 'deletedata'])->name('hotels-delete')->middleware('auth');
+Route::delete('/hotels/delete/{id}', [HotelDetailController::class, 'delete'])->name('hotels-delete')->middleware('auth');
 Route::get('/hotels/export', [HotelDetailController::class,'Export'])->name('hotels-export')->middleware('auth');
 
 
@@ -176,7 +176,7 @@ Route::get('/hotelroom', [HotelRoomController::class,'View'])->name('hotelroom')
 Route::get('/hotelroom/form/{id}', [HotelRoomController::class,'Form'])->name('hotelroom-form')->middleware('auth');
 Route::post('/hotelroom/store', [HotelRoomController::class, 'store'])->name('hotelroom-store')->middleware('auth');
 Route::post('/hotelroom/edit', [HotelRoomController::class, 'edit'])->name('hotelroom-edit')->middleware('auth');
-Route::delete('/hotelroom/delete/{id}', [HotelRoomController::class, 'deletedata'])->name('hotelroom-delete')->middleware('auth');
+Route::delete('/hotelroom/delete/{id}', [HotelRoomController::class, 'delete'])->name('hotelroom-delete')->middleware('auth');
 Route::get('/hotelroom/export', [HotelRoomController::class,'Export'])->name('hotelroom-export')->middleware('auth');
 
 
@@ -206,7 +206,7 @@ Route::get('/tour', [TourDetailController::class,'View'])->name('tour')->middlew
 Route::get('/tour/form/{id}', [TourDetailController::class,'Form'])->name('tour-form')->middleware('auth');
 Route::post('/tour/store', [TourDetailController::class, 'store'])->name('tour-store')->middleware('auth');
 Route::post('/tour/edit', [TourDetailController::class, 'edit'])->name('tour-edit')->middleware('auth');
-Route::delete('/tour/delete/{id}', [TourDetailController::class, 'deletedata'])->name('tour-delete')->middleware('auth');
+Route::delete('/tour/delete/{id}', [TourDetailController::class, 'delete'])->name('tour-delete')->middleware('auth');
 Route::get('/tour/export', [TourDetailController::class,'Export'])->name('tour-export')->middleware('auth');
 
 

@@ -185,4 +185,28 @@ class HotelDetailController extends Controller
         return response()->json($data);
     }
 
+    public function deletedata(Request $request){
+        try {
+
+            $rooms = DB::table('hotelroom')
+                ->where('HotelID', '=', $request->id)
+                ->where('RecordOwnerID', '=', Auth::user()->RecordOwnerID)
+                ->delete();
+
+            $hoteldetail = DB::table('hoteldetail')
+                ->where('id', '=', $request->id)
+                ->where('RecordOwnerID', '=', Auth::user()->RecordOwnerID)
+                ->delete();
+
+            if ($hoteldetail) {
+                alert()->success('Success', 'Delete Hotel Successfuly.');
+            } else {
+                alert()->error('Error', 'Delete Hotel Failed.');
+            }
+        } catch (\Throwable $th) {
+            alert()->error('Error', $th->getMessage());
+        }
+        return redirect()->back();
+    }
+
 }

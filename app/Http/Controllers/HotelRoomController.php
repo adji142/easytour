@@ -218,5 +218,25 @@ class HotelRoomController extends Controller
         return response()->json($data);
     }
 
+    public function deletedata(Request $request){
+        try {
+            $rooms = DB::table('hotelroom')
+                ->where('id', '=', $request->id)
+                ->where('RecordOwnerID', '=', Auth::user()->RecordOwnerID)
+                ->delete();
+
+            if ($rooms) {
+                HotelImage::where('RoomID', $request->id)
+                    ->where('RecordOwnerID', Auth::user()->RecordOwnerID)
+                    ->delete();
+            }
+
+            return response()->json(['success' => true, 'message' => 'Hotel Room Deleted Successfully']);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => $th->getMessage()]);
+        }
+        return redirect()->back();
+    }
+
 
 }

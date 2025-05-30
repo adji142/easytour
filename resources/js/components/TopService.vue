@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-lg-12 col-md-12 col-sm-12 col-12">
             <div class="section_heading_center">
-              <h2>And tour top services</h2>
+              <h2>Easy Tour Excellent Services</h2>
             </div>
           </div>
         </div>

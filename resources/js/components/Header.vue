@@ -76,6 +76,12 @@
                                             </li>
 
                                             <li class="nav-item dropdown">
+                                                <a href="#about_two_area" class="dropdown-item dropdown-toggle">
+                                                    About Us
+                                                </a>
+                                            </li>
+                                            
+                                            <li class="nav-item dropdown">
                                                 <a href="/tourdestionation" class="dropdown-item dropdown-toggle">
                                                     Tours Package
                                                 </a>
@@ -98,11 +104,7 @@
                                                     Article
                                                 </a>
                                             </li>
-                                            <li class="nav-item dropdown">
-                                                <a href="#about_two_area" class="dropdown-item dropdown-toggle">
-                                                    About Us
-                                                </a>
-                                            </li>
+                                            
 
                                         </ul>
                                     </div>
@@ -123,6 +125,11 @@
                                     <li class="nav-item">
                                         <a href="/" class="nav-link" :class="{ active: isActive('Home') }">
                                             Home
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#about_two_area" class="nav-link">
+                                            About Us
                                         </a>
                                     </li>
                                     <li class="nav-item">
@@ -148,11 +155,7 @@
                                         </a>
                                     </li>
 
-                                    <li class="nav-item">
-                                        <a href="#about_two_area" class="nav-link">
-                                            About Us
-                                        </a>
-                                    </li>
+                                    
                                 </ul>
                                 <div class="others-options d-flex align-items-center">
                                     <div class="option-item">
