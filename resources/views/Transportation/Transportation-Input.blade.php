@@ -231,14 +231,14 @@
 					<div class="col-md-6">
                         <label  class="text-body">Transportation Package Price</label>
                         <fieldset class="form-group mb-3">
-                            <input type="number" class="form-control" id="PackagePrice" name="PackagePrice" placeholder="Transportation Package Price">
+                            <input type="number" class="form-control" id="PackagePrice" name="PackagePrice" placeholder="Transportation Package Price" value="0">
                         </fieldset>
                     </div>
 
 					<div class="col-md-6">
                         <label  class="text-body">Transportation Package Discount</label>
                         <fieldset class="form-group mb-3">
-                            <input type="number" class="form-control" id="PackagePriceDiscount" name="PackagePriceDiscount" placeholder="Transportation Package Discount">
+                            <input type="number" class="form-control" id="PackagePriceDiscount" name="PackagePriceDiscount" placeholder="Transportation Package Discount" value ="0">
                         </fieldset>
                     </div>
 

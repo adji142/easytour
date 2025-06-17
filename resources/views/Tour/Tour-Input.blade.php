@@ -350,14 +350,14 @@
 					<div class="col-md-6">
                         <label  class="text-body">Tour Package Price</label>
                         <fieldset class="form-group mb-3">
-                            <input type="number" class="form-control" id="TourPackagePrice" name="TourPackagePrice" placeholder="Tour Package Price">
+                            <input type="number" class="form-control" id="TourPackagePrice" name="TourPackagePrice" placeholder="Tour Package Price" value = "0">
                         </fieldset>
                     </div>
 
 					<div class="col-md-6">
                         <label  class="text-body">Tour Package Discount</label>
                         <fieldset class="form-group mb-3">
-                            <input type="number" class="form-control" id="TourPackageDiscountPrice" name="TourPackageDiscountPrice" placeholder="Tour Package Discount">
+                            <input type="number" class="form-control" id="TourPackageDiscountPrice" name="TourPackageDiscountPrice" placeholder="Tour Package Discount" value="0">
                         </fieldset>
                     </div>
 

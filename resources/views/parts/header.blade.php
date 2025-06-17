@@ -3,7 +3,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>{{ config('app.name', 'Admin | Dashboard') }}</title>
+		<title>Easy Tour Admin | Dashboard</title>
 		<meta name="description" content="Updates and statistics" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -338,13 +338,13 @@
 					class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
 					
 					<div class="text-dark order-2 order-md-1">
-						<span class="text-muted font-weight-bold me-2">2024©</span>
-						<a href="https://dstechsmart.com/" target="_blank" class="text-dark-75 text-hover-primary">dstechsmart.com</a>
+						<span class="text-muted font-weight-bold me-2">2025©</span>
+						<a href="https://easytourbatam.com/" target="_blank" class="text-dark-75 text-hover-primary">PT. Batam Transportasi Andalan</a>
 					</div>
 
-					<div class="nav nav-dark">
+					{{-- <div class="nav nav-dark">
 						<a href="https://api.whatsapp.com/send/?phone=6282258493130&text=Saya%20ada%20kendala%20di%20PoS&type=phone_number&app_absent=0" target="_blank" class="nav-link pl-0 pr-0">Contact</a>
-					</div>
+					</div> --}}
 
 				</div>
 
