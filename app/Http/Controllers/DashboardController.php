@@ -24,7 +24,8 @@ class DashboardController extends Controller
         $endDate = $request->input('endDate') ?? Carbon::today()->toDateString();
         $startDate = $request->input('startDate') ?? Carbon::today()->subDays(90)->toDateString();
 
-        $bookingList = BookingSubmition::where('UserID', $user->id)
+        $bookingList = BookingSubmition::selectRaw('*, CASE WHEN BookingStatus = 0 THEN "Pending" WHEN BookingStatus = 1 THEN "Success" WHEN BookingStatus = 2 THEN "Expired" ELSE "Unknown" END as BookingStatusText')
+                    ->where('UserID', $user->id)
                     ->whereDate('BookingDate', '>=', $startDate)
                     ->whereDate('BookingDate', '<=', $endDate)
                     ->orderBy('BookingDate', 'desc')

@@ -1,4 +1,5 @@
 <template>
+
     <section id="tour_booking_submission" class="section_padding">
         <div class="container">
             <div class="row">
@@ -66,7 +67,7 @@
                                     <h6>Total Amount <span>{{ formatNumber(totalAmount) }}</span></h6>
                                 </div>
                                 <div class="coupon_code_submit">
-                                    <button class="btn btn_theme btn_md" @click="payWithMidtrans" :disabled="isProcessing">
+                                    <button class="btn btn_theme btn_md" @click="payWithXendit" :disabled="isProcessing">
                                         <span v-if="isProcessing">
                                             <i class="fas fa-spinner fa-spin"></i> Processing...
                                         </span>
@@ -188,6 +189,16 @@
                 
             </div>
         </div>
+
+        <div v-if="showPaymentModal" class="payment-modal-overlay">
+            <div class="payment-modal">
+                <h4>Complete Your Payment</h4>
+                <iframe :src="invoiceUrl" frameborder="0" class="payment-frame"></iframe>
+                <p>Do not close this window until your payment is completed or canceled.</p>
+                <button class="btn btn_theme btn_md" @click="checkPaymentStatus">Check Payment Status</button>
+            </div>
+        </div>
+
     </section>
 </template>
 <script>
@@ -218,6 +229,10 @@ export default {
             note: '',
             acceptedTerms: false,
             isProcessing: false,
+            showPaymentModal: false,
+            invoiceUrl: '',
+            invoiceId: '',
+            checkInterval: null,
         }
     },
     mounted() {
@@ -226,6 +241,9 @@ export default {
         this.children = this.bookingData.ChildBookingPerson || 0;
         this.infant = this.bookingData.InfantBookingPerson || 0;
         this.note = this.bookingData.SpecialRequest || '';
+    },
+    beforeUnmount() {
+        clearInterval(this.checkInterval);
     },
     computed: {
         discountPercent() {
@@ -278,6 +296,87 @@ export default {
         },
         decrease(type) {
             if (this[type] > 0) this[type]--;
+        },
+        async payWithXendit() {
+            this.isProcessing = true;
+            try {
+                const formData = {
+                    "BookingDate": this.bookingData.BookingDate,
+                    "UserID": this.user.id,
+                    "BookingType" : this.bookingData.BookingType,
+                    "ProductID" : this.bookingData.ProductID,
+                    "PackageID" : this.bookingData.PackageID,
+                    "PartnerCode" : this.bookingData.PartnerCode,
+                    "BookingFullName": this.user.name,
+                    "BookingEmail" : this.user.email,
+                    "BookingPhone" : "",
+                    "BookingIdentityID" : "",
+                    "AdultBookingPerson" : this.bookingData.AdultBookingPerson,
+                    "ChildBookingPerson" : this.bookingData.ChildBookingPerson,
+                    "InfantBookingPerson" : this.bookingData.InfantBookingPerson,
+                    "TransactionAmt" : this.subtotal,
+                    "TransactionTax" : 0,
+                    "TransactionDiscount" : this.discountAmount,
+                    "DiscountVoucerCode" : "",
+                    "DiscountVoucerAmt" : 0,
+                    "TotalNetTransaction" : this.totalAmount,
+                    "TotalPayment" : this.totalAmount,
+                    "PaymentMethod" : "Xendit",
+                    "PaymentReff" : "",
+                    "PaymentIssued" : "",
+                    "SpecialRequest" : this.note,
+                    "BookingStatus" : 0
+                }
+                const response = await axios.post('/booking/payxendit', {
+                    formData
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                console.log(response.data);
+
+                // Handle the response from Xendit
+                if (response.data.success) {
+                    const data = response.data;
+                    this.invoiceUrl = data.payment_url;
+                    this.invoiceId = data.invoice_id; // Assuming the invoice ID is returned
+                    this.showPaymentModal = true;
+
+                    this.checkInterval = setInterval(this.checkPaymentStatus, 5000);
+                    
+                } else {
+                    Swal.fire('Error', 'Failed to create payment. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.fire('Error', 'An error occurred while processing your payment.', 'error');
+            } finally {
+                this.isProcessing = false;
+            }
+        },
+        async checkPaymentStatus() {
+            if (!this.invoiceId) return;
+            try {
+                const res = await axios.get(`/booking/status/${this.invoiceId}`);
+                if (res.data.status === 'SETTLED' || res.data.status === 'PAID') {
+                    clearInterval(this.checkInterval);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pembayaran Berhasil',
+                        text: 'Anda akan diarahkan ke dashboard...',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    setTimeout(() => {
+                        window.location.href = '/userdashboard';
+                    }, 2000);
+                }
+            } catch (e) {
+                console.error('Gagal cek status pembayaran', e);
+            }
         },
         async payWithMidtrans() {
             this.isProcessing = true;
@@ -396,3 +495,31 @@ export default {
     }
 };
 </script>
+<style scoped>
+    .payment-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+    .payment-modal {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 0 10px #000;
+    text-align: center;
+    }
+    .payment-frame {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #ccc;
+    }
+    </style>

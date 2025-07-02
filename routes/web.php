@@ -25,6 +25,8 @@ use App\Http\Controllers\BookingSubmitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransportationDetailController;
 use App\Http\Controllers\ArticleController;
+
+use App\Http\Controllers\XenditController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +41,8 @@ use App\Http\Controllers\ArticleController;
 // Route::get('/', function () {
 //     return Inertia::render('Home');
 // })->name('home');
+
+Route::get('/create-invoice', [XenditController::class, 'createInvoice'])->name('create.invoice');
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
 Route::get('/admin', function () {
@@ -331,6 +335,9 @@ Route::middleware(['is_user'])->group(function () {
     Route::get('/editprofile', [DashboardController::class,'Profile'])->name('editprofile');
     Route::post('/saveprofile', [DashboardController::class,'update'])->name('saveprofile');
     Route::get('/downloadvoucher/{documentnumber}', [BookingSubmitionController::class,'DownloadPDF'])->name('downloadvoucher');
+    Route::post('/booking/payxendit', [XenditController::class,'createInvoice'])->name('booking-payxendit');
+    Route::get('/booking/status/{invoiceId}', [XenditController::class, 'checkInvoiceStatus']);
+
 });
 
 

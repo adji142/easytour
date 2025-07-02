@@ -2,6 +2,7 @@
     <section id="dashboard_main_area" class="section_padding">
         <div class="container">
             <div class="row">
+                <!-- Sidebar -->
                 <div class="col-lg-4">
                     <div class="dashboard_sidebar">
                         <div class="dashboard_sidebar_user">
@@ -13,18 +14,21 @@
                             <ul>
                                 <li><a href="/userdashboard" class="active"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
                                 <li><a href="/editprofile"><i class="fas fa-user-circle"></i>My profile</a></li>
-                                <li><a href="/logout" ><i class="fas fa-sign-out"></i>Logout</a></li>
+                                <li><a href="/logout"><i class="fas fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
+                <!-- Modal backdrop (optional) -->
                 <div v-if="active" class="modal-backdrop fade show"></div>
 
+                <!-- Main Content -->
                 <div class="col-lg-8">
                     <div class="dashboard_common_table">
                         <h3>My bookings</h3>
 
+                        <!-- Filter -->
                         <div class="row mb-3">
                             <div class="col-md-5">
                                 <label for="startDate">Start Date</label>
@@ -45,6 +49,7 @@
                             </div>
                         </div>
 
+                        <!-- Table -->
                         <div class="table-responsive-lg table_common_area">
                             <table class="table">
                                 <thead>
@@ -53,6 +58,8 @@
                                         <th>Booking ID</th>
                                         <th>Booking type</th>
                                         <th>Booking amount</th>
+                                        <th>Paid amount</th>
+                                        <th>Booking Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -62,7 +69,14 @@
                                         <td>#{{ item.DocumentNumber }}</td>
                                         <td>{{ item.BookingType }}</td>
                                         <td>{{ formatPrice(item.TotalNetTransaction) }}</td>
-                                        <td><a :href="`/downloadvoucher/${item.DocumentNumber}`" target="_blank">
+                                        <td>{{ formatPrice(item.TotalPayment) }}</td>
+                                        <td :class="getStatusClass(item.BookingStatusText)">
+                                            {{ item.BookingStatusText }}
+                                        </td>
+                                        <td>
+                                            <a v-if="item.BookingStatusText.toLowerCase() === 'success'" 
+                                            :href="`/downloadvoucher/${item.DocumentNumber}`" 
+                                            target="_blank">
                                                 <i class="fas fa-download"></i>
                                             </a>
                                         </td>
@@ -71,7 +85,7 @@
                             </table>
                         </div>
 
-                        <!-- Spinner saat loading -->
+                        <!-- Spinner -->
                         <div class="text-center my-3" v-if="isLoading">
                             <div class="spinner-border text-primary" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -158,6 +172,18 @@ export default {
         },
         formatPrice(price) {
             return formatNumber(price);
+        },
+        getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'expired':
+                    return 'text-danger';
+                case 'pending':
+                    return 'text-warning';
+                case 'success':
+                    return 'text-success';
+                default:
+                    return '';
+            }
         }
     }
 };
