@@ -15,6 +15,8 @@ class BookingSubmition extends Model
         'BookingPhone', 'BookingIdentityID', 'AdultBookingPerson', 'ChildBookingPerson',
         'InfantBookingPerson', 'TransactionAmt', 'TransactionTax', 'TransactionDiscount',
         'DiscountVoucerCode', 'DiscountVoucerAmt', 'TotalNetTransaction',
-        'TotalPayment', 'PaymentMethod', 'PaymentReff', 'SpecialRequest', 'BookingStatus','PaymentIssued'
+        'TotalPayment', 'PaymentMethod', 'PaymentReff', 'SpecialRequest', 'BookingStatus','PaymentIssued',
+        'TourPackagePrice', 'TourPackageChildPrice', 'TourPackageGuildFee', 'PaymentProff', 'RejectFactor', 'ApprovedAt',
+        'ApprovedBy', 'PaymentRemark'
     ];
 }

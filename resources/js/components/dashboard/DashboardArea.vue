@@ -60,6 +60,7 @@
                                         <th>Booking amount</th>
                                         <th>Paid amount</th>
                                         <th>Booking Status</th>
+                                        <th>Rejected</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -70,15 +71,30 @@
                                         <td>{{ item.BookingType }}</td>
                                         <td>{{ formatPrice(item.TotalNetTransaction) }}</td>
                                         <td>{{ formatPrice(item.TotalPayment) }}</td>
-                                        <td :class="getStatusClass(item.BookingStatusText)">
-                                            {{ item.BookingStatusText }}
+                                        <td :class="item.BookingStatusColor">
+                                            {{ item.BookingStatusName }}
                                         </td>
+                                        <td>{{ item.RejectFactor }}</td>
                                         <td>
-                                            <a v-if="item.BookingStatusText.toLowerCase() === 'success'" 
+                                            <a v-if="item.BookingStatus === 2" 
                                             :href="`/downloadvoucher/${item.DocumentNumber}`" 
                                             target="_blank">
                                                 <i class="fas fa-download"></i>
                                             </a>
+
+                                            <!-- Upload Payment Proof -->
+                                            <button v-if="item.BookingStatus === 0 || item.BookingStatus === 3"
+                                                class="btn btn-sm btn-outline-primary"
+                                                @click="openUploadModal(item)">
+                                                <i class="fas fa-upload"></i>
+                                            </button>
+
+                                            <!-- Cancel Booking -->
+                                            <button v-if="item.BookingStatus !== 2"
+                                                class="btn btn-sm btn-outline-danger"
+                                                @click="cancelBooking(item)">
+                                                <i class="fas fa-times"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -119,19 +135,53 @@
                 </div>
             </div>
         </div>
+
+        <div v-if="showUploadModal" class="payment-modal-overlay">
+            <div class="payment-modal">
+                <h4>Upload Payment Proof</h4>
+                <input type="file" @change="handleFileChange" accept="image/*" class="form-control mb-3" />
+                <textarea v-model="paymentNote" placeholder="Write any notes..." class="form-control" rows="3"></textarea>
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                <button class="btn btn-secondary" @click="showUploadModal = false">Cancel</button>
+                <button class="btn btn-primary" @click="submitQrisPayment" :disabled="isSubmittingProof">
+                    <span v-if="isSubmittingProof">
+                        <i class="fa fa-spinner fa-spin"></i> Submitting...
+                    </span>
+                    <span v-else>
+                        Submit Payment Proof
+                    </span>
+                </button>
+                </div>
+            </div>
+        </div>
+
     </section>
 </template>
 
 <script>
 import { formatNumber } from '../../helper';
+import Swal from 'sweetalert2';
+import axios from 'axios'
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+let token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+}
+
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 export default {
     name: "DashboardArea",
     data() {
         return {
             startDateModel: this.startDate,
             endDateModel: this.endDate,
-            isLoading: false
+            isLoading: false,
+            bookingId: null,
+            isSubmittingProof: false,
+            showUploadModal: false,
+            qrisProofImage: null,
+            qrisNote: '',
         };
     },
     props: {
@@ -173,8 +223,8 @@ export default {
         formatPrice(price) {
             return formatNumber(price);
         },
-        getStatusClass(status) {
-            switch (status.toLowerCase()) {
+        getStatusClass(BookingStatusColor) {
+            switch (BookingStatusColor.toLowerCase()) {
                 case 'expired':
                     return 'text-danger';
                 case 'pending':
@@ -184,7 +234,96 @@ export default {
                 default:
                     return '';
             }
-        }
+        },
+        openUploadModal(item) {
+            console.log(item);
+            this.bookingId = item.DocumentNumber;
+            this.showUploadModal = true; // tampilkan modal upload (nanti kita buat modalnya)
+        },
+        handleFileUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+            this.qrisProofImage = file;
+            }
+        },
+        async submitQrisPayment() {
+            if (!this.qrisProofImage) {
+                Swal.fire('Missing File', 'Please upload your payment screenshot first.', 'warning');
+                return;
+            }
+
+            // this.isProcessing = true;
+            this.isSubmittingProof = true;
+
+            try {
+                const res = await axios.post('/booking/payproof', {
+                    booking_id: this.bookingId,
+                    payment_proof: this.qrisProofImage,
+                    payment_remark: this.qrisNote
+                }, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+
+                if (res.data.success) {
+                    this.showUploadModal = false;
+                    Swal.fire('Success', 'Your payment proof has been submitted.', 'success');
+                    window.location.href = '/userdashboard';
+                } else {
+                    Swal.fire('Error', 'Failed to submit. Try again later.', 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                Swal.fire('Error', 'Something went wrong.', 'error');
+            } finally {
+                this.isSubmittingProof = false;
+            }
+        },
+        handleFileChange(event) {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.qrisProofImage = e.target.result; // Base64 string
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert('Please upload a valid image file');
+            }
+        },
     }
 };
 </script>
+<style scoped>
+    .payment-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: auto;
+        padding: 1rem;
+    }
+
+        .payment-modal {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        width: 100%;
+        max-width: 600px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 0 10px #000;
+        text-align: center;
+        }
+
+        .payment-frame {
+        width: 100%;
+        height: 500px;
+        border: 1px solid #ccc;
+        }
+        </style>

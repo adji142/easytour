@@ -158,6 +158,8 @@ class TourDetailController extends Controller
                         $oTourPackage->TourEndDate = $package['TourEndDate'];
                         $oTourPackage->TourPackageDescription = $package['TourPackageDescription'];
                         $oTourPackage->TourPackagePrice = $package['TourPackagePrice'];
+                        $oTourPackage->TourPackageChildPrice = $package['TourPackageChildPrice'];
+                        $oTourPackage->TourPackageGuildFee = $package['TourPackageGuildFee'];
                         if ($package['TourPackageDiscountPrice'] > 0) {
                             $oTourPackage->TourPackageDiscount = $package['TourPackageDiscountPrice'] / $package['TourPackagePrice'] * 100;  
                         }
@@ -249,6 +251,8 @@ class TourDetailController extends Controller
                         $oTourPackage->TourEndDate = $package['TourEndDate'];
                         $oTourPackage->TourPackageDescription = $package['TourPackageDescription'];
                         $oTourPackage->TourPackagePrice = $package['TourPackagePrice'];
+                        $oTourPackage->TourPackageChildPrice = $package['TourPackageChildPrice'];
+                        $oTourPackage->TourPackageGuildFee = $package['TourPackageGuildFee'];
                         if ($package['TourPackageDiscountPrice'] > 0) {
                             $oTourPackage->TourPackageDiscount = $package['TourPackageDiscountPrice'] / $package['TourPackagePrice'] * 100;  
                         }

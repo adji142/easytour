@@ -347,14 +347,28 @@
                         </fieldset>
                     </div>
 
-					<div class="col-md-6">
+					<div class="col-md-3">
                         <label  class="text-body">Tour Package Price</label>
                         <fieldset class="form-group mb-3">
                             <input type="number" class="form-control" id="TourPackagePrice" name="TourPackagePrice" placeholder="Tour Package Price" value = "0">
                         </fieldset>
                     </div>
 
-					<div class="col-md-6">
+					<div class="col-md-3">
+                        <label  class="text-body">Tour Package Child Price</label>
+                        <fieldset class="form-group mb-3">
+                            <input type="number" class="form-control" id="TourPackageChildPrice" name="TourPackageChildPrice" placeholder="Tour Package Child Price" value = "0">
+                        </fieldset>
+                    </div>
+
+					<div class="col-md-3">
+                        <label  class="text-body">Guild Fee</label>
+                        <fieldset class="form-group mb-3">
+                            <input type="number" class="form-control" id="TourPackageGuildFee" name="TourPackageGuildFee" placeholder="Guild Fee" value = "0">
+                        </fieldset>
+                    </div>
+
+					<div class="col-md-3">
                         <label  class="text-body">Tour Package Discount</label>
                         <fieldset class="form-group mb-3">
                             <input type="number" class="form-control" id="TourPackageDiscountPrice" name="TourPackageDiscountPrice" placeholder="Tour Package Discount" value="0">
@@ -438,6 +452,8 @@
 					'TourPackageDescription': tourPackage[index]['TourPackageDescription'],
 					'TourPackagePrice': tourPackage[index]['TourPackagePrice'],
 					'TourPackageDiscountPrice': tourPackage[index]['TourPackageDiscountPrice'],
+					'TourPackageChildPrice' : tourPackage[index]['TourPackageChildPrice'],
+					'TourPackageGuildFee' : tourPackage[index]['TourPackageGuildFee'],
 					'expanded': true
 				};
 				oPackageData.push(oData);
@@ -590,7 +606,8 @@
             var TourPackageDescription = quill_TourPackageDescription.root.innerHTML;
 			var TourPackagePrice = jQuery('#TourPackagePrice').val();
 			var TourPackageDiscountPrice = jQuery('#TourPackageDiscountPrice').val();
-            
+			var TourPackageChildPrice = jQuery('#TourPackageChildPrice').val();
+			var TourPackageGuildFee = jQuery('#TourPackageGuildFee').val();
             if (TourItineraryID) {
                 oPackageData = oPackageData.map(item => {
                     if (item.id === TourItineraryID) {
@@ -600,6 +617,8 @@
 						item.TourPackageDescription = TourPackageDescription;
 						item.TourPackagePrice = TourPackagePrice;
 						item.TourPackageDiscountPrice = TourPackageDiscountPrice;
+						item.TourPackageChildPrice = TourPackageChildPrice;
+						item.TourPackageGuildFee = TourPackageGuildFee;
                     }
                     return item;
                 });
@@ -612,6 +631,8 @@
 					'TourPackageDescription': TourPackageDescription,
 					'TourPackagePrice': TourPackagePrice,
 					'TourPackageDiscountPrice': TourPackageDiscountPrice,
+					'TourPackageChildPrice' : TourPackageChildPrice,
+					'TourPackageGuildFee' : TourPackageGuildFee,
                     'expanded': true
                 };
                 oPackageData.push(oData);
@@ -752,64 +773,69 @@
     }
 
 	function LoadPackage() {
-        // iteneraryData
 		console.log(oPackageData);
-        var previewContainer = document.getElementById("accordionpackageData");
-        previewContainer.innerHTML = "";
+		const previewContainer = document.getElementById("accordionpackageData");
+		previewContainer.innerHTML = "";
 
-        if (!Array.isArray(oPackageData) || oPackageData.length === 0) {
-            let noImageDiv = document.createElement("div");
-            noImageDiv.className = "col-12 text-center";
-            noImageDiv.innerText = "No Package Data Found";
-            previewContainer.appendChild(noImageDiv);
-            return;
-        }
+		if (!Array.isArray(oPackageData) || oPackageData.length === 0) {
+			let noImageDiv = document.createElement("div");
+			noImageDiv.className = "col-12 text-center";
+			noImageDiv.innerText = "No Package Data Found";
+			previewContainer.appendChild(noImageDiv);
+			return;
+		}
 
-        oPackageData.forEach((item, index) => {
-            const randomID = generateRandomText(5);
-            item.id = randomID;
-            item.expanded = false;
-            const isExpanded = item.expanded ? "true" : "false";
-            const showClass = item.expanded ? "show" : "";
-            const collapsedClass = item.expanded ? "" : "collapsed";
+		oPackageData.forEach((item, index) => {
+			const randomID = generateRandomText(5);
+			item.id = randomID;
+			item.expanded = false;
+			const isExpanded = item.expanded ? "true" : "false";
+			const showClass = item.expanded ? "show" : "";
+			const collapsedClass = item.expanded ? "" : "collapsed";
 
-            const accordionItem = document.createElement("div");
-            accordionItem.classList.add("accordion-item");
+			const formatCurrency = (value) => {
+				return "Rp " + Number(value || 0).toLocaleString('id-ID');
+			};
 
-            accordionItem.innerHTML = `
-                <h2 class="accordion-header" id="heading${item.id}">
-                    <button class="accordion-button ${collapsedClass}" type="button" data-bs-toggle="collapse" 
-                        data-bs-target="#collapse${item.id}" aria-expanded="${isExpanded}" aria-controls="collapse${item.id}">
-                        <h2><strong>${item.TourPackageName}</strong></h2>
-                    </button>
-                </h2>
-                <div id="collapse${item.id}" class="accordion-collapse collapse ${showClass}" 
-                    aria-labelledby="heading${item.id}" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
+			const accordionItem = document.createElement("div");
+			accordionItem.classList.add("accordion-item");
+
+			accordionItem.innerHTML = `
+				<h2 class="accordion-header" id="heading${item.id}">
+					<button class="accordion-button ${collapsedClass}" type="button" data-bs-toggle="collapse" 
+						data-bs-target="#collapse${item.id}" aria-expanded="${isExpanded}" aria-controls="collapse${item.id}">
+						<h2><strong>${item.TourPackageName}</strong></h2>
+					</button>
+				</h2>
+				<div id="collapse${item.id}" class="accordion-collapse collapse ${showClass}" 
+					aria-labelledby="heading${item.id}" data-bs-parent="#accordionExample">
+					<div class="accordion-body">
 						<p><strong>Start Date:</strong> ${item.TourStartDate}</p>
-        				<p><strong>End Date:</strong> ${item.TourEndDate}</p>
+						<p><strong>End Date:</strong> ${item.TourEndDate}</p>
 						<p><strong>Description:</strong> ${item.TourPackageDescription}</p>
 
 						<p><strong>Price:</strong> 
 							${item.TourPackageDiscountPrice > 0 
-								? `<span class="text-muted text-decoration-line-through">${item.TourPackagePrice}</span> 
-								<span class="text-success fw-bold ms-2">${item.TourPackagePrice - item.TourPackageDiscountPrice}</span>`
-								: `<span class="fw-bold">${item.TourPackagePrice}</span>`
+								? `<span class="text-muted text-decoration-line-through">${formatCurrency(item.TourPackagePrice)}</span> 
+								<span class="text-success fw-bold ms-2">${formatCurrency(item.TourPackagePrice - item.TourPackageDiscountPrice)}</span>`
+								: `<span class="fw-bold">${formatCurrency(item.TourPackagePrice)}</span>`
 							}
 						</p>
+						<p><strong>Child Price:</strong> ${formatCurrency(item.TourPackageChildPrice)}</p>
+						<p><strong>Guild Fee:</strong> ${formatCurrency(item.TourPackageGuildFee)}</p>
 					</div>
 
-                    <div class="d-flex justify-content-end mt-2 p-2">
-                        <button type="button" class="btn btn-danger" onclick="deletePackage('${item.id}')">Delete</button>
-                        <button type="button" class="btn btn-success ms-2" onclick="editPackage('${item.id}')">Edit</button>
-                    </div>
-                </div>
-            `;
+					<div class="d-flex justify-content-end mt-2 p-2">
+						<button type="button" class="btn btn-danger" onclick="deletePackage('${item.id}')">Delete</button>
+						<button type="button" class="btn btn-success ms-2" onclick="editPackage('${item.id}')">Edit</button>
+					</div>
+				</div>
+			`;
 
-            previewContainer.appendChild(accordionItem);
-        });
+			previewContainer.appendChild(accordionItem);
+		});
+	}
 
-    }
 
     function generateRandomText(length) {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

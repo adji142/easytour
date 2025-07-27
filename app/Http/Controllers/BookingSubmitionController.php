@@ -178,7 +178,7 @@ class BookingSubmitionController extends Controller
                 'PaymentReff' => $dataRequest['PaymentReff'] ?? null,
                 'PaymentIssued' => $dataRequest['PaymentIssued'],
                 'SpecialRequest' => $dataRequest['SpecialRequest'],
-                'BookingStatus' => 1, // Success
+                'BookingStatus' => 0, // Pending
             ]);
 
             DB::commit();
@@ -224,7 +224,28 @@ class BookingSubmitionController extends Controller
                 bookingsubmition.TotalNetTransaction, 
                 bookingsubmition.PaymentMethod,
                 bookingsubmition.PaymentReff, 
-                bookingsubmition.PaymentIssued ";
+                bookingsubmition.PaymentIssued, 
+                bookingsubmition.TourPackagePrice,
+                bookingsubmition.TourPackageChildPrice, 
+                bookingsubmition.TourPackageGuildFee, 
+                CASE WHEN bookingsubmition.BookingStatus = 0 THEN 'PENDING' ELSE 
+                    CASE WHEN bookingsubmition.BookingStatus = 1 THEN 'PAYMENT' ELSE 
+                        CASE WHEN bookingsubmition.BookingStatus = 2 THEN 'PAYMENT CONFIRMED' ELSE 
+                            CASE WHEN bookingsubmition.BookingStatus = 3 THEN 'BOOKING REJECTED' ELSE '' END
+                        END
+                    END
+                END BookingStatusName,
+                CASE WHEN bookingsubmition.BookingStatus = 0 THEN 'text-warning' ELSE 
+                    CASE WHEN bookingsubmition.BookingStatus = 1 THEN 'text-info' ELSE 
+                        CASE WHEN bookingsubmition.BookingStatus = 2 THEN 'text-success' ELSE 
+                            CASE WHEN bookingsubmition.BookingStatus = 3 THEN 'text-danger' ELSE '' END
+                        END
+                    END
+                END BookingStatusColor,
+                bookingsubmition.RejectFactor, 
+                bookingsubmition.ApprovedAt,
+                bookingsubmition.ApprovedBy,
+                bookingsubmition.PaymentProff ";
         $bookings = BookingSubmition::selectRaw($sql)
                         ->leftJoin('users', function ($value){
                             $value->on('bookingsubmition.UserID','=','users.id');
@@ -320,5 +341,125 @@ class BookingSubmitionController extends Controller
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, $filename);
+    }
+
+    public function handleApproval(Request $request)
+    {
+        $request->validate([
+            'DocumentNumber' => 'required|string',
+            'Status' => 'required|in:2,3', // 2 = Approve, 3 = Reject
+            'RejectReason' => 'nullable|string|max:255'
+        ]);
+
+        $booking = DB::table('bookingsubmition')
+            ->where('DocumentNumber', $request->DocumentNumber)
+            ->first();
+
+        if (!$booking) {
+            return response()->json(['success' => false, 'message' => 'Booking Not Found.'], 404);
+        }
+
+        $updateData = [
+            'BookingStatus' => (int)$request->Status,
+            'ApprovedAt' => Carbon::now(),
+            'ApprovedBy' => Auth::user()->name,
+        ];
+
+        if ((int)$request->Status === 3) { // Reject
+            $updateData['RejectFactor'] = $request->RejectReason;
+        }
+
+        DB::table('bookingsubmition')
+            ->where('DocumentNumber', $request->DocumentNumber)
+            ->update($updateData);
+
+        return response()->json([
+            'success' => true,
+            'message' => (int)$request->Status === 2 ? 'Booking Approved.' : 'Booking Rejected.'
+        ]);
+    }
+
+    public function PayWithQRIS(Request $request)
+    {
+        $data = array('success' => false, 'message' => '', 'data' => array(), 'payment_url' => '', 'invoice_id'=>'' );
+
+        $dataRequest = $request->formData;
+        $amount = (float) $dataRequest['TotalNetTransaction']; // pastikan float
+
+        try {
+            // dd($result);
+            $currentDate = Carbon::now();
+            $Year = $currentDate->format('y');
+            $Month = $currentDate->format('m');
+
+            $prefix = $Year.$Month;
+
+            // dd($dataRequest['TourPackagePrice']);
+            $DocNum = time();
+            $booking = BookingSubmition::create([
+                'DocumentNumber' => $DocNum,
+                'BookingDate' => $dataRequest['BookingDate'],
+                'BookingTime' => Carbon::now(),
+                'UserID' => $dataRequest['UserID'],
+                'BookingType' => $dataRequest['BookingType'],
+                'ProductID' => $dataRequest['ProductID'],
+                'PackageID' => $dataRequest['PackageID'],
+                'PartnerCode' => $dataRequest['PartnerCode'],
+                'BookingFullName' => $dataRequest['BookingFullName'],
+                'BookingEmail' => $dataRequest['BookingEmail'],
+                'BookingPhone' => $dataRequest['BookingPhone'] ?? '',
+                'BookingIdentityID' => $dataRequest['BookingIdentityID'] ?? '',
+                'AdultBookingPerson' => $dataRequest['AdultBookingPerson'],
+                'ChildBookingPerson' => $dataRequest['ChildBookingPerson'],
+                'InfantBookingPerson' => $dataRequest['InfantBookingPerson'],
+                'TransactionAmt' => $dataRequest['TransactionAmt'],
+                'TransactionTax' => $dataRequest['TransactionTax'],
+                'TransactionDiscount' => $dataRequest['TransactionDiscount'],
+                'DiscountVoucerCode' => $dataRequest['DiscountVoucerCode'] ?? '',
+                'DiscountVoucerAmt' => $dataRequest['DiscountVoucerAmt'],
+                'TotalNetTransaction' => $dataRequest['TotalNetTransaction'],
+                'TotalPayment' => 0,
+                'PaymentMethod' =>$dataRequest['PaymentMethod'],
+                'PaymentReff' => "",
+                'PaymentIssued' => $currentDate->toDateTimeString(),
+                'SpecialRequest' => empty($dataRequest['SpecialRequest']) ? "" : $dataRequest['SpecialRequest'],
+                'BookingStatus' => 0, // Success,
+                'TourPackagePrice' => $dataRequest['TourPackagePrice'],
+                'TourPackageChildPrice' => $dataRequest['TourPackageChildPrice'],
+                'TourPackageGuildFee' => $dataRequest['TourPackageGuildFee']
+            ]);
+            // dd($booking);
+            // return redirect($result->getInvoiceUrl());
+            $data['success'] = true;
+            $data['DocNum'] = $DocNum;
+        } catch (\Xendit\XenditSdkException $e) {
+            $data['message'] = $e->getMessage();
+        }
+        return response()->json($data, 200);
+    }
+
+    public function submitPaymentProof(Request $request)
+    {
+        $request->validate([
+            'booking_id' => 'required|integer|exists:bookingsubmition,DocumentNumber',
+            'payment_proof' => 'required|string',
+            'payment_remark' => 'nullable|string',
+        ]);
+
+        try {
+            DB::table('bookingsubmition')
+                ->where('DocumentNumber', $request->booking_id)
+                ->update([
+                    'PaymentProff' => $request->payment_proof,
+                    'PaymentRemark' => $request->payment_remark,
+                    'BookingStatus' => 1,
+                    'updated_at' => now(),
+                ]);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            Log::error('Submit Payment Error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
     }
 }

@@ -24,7 +24,27 @@ class DashboardController extends Controller
         $endDate = $request->input('endDate') ?? Carbon::today()->toDateString();
         $startDate = $request->input('startDate') ?? Carbon::today()->subDays(90)->toDateString();
 
-        $bookingList = BookingSubmition::selectRaw('*, CASE WHEN BookingStatus = 0 THEN "Pending" WHEN BookingStatus = 1 THEN "Success" WHEN BookingStatus = 2 THEN "Expired" ELSE "Unknown" END as BookingStatusText')
+        $queryRaw = "*, 
+            CASE WHEN bookingsubmition.BookingStatus = 0 THEN 'PENDING' ELSE 
+                    CASE WHEN bookingsubmition.BookingStatus = 1 THEN 'PAYMENT' ELSE 
+                        CASE WHEN bookingsubmition.BookingStatus = 2 THEN 'PAYMENT CONFIRMED' ELSE 
+                            CASE WHEN bookingsubmition.BookingStatus = 3 THEN 'BOOKING REJECTED' ELSE '' END
+                        END
+                    END
+                END BookingStatusName,
+                CASE WHEN bookingsubmition.BookingStatus = 0 THEN 'text-warning' ELSE 
+                    CASE WHEN bookingsubmition.BookingStatus = 1 THEN 'text-info' ELSE 
+                        CASE WHEN bookingsubmition.BookingStatus = 2 THEN 'text-success' ELSE 
+                            CASE WHEN bookingsubmition.BookingStatus = 3 THEN 'text-danger' ELSE '' END
+                        END
+                    END
+                END BookingStatusColor,
+                bookingsubmition.RejectFactor, 
+                bookingsubmition.ApprovedAt,
+                bookingsubmition.ApprovedBy
+        ";
+
+        $bookingList = BookingSubmition::selectRaw($queryRaw)
                     ->where('UserID', $user->id)
                     ->whereDate('BookingDate', '>=', $startDate)
                     ->whereDate('BookingDate', '<=', $endDate)

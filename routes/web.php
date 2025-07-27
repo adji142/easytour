@@ -326,6 +326,7 @@ Route::get('/searchhotel/details/{id}', [HotelDetailController::class,'detail'])
 */
 
 Route::get('/bookingList', [BookingSubmitionController::class,'BookingHistoryList'])->name('bookingList')->middleware('auth');
+Route::post('/booking/approval', [BookingSubmitionController::class,'handleApproval'])->name('booking.approval')->middleware('auth');
 
 Route::middleware(['is_user'])->group(function () {
     Route::get('/booking/{encoded}', [BookingSubmitionController::class,'index'])->name('booking');
@@ -337,6 +338,8 @@ Route::middleware(['is_user'])->group(function () {
     Route::get('/downloadvoucher/{documentnumber}', [BookingSubmitionController::class,'DownloadPDF'])->name('downloadvoucher');
     Route::post('/booking/payxendit', [XenditController::class,'createInvoice'])->name('booking-payxendit');
     Route::get('/booking/status/{invoiceId}', [XenditController::class, 'checkInvoiceStatus']);
+    Route::post('/booking/payqris', [BookingSubmitionController::class,'PayWithQRIS'])->name('booking-payqris');
+    Route::post('/booking/payproof', [BookingSubmitionController::class,'submitPaymentProof'])->name('booking-payproof');
 
 });
 
